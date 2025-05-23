@@ -1,3 +1,5 @@
+import {AppError} from "../utils/AppError.js";
+
 export class User {
     constructor(userData) {
         this.id = userData.id;
@@ -17,7 +19,7 @@ export class User {
 
     isValidEmail(email) {
         if (email === null) {
-            throw new Error("이메일은 필수입니다!");
+            throw new AppError("이메일은 필수 입력 사항입니다.");
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,7 +28,7 @@ export class User {
 
     isValidName(name) {
         if (name === null || name.length < 10) {
-            throw new Error("유효하지 않는 이름입니다.");
+            throw new AppError("이름은 필수 입력 사항이며 10글자 이내여야 합니다.");
         }
     }
 }
