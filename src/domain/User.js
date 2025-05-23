@@ -12,6 +12,21 @@ export class User {
         this.validate();
     }
 
+    static fromJSON(userData) {
+        return new User(userData);
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            email: this.email,
+            name: this.name,
+            birth: this.birth,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+        };
+    }
+
     validate() {
         this.isValidEmail(this.email);
         this.isValidName(this.name);
