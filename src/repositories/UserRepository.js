@@ -52,6 +52,7 @@ class UserRepository {
             updatedAt: new Date().toISOString(),
         };
 
+        users.push(newUser);
         await this.save(users);
         return newUser;
     }

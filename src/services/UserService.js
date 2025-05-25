@@ -7,6 +7,10 @@ export class UserService {
         this.userRepository = userRepository;
     }
 
+    async initialize() {
+        await this.userRepository.initialize();
+    }
+
     async createUser(userData) {
         const newUser = new User({
             email: userData.email,
@@ -14,7 +18,8 @@ export class UserService {
             birth: userData.birth,
         })
 
-        return await this.userRepository.save(newUser);
+        const savedUser = await this.userRepository.create(newUser);
+        return savedUser;
     }
 }
 

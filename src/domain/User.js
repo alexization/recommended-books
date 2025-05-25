@@ -42,7 +42,10 @@ export class User {
     }
 
     isValidName(name) {
-        if (name === null || name.length < 10) {
+        if (name === null || name === undefined) {
+            throw new AppError("이름은 필수 입력 사항입니다.");
+        }
+        if (name.length > 10) {
             throw new AppError("이름은 필수 입력 사항이며 10글자 이내여야 합니다.");
         }
     }

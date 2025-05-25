@@ -29,6 +29,15 @@ export class Router {
         return this;
     }
 
+    use(router) {
+        Object.keys(router.routes).forEach(method => {
+            Object.keys(router.routes[method]).forEach(path => {
+                this.routes[method][path] = router.routes[method][path];
+            });
+        })
+        return this;
+    }
+
     async handleRequest(req, res) {
         try {
             const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
@@ -44,13 +53,12 @@ export class Router {
 
             if (handler) {
                 req.params = params;
-
                 await handler(req, res);
             } else {
                 ResponseHandler.error(res, '요청한 리소스를 찾을 수 없습니다.');
             }
         } catch (error) {
-            ResponseHandler.error(res, '서버 내류 오류가 발생했습니다.');
+            ResponseHandler.error(res, '서버 내부 오류가 발생했습니다.');
         }
     }
 
@@ -71,9 +79,9 @@ export class Router {
                 }
             });
 
-            req.on(('error', (error) => {
+            req.on('error', (error) => {
                 reject(new AppError(error.message, 400));
-            }));
+            });
         });
     }
 
@@ -97,7 +105,6 @@ export class Router {
                 };
             }
         }
-
         return {handler: null, params: {}};
     }
 
