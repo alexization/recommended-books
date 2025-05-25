@@ -1,35 +1,48 @@
-import {config} from '../config/Config.js';
-import {readJsonFile, writeJsonFile} from "../utils/FileUtils.js";
-import {User} from "../domain/User.js";
-import {AppError} from "../utils/AppError.js";
+import fs from 'fs/promises';
+import path from 'path';
+import {fileURLToPath} from 'url';
 
-export class UserRepository {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+class UserRepository{
     constructor() {
-        this.filePath = config.storage.dataDir;
-        this.users = [];
+        this.dataFilePath = path.join(__dirname, '../../data/users.json');
+        this.initialize();
     }
 
-    /* 데이터 로드 */
     async initialize() {
         try {
-            const userData = await readJsonFile(this.filePath);
+            const dataDir = path.dirname(this.dataFilePath);
+            await fs.mkdir(dataDir, { recursive: true });
 
-            this.users = userData.map((data) => User.fromJSON(data));
-
+            try {
+                await fs.access(this.dataFilePath);
+            } catch {
+                await this.save([]);
+            }
         } catch (error) {
-            throw new AppError("UserRepository 데이터 로드 실패", error.message);
+            console.error("데이터 파일 초기화 실패: ", error);
         }
     }
 
-    async save() {
+    async load() {
         try {
-            const userData = this.users.map((user) => user.toJSON());
-            await writeJsonFile(this.filePath, userData);
-
+            const data = await fs.readFile(this.dataFilePath, 'utf8');
+            return JSON.parse(data);
         } catch (error) {
-            throw new AppError("데이터 저장 실패", error.message);
+            console.error("데이터 로드 실패", error);
+            return [];
+        }
+    }
+
+    async save(data) {
+        try {
+            await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
+        } catch (error){
+            console.error("데이터 저장 실패", error);
         }
     }
 }
 
-export const userRepository = new UserRepository();
+export default new UserRepository();
