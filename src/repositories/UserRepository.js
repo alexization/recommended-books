@@ -5,7 +5,7 @@ import {fileURLToPath} from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-class UserRepository{
+class UserRepository {
     constructor() {
         this.dataFilePath = path.join(__dirname, '../../data/users.json');
         this.initialize();
@@ -14,7 +14,7 @@ class UserRepository{
     async initialize() {
         try {
             const dataDir = path.dirname(this.dataFilePath);
-            await fs.mkdir(dataDir, { recursive: true });
+            await fs.mkdir(dataDir, {recursive: true});
 
             try {
                 await fs.access(this.dataFilePath);
@@ -39,9 +39,21 @@ class UserRepository{
     async save(data) {
         try {
             await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
-        } catch (error){
+        } catch (error) {
             console.error("데이터 저장 실패", error);
         }
+    }
+
+    async create(userData) {
+        const users = await this.load();
+        const newUser = {
+            ...userData,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+        };
+
+        await this.save(users);
+        return newUser;
     }
 }
 
