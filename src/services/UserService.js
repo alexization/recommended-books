@@ -1,12 +1,21 @@
 import {userRepository} from "../repositories/UserRepository.js";
+import {User} from "../domain/User.js";
 
-class UserService {
+export class UserService {
+
+    constructor(userRepository) {
+        this.userRepository = userRepository;
+    }
 
     async createUser(userData) {
-        const newUser = await userRepository.createUser(userData);
+        const newUser = new User({
+            email: userData.email,
+            name: userData.name,
+            birth: userData.birth,
+        })
 
-        return newUser;
+        return await this.userRepository.save(newUser);
     }
 }
 
-export default new UserService();
+export const userService = new UserService(userRepository);
