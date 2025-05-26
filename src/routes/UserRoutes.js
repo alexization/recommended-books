@@ -18,4 +18,9 @@ userRouter.get('/users', async (req, res) => {
     await userController.findUserByEmail(req, res);
 })
 
+/* 회원 정보 수정 */
+userRouter.put('/user', async (req, res) => {
+    await userController.update(req, res);
+})
+
 export default userRouter;

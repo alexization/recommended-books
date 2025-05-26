@@ -47,6 +47,17 @@ export class UserController {
         }
     }
 
+    async update(req, res) {
+        try {
+            const {email, name, birth} = req.body;
+
+            const updatedUser = await this.userService.update({email, name, birth});
+            ResponseHandler.success(res, updatedUser, '사용자 정보를 성공적으로 수정했습니다.');
+        } catch (error) {
+            ResponseHandler.error(res, error.message, error);
+        }
+    }
+
     validateEmail(email) {
         if (!email || email.trim() === '') {
             throw new ValidationError("이메일은 필수 입력 사항입니다.");

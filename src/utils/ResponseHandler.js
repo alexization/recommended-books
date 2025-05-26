@@ -7,7 +7,7 @@ export class ResponseHandler {
 
     static error(res, message, error = null) {
         res.end(JSON.stringify({
-            status: 'error', message: message,
+            status: 'error', message: message, error
         }));
     }
 }

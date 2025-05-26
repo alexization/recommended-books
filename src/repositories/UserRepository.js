@@ -80,6 +80,23 @@ class UserRepository {
         return users.filter(user => user.email === email);
     }
 
+    async update(updateUserData) {
+        const users = await this.load();
+
+        const updateUser = users.find(user => user.email === updateUserData.email);
+
+        if (!updateUser) {
+            throw new AppError("해당 이메일을 가진 사용자가 없습니다.");
+        }
+
+        updateUser.name = updateUserData.name;
+        updateUser.birth = updateUserData.birth;
+        updateUser.updatedAt = new Date().toISOString();
+
+        await this.save(users);
+        return updateUser;
+    }
+
     isDuplicatedEmail(users, email) {
         const result = users.filter(user => user.email === email);
 
