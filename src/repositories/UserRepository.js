@@ -46,6 +46,12 @@ class UserRepository {
 
     async create(userData) {
         const users = await this.load();
+
+        userData.id = 1;
+        if (users.length !== 0) {
+            userData.id = Math.max(...users.map(user => user.id)) + 1;
+        }
+
         const newUser = {
             ...userData,
             createdAt: new Date().toISOString(),
