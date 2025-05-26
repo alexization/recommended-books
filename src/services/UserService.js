@@ -21,6 +21,10 @@ export class UserService {
         const savedUser = await this.userRepository.create(newUser);
         return savedUser;
     }
+
+    async findUserById(id) {
+        return await this.userRepository.findUserById(id);
+    }
 }
 
 export const userService = new UserService(userRepository);

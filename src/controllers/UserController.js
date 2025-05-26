@@ -21,6 +21,16 @@ export class UserController {
         }
     }
 
+    async findUserById(req, res) {
+        try {
+            const id = req.params.id;
+
+            const user = await this.userService.findUserById(id);
+            ResponseHandler.success(res, user, '사용자 정보를 성공적으로 가져왔습니다.');
+        } catch (error) {
+            ResponseHandler.error(res, error);
+        }
+    }
 }
 
 export const userController =  new UserController(userService);

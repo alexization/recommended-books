@@ -62,6 +62,12 @@ class UserRepository {
         await this.save(users);
         return newUser;
     }
+
+    async findUserById(id) {
+        const users = await this.load();
+
+        return users.filter(user => user.id == id);
+    }
 }
 
 export const userRepository = new UserRepository();
