@@ -1,5 +1,5 @@
 export class ResponseHandler {
-    static success(res, data = null, message) {
+    static success(res, message, data = null) {
         res.end(JSON.stringify({
             status: 'success', message: message, data
         }));

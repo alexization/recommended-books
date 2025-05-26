@@ -15,7 +15,7 @@ export class UserController {
                 email, name, birth,
             });
 
-            ResponseHandler.success(res, newUser, '사용자가 정상적으로 등록되었습니다.');
+            ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
         } catch (error) {
             ResponseHandler.error(res, error);
         }
@@ -26,7 +26,7 @@ export class UserController {
             const id = req.params.id;
 
             const user = await this.userService.findUserById(id);
-            ResponseHandler.success(res, user, '사용자 정보를 성공적으로 가져왔습니다.');
+            ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
         } catch (error) {
             ResponseHandler.error(res, error);
         }
@@ -37,7 +37,7 @@ export class UserController {
             const {email} = req.body;
 
             const user = await this.userService.findUserByEmail(email);
-            ResponseHandler.success(res, user, '사용자 정보를 성공적으로 가져왔습니다.');
+            ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
         } catch (error) {
             ResponseHandler.error(res, error);
         }
