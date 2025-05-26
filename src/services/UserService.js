@@ -29,6 +29,10 @@ export class UserService {
     async update(updateUserData) {
         return await this.userRepository.update(updateUserData);
     }
+
+    async delete(id) {
+        return await this.userRepository.delete(id);
+    }
 }
 
 export const userService = new UserService(userRepository);

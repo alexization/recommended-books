@@ -23,4 +23,9 @@ userRouter.put('/user', async (req, res) => {
     await userController.update(req, res);
 })
 
+/* 회원 정보 삭제 */
+userRouter.delete('/user/:id', async (req, res) => {
+    await userController.delete(req, res);
+})
+
 export default userRouter;

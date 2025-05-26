@@ -48,7 +48,7 @@ class UserRepository {
     async create(userData) {
         const users = await this.load();
 
-        if (this.isDuplicatedEmail(users, userData.email)) {
+        if (this.isExistedEmail(users, userData.email)) {
             throw new AppError("이미 가입한 이메일입니다.");
         }
 
@@ -97,7 +97,14 @@ class UserRepository {
         return updateUser;
     }
 
-    isDuplicatedEmail(users, email) {
+    async delete(id) {
+        const users = await this.load();
+        const newUsers = users.filter(user => user.id !== Number(id));
+
+        await this.save(newUsers);
+    }
+
+    isExistedEmail(users, email) {
         const result = users.filter(user => user.email === email);
 
         return result.length !== 0;
