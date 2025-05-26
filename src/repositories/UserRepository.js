@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import {AppError} from "../utils/AppError.js";
+import {AppError, NotFoundError} from "../utils/AppError.js";
 import {User} from "../domain/User.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -83,7 +83,7 @@ class UserRepository {
         const updateUser = users.find(user => user.email === updateUserData.email);
 
         if (!updateUser) {
-            throw new AppError("해당 이메일을 가진 사용자가 없습니다.");
+            throw new NotFoundError("해당 이메일을 가진 사용자가 없습니다.");
         }
 
         updateUser.name = updateUserData.name;
