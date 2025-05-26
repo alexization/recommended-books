@@ -33,20 +33,22 @@ export class User {
     }
 
     isValidEmail(email) {
-        if (email === null) {
+        if (!email || email.trim() === '') {
             throw new AppError("이메일은 필수 입력 사항입니다.");
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+        if (!emailRegex.test(email)) {
+            throw new AppError("올바른 이메일 형식이 아닙니다.");
+        }
     }
 
     isValidName(name) {
-        if (name === null || name === undefined) {
+        if (!name || name.trim() === '') {
             throw new AppError("이름은 필수 입력 사항입니다.");
         }
         if (name.length > 10) {
-            throw new AppError("이름은 필수 입력 사항이며 10글자 이내여야 합니다.");
+            throw new AppError("이름은10글자 이내여야 합니다.");
         }
     }
 }
