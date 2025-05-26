@@ -58,6 +58,17 @@ export class UserController {
         }
     }
 
+    async delete(req, res) {
+        try {
+            const id = req.params.id;
+
+            await this.userService.delete(id);
+            ResponseHandler.success(res, null, '사용자를 성공적으로 삭제했습니다.');
+        } catch (error) {
+            ResponseHandler.error(res, error.message, error);
+        }
+    }
+
     validateEmail(email) {
         if (!email || email.trim() === '') {
             throw new ValidationError("이메일은 필수 입력 사항입니다.");
@@ -75,18 +86,6 @@ export class UserController {
         }
         if (name.length > 10) {
             throw new ValidationError("이름은10글자 이내여야 합니다.");
-        }
-    }
-
-
-    async delete(req, res) {
-        try {
-            const id = req.params.id;
-
-            await this.userService.delete(id);
-            ResponseHandler.success(res, null, '사용자를 성공적으로 삭제했습니다.');
-        } catch (error) {
-            ResponseHandler.error(res, error.message, error);
         }
     }
 }

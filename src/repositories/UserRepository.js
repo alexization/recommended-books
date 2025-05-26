@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import {AppError} from "../utils/AppError.js";
+import {User} from "../domain/User.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -57,11 +58,7 @@ class UserRepository {
             userData.id = Math.max(...users.map(user => user.id)) + 1;
         }
 
-        const newUser = {
-            ...userData,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        };
+        const newUser = new User({...userData});
 
         users.push(newUser);
         await this.save(users);
