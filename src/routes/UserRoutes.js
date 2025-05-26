@@ -19,12 +19,12 @@ userRouter.get('/users', async (req, res) => {
 })
 
 /* 회원 정보 수정 */
-userRouter.put('/user', async (req, res) => {
+userRouter.put('/users', async (req, res) => {
     await userController.update(req, res);
 })
 
 /* 회원 정보 삭제 */
-userRouter.delete('/user/:id', async (req, res) => {
+userRouter.delete('/users/:id', async (req, res) => {
     await userController.delete(req, res);
 })
 
