@@ -36,7 +36,7 @@ export class UserController {
 
     async findUserByEmail(req, res) {
         try {
-            const {email} = req.body;
+            const email = req.query.email;
 
             this.validateEmail(email);
 
