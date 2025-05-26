@@ -66,7 +66,13 @@ class UserRepository {
     async findUserById(id) {
         const users = await this.load();
 
-        return users.filter(user => user.id == id);
+        return users.filter(user => user.id === Number(id));
+    }
+
+    async findUserByEmail(email) {
+        const users = await this.load();
+
+        return users.filter(user => user.email === email);
     }
 }
 

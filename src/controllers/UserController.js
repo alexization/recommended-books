@@ -31,6 +31,17 @@ export class UserController {
             ResponseHandler.error(res, error);
         }
     }
+
+    async findUserByEmail(req, res) {
+        try {
+            const {email} = req.body;
+
+            const user = await this.userService.findUserByEmail(email);
+            ResponseHandler.success(res, user, '사용자 정보를 성공적으로 가져왔습니다.');
+        } catch (error) {
+            ResponseHandler.error(res, error);
+        }
+    }
 }
 
-export const userController =  new UserController(userService);
+export const userController = new UserController(userService);
