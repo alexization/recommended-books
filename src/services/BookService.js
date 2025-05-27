@@ -12,23 +12,23 @@ export class BookService {
 
     async getBooks(pageNo) {
         try {
-            const url = this.buildApiUrl(pageNo);
+            const url = this.buildBookSearchUrl(pageNo);
 
-            return await this.makeApiRequest(url);
+            return await this.executeHttpRequest(url);
         } catch (error) {
             console.error(error);
             throw new AppError('API 호출 중 오류가 발생했습니다.', 500);
         }
     }
 
-    buildApiUrl(pageNo) {
+    buildBookSearchUrl(pageNo) {
         const params = new URLSearchParams({
             numOfRows: '10', pageNo: pageNo.toString(),
         });
         return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&${params.toString()}`;
     }
 
-    makeApiRequest(url) {
+    executeHttpRequest(url) {
         return new Promise((resolve, reject) => {
             const request = https.get(url, (response) => {
                 let data = '';

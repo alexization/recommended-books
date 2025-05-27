@@ -26,12 +26,12 @@ export class UserService {
         return await this.userRepository.findUserByEmail(email);
     }
 
-    async update(updateUserData) {
-        return await this.userRepository.update(updateUserData);
+    async updateUser(updateUserData) {
+        return await this.userRepository.updateUser(updateUserData);
     }
 
-    async delete(id) {
-        return await this.userRepository.delete(id);
+    async deleteUser(id) {
+        return await this.userRepository.deleteUser(id);
     }
 }
 

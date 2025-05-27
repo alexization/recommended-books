@@ -47,22 +47,22 @@ export class UserController {
         }
     }
 
-    async update(req, res) {
+    async updateUser(req, res) {
         try {
             const {email, name, birth} = req.body;
 
-            const updatedUser = await this.userService.update({email, name, birth});
+            const updatedUser = await this.userService.updateUser({email, name, birth});
             ResponseHandler.success(res, updatedUser, '사용자 정보를 성공적으로 수정했습니다.');
         } catch (error) {
             ResponseHandler.error(res, error.message, error);
         }
     }
 
-    async delete(req, res) {
+    async deleteUser(req, res) {
         try {
             const id = req.params.id;
 
-            await this.userService.delete(id);
+            await this.userService.deleteUser(id);
             ResponseHandler.success(res, null, '사용자를 성공적으로 삭제했습니다.');
         } catch (error) {
             ResponseHandler.error(res, error.message, error);
