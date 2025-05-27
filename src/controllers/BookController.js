@@ -8,7 +8,7 @@ export class BookController {
         this.bookService = bookService;
     }
 
-    async getRecommendedBooks(req, res) {
+    async getBooks(req, res) {
         try {
             const {numOfRows, pageNo} = req.query;
 
@@ -20,7 +20,7 @@ export class BookController {
                 throw new ValidationError('페이지 번호는 1 이상이어야 합니다.');
             }
 
-            const result = await this.bookService.getRecommendedBooks(req.query);
+            const result = await this.bookService.getBooks(req.query);
 
             ResponseHandler.success(res, result.message, {
                 books: result.items,

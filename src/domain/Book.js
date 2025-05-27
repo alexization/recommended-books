@@ -28,7 +28,7 @@ export class Book {
             refrm: this.refrm,
             loan_yn: this.loan_yn,
             rtn_ed: this.rtn_ed,
-            bk_rsvt: this.bk_rsvt
+            bk_rsvt: this.bk_rsvt,
             mutl_loan: this.mutl_loan
         };
     }

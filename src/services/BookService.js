@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
+import https from 'https';
 import {AppError, BadRequestError} from "../utils/AppError.js";
-import http from "http";
 
 dotenv.config();
 
@@ -10,29 +10,29 @@ export class BookService {
         this.baseUrl = process.env.OPEN_API_BASE_URL;
     }
 
-    async getRecommendedBooks(options) {
+    async getBooks(options) {
         try {
             const {numOfRows, pageNo} = options;
-            const serviceKey = process.env.OPEN_API_KEY;
+            const serviceKey = process.env.OPEN_API_SERVICE_KEY;
             const url = this.buildApiUrl(serviceKey, numOfRows, pageNo);
 
             return await this.makeApiRequest(url);
         } catch (error) {
+            console.error(error);
             throw new AppError('API 호출 중 오류가 발생했습니다.', 500);
         }
     }
 
     buildApiUrl(serviceKey, numOfRows, pageNo) {
         const params = new URLSearchParams({
-            serviceKey: serviceKey, numOfRows: numOfRows.toString(), pageNo: pageNo.toString(),
+            numOfRows: numOfRows.toString(), pageNo: pageNo.toString(),
         });
-
-        return `${this.baseUrl}?${params.toString()}`;
+        return `${this.baseUrl}?serviceKey=${serviceKey}&${params.toString()}`;
     }
 
     makeApiRequest(url) {
         return new Promise((resolve, reject) => {
-            const request = http.get(url, (response) => {
+            const request = https.get(url, (response) => {
                 let data = '';
 
                 response.on('data', (chunk) => {
