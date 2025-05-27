@@ -3,11 +3,13 @@ import {Router} from './utils/Routes.js';
 import {ResponseHandler} from "./utils/ResponseHandler.js";
 import {userService} from "./services/UserService.js";
 import userRouter from "./routes/UserRoutes.js";
+import bookRouter from "./routes/BookRoutes.js";
 
 export function createServer() {
     const router = new Router();
 
     router.use(userRouter);
+    router.use(bookRouter);
 
     const server = http.createServer(async (req, res) => {
         try {
