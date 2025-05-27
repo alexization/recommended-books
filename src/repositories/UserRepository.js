@@ -1,7 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import {AppError} from "../utils/AppError.js";
+import {AppError, NotFoundError} from "../utils/AppError.js";
+import {User} from "../domain/User.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,7 +49,7 @@ class UserRepository {
     async create(userData) {
         const users = await this.load();
 
-        if (this.isDuplicatedEmail(users, userData.email)) {
+        if (this.isExistedEmail(users, userData.email)) {
             throw new AppError("이미 가입한 이메일입니다.");
         }
 
@@ -57,11 +58,7 @@ class UserRepository {
             userData.id = Math.max(...users.map(user => user.id)) + 1;
         }
 
-        const newUser = {
-            ...userData,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        };
+        const newUser = new User({...userData});
 
         users.push(newUser);
         await this.save(users);
@@ -80,7 +77,31 @@ class UserRepository {
         return users.filter(user => user.email === email);
     }
 
-    isDuplicatedEmail(users, email) {
+    async update(updateUserData) {
+        const users = await this.load();
+
+        const updateUser = users.find(user => user.email === updateUserData.email);
+
+        if (!updateUser) {
+            throw new NotFoundError("해당 이메일을 가진 사용자가 없습니다.");
+        }
+
+        updateUser.name = updateUserData.name;
+        updateUser.birth = updateUserData.birth;
+        updateUser.updatedAt = new Date().toISOString();
+
+        await this.save(users);
+        return updateUser;
+    }
+
+    async delete(id) {
+        const users = await this.load();
+        const newUsers = users.filter(user => user.id !== Number(id));
+
+        await this.save(newUsers);
+    }
+
+    isExistedEmail(users, email) {
         const result = users.filter(user => user.email === email);
 
         return result.length !== 0;

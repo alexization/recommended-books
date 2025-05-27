@@ -18,4 +18,14 @@ userRouter.get('/users', async (req, res) => {
     await userController.findUserByEmail(req, res);
 })
 
+/* 회원 정보 수정 */
+userRouter.put('/users', async (req, res) => {
+    await userController.update(req, res);
+})
+
+/* 회원 정보 삭제 */
+userRouter.delete('/users/:id', async (req, res) => {
+    await userController.delete(req, res);
+})
+
 export default userRouter;

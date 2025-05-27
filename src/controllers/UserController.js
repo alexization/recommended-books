@@ -19,7 +19,7 @@ export class UserController {
 
             ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
         } catch (error) {
-            ResponseHandler.error(res, error);
+            ResponseHandler.error(res, error.message, error);
         }
     }
 
@@ -30,7 +30,7 @@ export class UserController {
             const user = await this.userService.findUserById(id);
             ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
         } catch (error) {
-            ResponseHandler.error(res, error);
+            ResponseHandler.error(res, error.message, error);
         }
     }
 
@@ -43,7 +43,29 @@ export class UserController {
             const user = await this.userService.findUserByEmail(email);
             ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
         } catch (error) {
-            ResponseHandler.error(res, error);
+            ResponseHandler.error(res, error.message, error);
+        }
+    }
+
+    async update(req, res) {
+        try {
+            const {email, name, birth} = req.body;
+
+            const updatedUser = await this.userService.update({email, name, birth});
+            ResponseHandler.success(res, updatedUser, '사용자 정보를 성공적으로 수정했습니다.');
+        } catch (error) {
+            ResponseHandler.error(res, error.message, error);
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            const id = req.params.id;
+
+            await this.userService.delete(id);
+            ResponseHandler.success(res, null, '사용자를 성공적으로 삭제했습니다.');
+        } catch (error) {
+            ResponseHandler.error(res, error.message, error);
         }
     }
 
@@ -66,7 +88,6 @@ export class UserController {
             throw new ValidationError("이름은10글자 이내여야 합니다.");
         }
     }
-
 }
 
 export const userController = new UserController(userService);
