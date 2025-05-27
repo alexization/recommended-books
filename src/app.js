@@ -1,9 +1,13 @@
 import http from 'http';
 import {Router} from './utils/Routes.js';
 import {ResponseHandler} from "./utils/ResponseHandler.js";
+import {userService} from "./services/UserService.js";
+import userRouter from "./routes/UserRoutes.js";
 
 export function createServer() {
     const router = new Router();
+
+    router.use(userRouter);
 
     const server = http.createServer(async (req, res) => {
         try {
@@ -20,14 +24,18 @@ export function createServer() {
     return server;
 }
 
-export function startServer(port = 3000) {
-    return new Promise((resolve, reject) => {
-        const server = createServer();
+export async function startServer(port = 3000) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await userService.initialize();
+            const server = createServer();
 
-        server.listen(port, () => {
-            resolve(server);
-        });
-
-        server.on('error', reject);
+            server.listen(port, () => {
+                resolve(server);
+            });
+            server.on('error', reject);
+        } catch (error) {
+            reject(error);
+        }
     });
 }
