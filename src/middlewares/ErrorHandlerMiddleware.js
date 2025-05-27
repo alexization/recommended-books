@@ -22,7 +22,7 @@ export const errorHandlerMiddleware = (req, res, next) => {
         }
 
         if (error instanceof AppError) {
-            return ResponseHandler.error(res, error.message, {type: 'APP_ERROR', statusCode: 400});
+            return ResponseHandler.error(res, error.message, {statusCode: 400});
         }
 
         return ResponseHandler.error(res, '예상치 못한 오류 입니다.', {statusCode: 500});

@@ -66,10 +66,10 @@ export class Router {
             if (handler) {
                 await this.middlewareManager.execute(req, res, handler);
             } else {
-                ResponseHandler.error(res, '요청한 리소스를 찾을 수 없습니다.');
+                ResponseHandler.error(res, '요청한 리소스를 찾을 수 없습니다.', );
             }
         } catch (error) {
-            ResponseHandler.error(res, '서버 내부 오류가 발생했습니다.');
+            ResponseHandler.error(res, error.message, error);
         }
     }
 

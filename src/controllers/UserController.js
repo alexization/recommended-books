@@ -9,64 +9,44 @@ export class UserController {
     }
 
     async createUser(req, res) {
-        try {
-            const {email, name, birth} = req.body;
+        const {email, name, birth} = req.body;
 
-            this.validateEmail(email);
-            this.validateName(name);
+        this.validateEmail(email);
+        this.validateName(name);
 
-            const newUser = await this.userService.createUser({email, name, birth,});
+        const newUser = await this.userService.createUser({email, name, birth,});
 
-            ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
-        } catch (error) {
-            ResponseHandler.error(res, error.message, error);
-        }
+        ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
     }
 
     async findUserById(req, res) {
-        try {
-            const id = req.params.id;
+        const id = req.params.id;
 
-            const user = await this.userService.findUserById(id);
-            ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
-        } catch (error) {
-            ResponseHandler.error(res, error.message, error);
-        }
+        const user = await this.userService.findUserById(id);
+        ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
     async findUserByEmail(req, res) {
-        try {
-            const email = req.query.email;
+        const email = req.query.email;
 
-            this.validateEmail(email);
+        this.validateEmail(email);
 
-            const user = await this.userService.findUserByEmail(email);
-            ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
-        } catch (error) {
-            ResponseHandler.error(res, error.message, error);
-        }
+        const user = await this.userService.findUserByEmail(email);
+        ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
     async updateUser(req, res) {
-        try {
-            const {email, name, birth} = req.body;
+        const {email, name, birth} = req.body;
 
-            const updatedUser = await this.userService.updateUser({email, name, birth});
-            ResponseHandler.success(res, updatedUser, '사용자 정보를 성공적으로 수정했습니다.');
-        } catch (error) {
-            ResponseHandler.error(res, error.message, error);
-        }
+        const updatedUser = await this.userService.updateUser({email, name, birth});
+        ResponseHandler.success(res, updatedUser, '사용자 정보를 성공적으로 수정했습니다.');
     }
 
     async deleteUser(req, res) {
-        try {
-            const id = req.params.id;
+        const id = req.params.id;
 
-            await this.userService.deleteUser(id);
-            ResponseHandler.success(res, null, '사용자를 성공적으로 삭제했습니다.');
-        } catch (error) {
-            ResponseHandler.error(res, error.message, error);
-        }
+        await this.userService.deleteUser(id);
+        ResponseHandler.success(res, null, '사용자를 성공적으로 삭제했습니다.');
     }
 
     validateEmail(email) {
@@ -85,7 +65,7 @@ export class UserController {
             throw new ValidationError("이름은 필수 입력 사항입니다.");
         }
         if (name.length > 10) {
-            throw new ValidationError("이름은10글자 이내여야 합니다.");
+            throw new ValidationError("이름은 10글자 이내여야 합니다.");
         }
     }
 }
