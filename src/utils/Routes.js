@@ -1,12 +1,14 @@
 import {URL} from 'url';
 import {AppError} from "./AppError.js";
 import {ResponseHandler} from "./ResponseHandler.js";
+import {MiddlewareManager} from "../middlewares/MiddlewareManager.js";
 
 export class Router {
     constructor() {
         this.routes = {
             GET: {}, POST: {}, PUT: {}, DELETE: {},
         };
+        this.middlewareManager = new MiddlewareManager();
     }
 
     get(path, handler) {
@@ -35,6 +37,16 @@ export class Router {
                 this.routes[method][path] = router.routes[method][path];
             });
         })
+
+        router.middlewareManager.middlewares.forEach(middleware => {
+            this.middlewareManager.use(middleware);
+        })
+
+        return this;
+    }
+
+    useMiddleware(middleware) {
+        this.middlewareManager.use(middleware);
         return this;
     }
 
@@ -52,8 +64,7 @@ export class Router {
             const {handler, params} = this.findRoute(method, path);
 
             if (handler) {
-                req.params = params;
-                await handler(req, res);
+                await this.middlewareManager.execute(req, res, handler);
             } else {
                 ResponseHandler.error(res, '요청한 리소스를 찾을 수 없습니다.');
             }

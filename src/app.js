@@ -4,9 +4,12 @@ import {ResponseHandler} from "./utils/ResponseHandler.js";
 import {userService} from "./services/UserService.js";
 import userRouter from "./routes/UserRoutes.js";
 import bookRouter from "./routes/BookRoutes.js";
+import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware.js";
 
 export function createServer() {
     const router = new Router();
+
+    router.useMiddleware(errorHandlerMiddleware);
 
     router.use(userRouter);
     router.use(bookRouter);
