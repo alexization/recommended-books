@@ -10,18 +10,13 @@ export class BookService {
         this.baseUrl = process.env.OPEN_API_BASE_URL;
     }
 
-    async getRecommendedBooks(options = {}) {
+    async getRecommendedBooks(options) {
         try {
-            const {
-                serviceKey = process.env.OPEN_API_SERVICE_KEY,
-                numOfRows = 10,
-                pageNo = 1
-            } = options;
-
+            const {numOfRows, pageNo} = options;
+            const serviceKey = process.env.OPEN_API_KEY;
             const url = this.buildApiUrl(serviceKey, numOfRows, pageNo);
-            const responseData = await this.makeApiRequest(url);
 
-            return responseData;
+            return await this.makeApiRequest(url);
         } catch (error) {
             throw new AppError('API 호출 중 오류가 발생했습니다.', 500);
         }
@@ -29,9 +24,7 @@ export class BookService {
 
     buildApiUrl(serviceKey, numOfRows, pageNo) {
         const params = new URLSearchParams({
-            serviceKey: serviceKey,
-            numOfRows: numOfRows.toString(),
-            pageNo: pageNo.toString(),
+            serviceKey: serviceKey, numOfRows: numOfRows.toString(), pageNo: pageNo.toString(),
         });
 
         return `${this.baseUrl}?${params.toString()}`;
