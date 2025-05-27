@@ -10,11 +10,9 @@ export class BookService {
         this.baseUrl = process.env.OPEN_API_BASE_URL;
     }
 
-    async getBooks(options) {
+    async getBooks(pageNo) {
         try {
-            const {numOfRows, pageNo} = options;
-            const serviceKey = process.env.OPEN_API_SERVICE_KEY;
-            const url = this.buildApiUrl(serviceKey, numOfRows, pageNo);
+            const url = this.buildApiUrl(pageNo);
 
             return await this.makeApiRequest(url);
         } catch (error) {
@@ -23,11 +21,11 @@ export class BookService {
         }
     }
 
-    buildApiUrl(serviceKey, numOfRows, pageNo) {
+    buildApiUrl(pageNo) {
         const params = new URLSearchParams({
-            numOfRows: numOfRows.toString(), pageNo: pageNo.toString(),
+            numOfRows: '10', pageNo: pageNo.toString(),
         });
-        return `${this.baseUrl}?serviceKey=${serviceKey}&${params.toString()}`;
+        return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&${params.toString()}`;
     }
 
     makeApiRequest(url) {
