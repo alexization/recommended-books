@@ -46,10 +46,10 @@ class UserRepository {
         }
     }
 
-    async create(userData) {
+    async createUser(userData) {
         const users = await this.load();
 
-        if (this.isExistedEmail(users, userData.email)) {
+        if (this.isEmailExists(users, userData.email)) {
             throw new AppError("이미 가입한 이메일입니다.");
         }
 
@@ -77,7 +77,7 @@ class UserRepository {
         return users.filter(user => user.email === email);
     }
 
-    async update(updateUserData) {
+    async updateUser(updateUserData) {
         const users = await this.load();
 
         const updateUser = users.find(user => user.email === updateUserData.email);
@@ -94,14 +94,14 @@ class UserRepository {
         return updateUser;
     }
 
-    async delete(id) {
+    async deleteUser(id) {
         const users = await this.load();
         const newUsers = users.filter(user => user.id !== Number(id));
 
         await this.save(newUsers);
     }
 
-    isExistedEmail(users, email) {
+    isEmailExists(users, email) {
         const result = users.filter(user => user.email === email);
 
         return result.length !== 0;

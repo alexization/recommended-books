@@ -19,9 +19,7 @@ export class BookController {
             const result = await this.bookService.getBooks(pageNo);
 
             ResponseHandler.success(res, result.message, {
-                books: result.items,
-                totalCount: result.totalCount,
-                currentPage: pageNo,
+                books: result.items, totalCount: result.totalCount, currentPage: pageNo,
             });
         } catch (error) {
             ResponseHandler.error(res, error.message, error);
