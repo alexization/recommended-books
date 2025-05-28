@@ -59,9 +59,10 @@ export class Router {
             await this.parseRequestBody(req);
 
             req.query = Object.fromEntries(parsedUrl.searchParams);
-            req.params = {};
 
             const {handler, params} = this.findRoute(method, path);
+
+            req.params = params;
 
             if (handler) {
                 await this.middlewareManager.execute(req, res, handler);
