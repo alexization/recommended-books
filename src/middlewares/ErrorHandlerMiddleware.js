@@ -1,13 +1,13 @@
 import {AppError, BadRequestError, NotFoundError, ValidationError} from "../utils/AppError.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 
-export const errorHandlerMiddleware = (req, res, next) => {
+export const errorHandlerMiddleware = async (req, res, next) => {
     try {
-        return next();
+        await next();
     } catch (error) {
         console.error({
             message: error.message, stack: error.stack,
-        });
+        })
 
         if (error instanceof ValidationError) {
             return ResponseHandler.error(res, error.message, {statusCode: 400});
