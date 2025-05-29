@@ -50,7 +50,7 @@ class UserRepository {
         const users = await this.load();
 
         if (this.isEmailExists(users, userData.email)) {
-            throw new AppError("이미 가입한 이메일입니다.");
+            throw new AppError("이미 가입한 이메일입니다.", 400);
         }
 
         userData.id = 1;

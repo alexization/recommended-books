@@ -16,7 +16,6 @@ export class BookService {
 
             return await this.executeHttpRequest(url);
         } catch (error) {
-            console.error(error);
             throw new AppError('API 호출 중 오류가 발생했습니다.', 500);
         }
     }

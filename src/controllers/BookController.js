@@ -9,21 +9,17 @@ export class BookController {
     }
 
     async getBooks(req, res) {
-        try {
-            const {pageNo} = req.query;
+        const {pageNo} = req.query;
 
-            if (isNaN(pageNo) || pageNo < 1) {
-                throw new ValidationError('페이지 번호는 1 이상이어야 합니다.');
-            }
-
-            const result = await this.bookService.getBooks(pageNo);
-
-            ResponseHandler.success(res, result.message, {
-                books: result.items, totalCount: result.totalCount, currentPage: pageNo,
-            });
-        } catch (error) {
-            ResponseHandler.error(res, error.message, error);
+        if (isNaN(pageNo) || pageNo < 1) {
+            throw new ValidationError('페이지 번호는 1 이상이어야 합니다.');
         }
+
+        const result = await this.bookService.getBooks(pageNo);
+
+        ResponseHandler.success(res, result.message, {
+            books: result.items, totalCount: result.totalCount, currentPage: pageNo,
+        });
     }
 }
 
