@@ -1,10 +1,10 @@
 import http from 'http';
 import {Router} from './utils/Routes.js';
-import {ResponseHandler} from "./utils/ResponseHandler.js";
+import {ResponseHandler} from "./utils/ResponseHandler.ts";
 import {userService} from "./services/UserService.js";
 import userRouter from "./routes/UserRoutes.js";
 import bookRouter from "./routes/BookRoutes.js";
-import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware.js";
+import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware.ts";
 
 export function createServer() {
     const router = new Router();

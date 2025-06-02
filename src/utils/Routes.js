@@ -1,6 +1,6 @@
 import {URL} from 'url';
 import {AppError} from "./AppError.ts";
-import {ResponseHandler} from "./ResponseHandler.js";
+import {ResponseHandler} from "./ResponseHandler.ts";
 import {MiddlewareManager} from "../middlewares/MiddlewareManager.ts";
 
 export class Router {

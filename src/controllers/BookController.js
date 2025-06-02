@@ -1,5 +1,5 @@
 import {bookService} from "../services/BookService.js";
-import {ResponseHandler} from "../utils/ResponseHandler.js";
+import {ResponseHandler} from "../utils/ResponseHandler.ts";
 import {ValidationError} from "../utils/AppError.ts";
 
 export class BookController {
