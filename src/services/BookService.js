@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import https from 'https';
-import {AppError, BadRequestError} from "../utils/AppError.js";
+import {AppError, BadRequestError} from "../utils/AppError.ts";
 
 dotenv.config();
 

@@ -1,6 +1,6 @@
 import {userService} from "../services/UserService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
-import {ValidationError} from "../utils/AppError.js";
+import {ValidationError} from "../utils/AppError.ts";
 
 export class UserController {
 

@@ -1,4 +1,4 @@
-import {AppError, BadRequestError, NotFoundError, ValidationError} from "../utils/AppError.js";
+import {AppError, BadRequestError, NotFoundError, ValidationError} from "../utils/AppError.ts";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 
 export const errorHandlerMiddleware = async (req, res, next) => {

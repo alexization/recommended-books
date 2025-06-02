@@ -1,5 +1,5 @@
 import {URL} from 'url';
-import {AppError} from "./AppError.js";
+import {AppError} from "./AppError.ts";
 import {ResponseHandler} from "./ResponseHandler.js";
 import {MiddlewareManager} from "../middlewares/MiddlewareManager.js";
 
