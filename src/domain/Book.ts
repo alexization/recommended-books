@@ -1,5 +1,31 @@
+export interface BookData {
+    bk_nm: string;
+    aut_nm: string;
+    pblshr: string;
+    pblcn_yr: string;
+    callno: string;
+    lib: string;
+    refrm: string;
+    loan_yn: string;
+    rtn_ed: string;
+    bk_rsvt: string;
+    mutl_loan: string;
+}
+
 export class Book {
-    constructor(bookData) {
+    public bk_nm: string;
+    public aut_nm: string;
+    public pblshr: string;
+    public pblcn_yr: string;
+    public callno: string;
+    public lib: string;
+    public refrm: string;
+    public loan_yn: string;
+    public rtn_ed: string;
+    public bk_rsvt: string;
+    public mutl_loan: string;
+
+    constructor(bookData: BookData) {
         this.bk_nm = bookData.bk_nm;    // 도서명
         this.aut_nm = bookData.aut_nm;  // 저자명
         this.pblshr = bookData.pblshr;  // 출판사
@@ -13,7 +39,7 @@ export class Book {
         this.mutl_loan = bookData.mutl_loan;    // 상호대차 여부
     }
 
-    static fromJSON(bookData) {
+    static fromJSON(bookData: BookData) {
         return new Book(bookData);
     }
 
