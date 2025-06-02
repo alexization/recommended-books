@@ -1,5 +1,21 @@
+export interface UserData {
+    id: number;
+    email: string;
+    name: string;
+    birth: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export class User {
-    constructor(userData) {
+    public readonly id: number;
+    public readonly email: string;
+    public name: string;
+    public birth: number;
+    public readonly createdAt: string;
+    public updatedAt: string;
+
+    constructor(userData: UserData) {
         this.id = userData.id;
         this.email = userData.email;
         this.name = userData.name;
@@ -8,7 +24,7 @@ export class User {
         this.updatedAt = new Date().toISOString();
     }
 
-    static fromJSON(userData) {
+    static fromJSON(userData: UserData) {
         return new User(userData);
     }
 

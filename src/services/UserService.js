@@ -1,5 +1,5 @@
 import {userRepository} from "../repositories/UserRepository.js";
-import {User} from "../domain/User.js";
+import {User} from "../domain/User.ts";
 
 export class UserService {
 

@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import {AppError, NotFoundError} from "../utils/AppError.ts";
-import {User} from "../domain/User.js";
+import {User} from "../domain/User.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
