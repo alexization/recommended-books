@@ -1,19 +1,21 @@
 import fs from 'fs/promises';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import {AppError, NotFoundError} from "../utils/AppError.ts";
-import {User} from "../domain/User.ts";
+import {AppError, NotFoundError} from "../utils/AppError";
+import {User, UserData} from "../domain/User";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 class UserRepository {
+    private readonly dataFilePath: string;
+
     constructor() {
         this.dataFilePath = path.join(__dirname, '../../data/users.json');
         this.initialize();
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             const dataDir = path.dirname(this.dataFilePath);
             await fs.mkdir(dataDir, {recursive: true});
@@ -28,7 +30,7 @@ class UserRepository {
         }
     }
 
-    async load() {
+    private async load(): Promise<UserData[]> {
         try {
             const data = await fs.readFile(this.dataFilePath, 'utf8');
             return JSON.parse(data);
@@ -38,7 +40,7 @@ class UserRepository {
         }
     }
 
-    async save(data) {
+    private async save(data: UserData[]): Promise<void> {
         try {
             await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
         } catch (error) {
@@ -46,7 +48,7 @@ class UserRepository {
         }
     }
 
-    async createUser(userData) {
+    async createUser(userData: UserData): Promise<User> {
         const users = await this.load();
 
         if (this.isEmailExists(users, userData.email)) {
@@ -60,24 +62,23 @@ class UserRepository {
 
         const newUser = new User({...userData});
 
-        users.push(newUser);
+        users.push(newUser.toJSON());
         await this.save(users);
+
         return newUser;
     }
 
-    async findUserById(id) {
+    async findUserById(id: string | number): Promise<UserData[]> {
         const users = await this.load();
-
         return users.filter(user => user.id === Number(id));
     }
 
-    async findUserByEmail(email) {
+    async findUserByEmail(email: string): Promise<UserData[]> {
         const users = await this.load();
-
         return users.filter(user => user.email === email);
     }
 
-    async updateUser(updateUserData) {
+    async updateUser(updateUserData: UserData): Promise<UserData> {
         const users = await this.load();
 
         const updateUser = users.find(user => user.email === updateUserData.email);
@@ -94,14 +95,14 @@ class UserRepository {
         return updateUser;
     }
 
-    async deleteUser(id) {
+    async deleteUser(id: string | number): Promise<void> {
         const users = await this.load();
         const newUsers = users.filter(user => user.id !== Number(id));
 
         await this.save(newUsers);
     }
 
-    isEmailExists(users, email) {
+    isEmailExists(users: UserData[], email: string): boolean {
         const result = users.filter(user => user.email === email);
 
         return result.length !== 0;

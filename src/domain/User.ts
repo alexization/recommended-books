@@ -28,7 +28,7 @@ export class User {
         return new User(userData);
     }
 
-    toJSON() {
+    toJSON(): UserData {
         return {
             id: this.id,
             email: this.email,

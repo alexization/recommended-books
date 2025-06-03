@@ -1,4 +1,4 @@
-import {userRepository} from "../repositories/UserRepository.js";
+import {userRepository} from "../repositories/UserRepository.ts";
 import {User} from "../domain/User.ts";
 
 export class UserService {
