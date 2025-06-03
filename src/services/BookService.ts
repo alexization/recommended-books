@@ -1,17 +1,11 @@
 import dotenv from 'dotenv';
 import https from 'https';
 import {AppError, BadRequestError} from "../utils/AppError";
-import {BookData} from "../domain/Book";
+import {ApiResponse, BookServiceInterface} from "../interfaces/BookServiceInterface";
 
 dotenv.config();
 
-interface ApiResponse {
-    message: string;
-    items: BookData[];
-    totalCount: number;
-}
-
-export class BookService {
+export class BookService implements BookServiceInterface{
     private readonly baseUrl: string;
 
     constructor() {

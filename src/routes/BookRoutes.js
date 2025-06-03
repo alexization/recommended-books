@@ -1,5 +1,5 @@
 import {Router} from '../utils/Routes.ts';
-import {bookController} from "../controllers/BookController.js";
+import {bookController} from "../controllers/BookController.ts";
 
 const bookRouter = new Router();
 
