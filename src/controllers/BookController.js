@@ -1,4 +1,4 @@
-import {bookService} from "../services/BookService.js";
+import {bookService} from "../services/BookService.ts";
 import {ResponseHandler} from "../utils/ResponseHandler.ts";
 import {ValidationError} from "../utils/AppError.ts";
 
