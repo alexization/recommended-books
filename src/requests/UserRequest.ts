@@ -7,7 +7,7 @@ export interface UserRequest extends IncomingMessage {
         birth: number;
     };
     params: {
-        id: string | number;
+        id: number;
     };
     query: {
         email: string;

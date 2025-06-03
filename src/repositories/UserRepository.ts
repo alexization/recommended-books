@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import {AppError, NotFoundError} from "../utils/AppError";
+import {NotFoundError, ValidationError} from "../utils/AppError";
 import {User, UserData} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 
@@ -53,7 +53,7 @@ class UserRepository implements UserRepositoryInterface {
         const users = await this.load();
 
         if (this.isEmailExists(users, userData.email)) {
-            throw new AppError("이미 가입한 이메일입니다.", 400);
+            throw new ValidationError("이미 가입한 이메일입니다.");
         }
 
         if (users.length !== 0) {
@@ -68,7 +68,7 @@ class UserRepository implements UserRepositoryInterface {
         return newUser;
     }
 
-    async findUserById(id: string | number): Promise<UserData[]> {
+    async findUserById(id: number): Promise<UserData[]> {
         const users = await this.load();
         return users.filter(user => user.id === Number(id));
     }
@@ -95,7 +95,7 @@ class UserRepository implements UserRepositoryInterface {
         return updateUser;
     }
 
-    async deleteUser(id: string | number): Promise<void> {
+    async deleteUser(id: number): Promise<void> {
         const users = await this.load();
         const newUsers = users.filter(user => user.id !== Number(id));
 

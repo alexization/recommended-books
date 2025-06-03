@@ -39,11 +39,11 @@ export class Book {
         this.mutl_loan = bookData.mutl_loan;    // 상호대차 여부
     }
 
-    static fromJSON(bookData: BookData) {
+    static fromJSON(bookData: BookData): Book {
         return new Book(bookData);
     }
 
-    toJSON() {
+    toJSON(): BookData {
         return {
             bk_nm: this.bk_nm,
             aut_nm: this.aut_nm,

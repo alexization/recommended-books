@@ -16,7 +16,7 @@ export class MiddlewareManager {
     async execute(req: IncomingMessage, res: ServerResponse, finalHandler: RouteHandler): Promise<void> {
         let currentIndex = 0;
 
-        const next: NextFunction = async (error?: Error) => {
+        const next: NextFunction = async (error?: Error): Promise<void> => {
             if (error) {
                 throw error;
             }

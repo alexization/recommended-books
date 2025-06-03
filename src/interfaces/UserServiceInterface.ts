@@ -5,11 +5,11 @@ export interface UserServiceInterface {
 
     createUser(userData: UserData): Promise<UserData>;
 
-    findUserById(id: string | number): Promise<UserData[]>;
+    findUserById(id: number): Promise<UserData[]>;
 
     findUserByEmail(email: string): Promise<UserData[]>;
 
     updateUser(updateUserData: UserData): Promise<UserData>;
 
-    deleteUser(id: string | number): Promise<void>;
+    deleteUser(id: number): Promise<void>;
 }

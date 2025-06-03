@@ -6,5 +6,5 @@ export interface ApiResponse {
 }
 
 export interface BookServiceInterface {
-    getBooks(pageNo: string | number): Promise<ApiResponse>;
+    getBooks(pageNo: number): Promise<ApiResponse>;
 }

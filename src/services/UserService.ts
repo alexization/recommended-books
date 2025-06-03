@@ -17,7 +17,7 @@ export class UserService implements UserServiceInterface{
         return await this.userRepository.createUser(newUser);
     }
 
-    async findUserById(id: string | number): Promise<UserData[]> {
+    async findUserById(id: number): Promise<UserData[]> {
         return await this.userRepository.findUserById(id);
     }
 
@@ -29,7 +29,7 @@ export class UserService implements UserServiceInterface{
         return await this.userRepository.updateUser(updateUserData);
     }
 
-    async deleteUser(id: string | number): Promise<void> {
+    async deleteUser(id: number): Promise<void> {
         return await this.userRepository.deleteUser(id);
     }
 }

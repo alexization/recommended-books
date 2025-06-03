@@ -24,7 +24,7 @@ export class User {
         this.updatedAt = new Date().toISOString();
     }
 
-    static fromJSON(userData: UserData) {
+    static fromJSON(userData: UserData): User {
         return new User(userData);
     }
 
