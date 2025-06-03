@@ -2,13 +2,8 @@ import {bookService} from "../services/BookService";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {ValidationError} from "../utils/AppError";
 import {BookServiceInterface} from "../interfaces/BookServiceInterface";
-import {IncomingMessage, ServerResponse} from "http";
-
-interface ExtendedIncomingMessage extends IncomingMessage {
-    query: {
-        pageNo: number;
-    };
-}
+import {ServerResponse} from "http";
+import {BookRequest} from "../requests/BookRequest";
 
 export class BookController {
     private readonly bookService: BookServiceInterface;
@@ -17,7 +12,7 @@ export class BookController {
         this.bookService = bookService;
     }
 
-    async getBooks(req: ExtendedIncomingMessage, res: ServerResponse): Promise<void> {
+    async getBooks(req: BookRequest, res: ServerResponse): Promise<void> {
         const pageNo = req.query.pageNo;
 
         if (isNaN(pageNo) || pageNo < 1) {
