@@ -2,7 +2,7 @@ import http from 'http';
 import {Router} from './utils/Routes.ts';
 import {ResponseHandler} from "./utils/ResponseHandler.ts";
 import {userService} from "./services/UserService.ts";
-import userRouter from "./routes/UserRoutes.js";
+import userRouter from "./routes/UserRoutes.ts";
 import bookRouter from "./routes/BookRoutes.js";
 import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware.ts";
 
