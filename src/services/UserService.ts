@@ -4,9 +4,7 @@ import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
 
 export class UserService implements UserServiceInterface{
-    private readonly userRepository: UserRepositoryInterface;
-
-    constructor(userRepository: UserRepositoryInterface) {
+    constructor(private readonly userRepository: UserRepositoryInterface) {
         this.userRepository = userRepository;
     }
 

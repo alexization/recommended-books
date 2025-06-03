@@ -7,9 +7,7 @@ import {ServerResponse} from "http";
 import {UserRequest} from "../requests/UserRequest";
 
 export class UserController {
-    private readonly userService: UserServiceInterface;
-
-    constructor(userService: UserServiceInterface) {
+    constructor(private readonly userService: UserServiceInterface) {
         this.userService = userService;
     }
 

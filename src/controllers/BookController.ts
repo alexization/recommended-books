@@ -6,9 +6,7 @@ import {ServerResponse} from "http";
 import {BookRequest} from "../requests/BookRequest";
 
 export class BookController {
-    private readonly bookService: BookServiceInterface;
-
-    constructor(bookService: BookServiceInterface) {
+    constructor(private readonly bookService: BookServiceInterface) {
         this.bookService = bookService;
     }
 
