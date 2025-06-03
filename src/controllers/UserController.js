@@ -1,4 +1,4 @@
-import {userService} from "../services/UserService.js";
+import {userService} from "../services/UserService.ts";
 import {ResponseHandler} from "../utils/ResponseHandler.ts";
 import {ValidationError} from "../utils/AppError.ts";
 

@@ -3,11 +3,12 @@ import path from 'path';
 import {fileURLToPath} from 'url';
 import {AppError, NotFoundError} from "../utils/AppError";
 import {User, UserData} from "../domain/User";
+import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-class UserRepository {
+class UserRepository implements UserRepositoryInterface{
     private readonly dataFilePath: string;
 
     constructor() {
