@@ -1,9 +1,40 @@
 import {URL} from 'url';
-import {AppError} from "./AppError.ts";
-import {ResponseHandler} from "./ResponseHandler.ts";
-import {MiddlewareManager} from "../middlewares/MiddlewareManager.ts";
+import {AppError} from "./AppError";
+import {ResponseHandler} from "./ResponseHandler";
+import {MiddlewareManager, RouteHandler, Middleware} from "../middlewares/MiddlewareManager";
+import {IncomingMessage, ServerResponse} from "http";
+
+interface ExtendedIncomingMessage extends IncomingMessage {
+    body?: any;
+    query?: Record<string, string>;
+    params?: Record<string, string>;
+}
+
+interface RouteMap {
+    [path: string]: RouteHandler;
+}
+
+interface Routes {
+    GET: RouteMap;
+    POST: RouteMap;
+    PUT: RouteMap;
+    DELETE: RouteMap;
+}
+
+interface MatchResult {
+    matched: boolean;
+    params: Record<string, string>;
+}
+
+interface RouteResult {
+    handler: RouteHandler | null;
+    params: Record<string, string>;
+}
 
 export class Router {
+    public readonly routes: Routes;
+    public readonly middlewareManager: MiddlewareManager;
+
     constructor() {
         this.routes = {
             GET: {}, POST: {}, PUT: {}, DELETE: {},
@@ -11,30 +42,31 @@ export class Router {
         this.middlewareManager = new MiddlewareManager();
     }
 
-    get(path, handler) {
+    get(path: string, handler: RouteHandler): this {
         this.routes.GET[path] = handler;
         return this;
     }
 
-    post(path, handler) {
+    post(path: string, handler: RouteHandler): this {
         this.routes.POST[path] = handler;
         return this;
     }
 
-    put(path, handler) {
+    put(path: string, handler: RouteHandler): this {
         this.routes.PUT[path] = handler;
         return this;
     }
 
-    delete(path, handler) {
+    delete(path: string, handler: RouteHandler): this {
         this.routes.DELETE[path] = handler;
         return this;
     }
 
-    use(router) {
+    use(router: Router) {
         Object.keys(router.routes).forEach(method => {
-            Object.keys(router.routes[method]).forEach(path => {
-                this.routes[method][path] = router.routes[method][path];
+            const methodKey = method as keyof Routes;
+            Object.keys(router.routes[methodKey]).forEach(path => {
+                this.routes[methodKey][path] = router.routes[methodKey][path];
             });
         })
 
@@ -45,16 +77,16 @@ export class Router {
         return this;
     }
 
-    useMiddleware(middleware) {
+    useMiddleware(middleware: Middleware): this {
         this.middlewareManager.use(middleware);
         return this;
     }
 
-    async handleRequest(req, res) {
+    async handleRequest(req: ExtendedIncomingMessage, res: ServerResponse): Promise<void> {
         try {
-            const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+            const parsedUrl = new URL(req.url as string, `http://${req.headers.host}`);
             const path = parsedUrl.pathname;
-            const method = req.method;
+            const method = req.method as string;
 
             await this.parseRequestBody(req);
 
@@ -67,16 +99,16 @@ export class Router {
             if (handler) {
                 await this.middlewareManager.execute(req, res, handler);
             } else {
-                ResponseHandler.error(res, '요청한 리소스를 찾을 수 없습니다.', );
+                ResponseHandler.error(res, '요청한 리소스를 찾을 수 없습니다.', 400);
             }
-        } catch (error) {
-            ResponseHandler.error(res, error.message, error);
+        } catch (error: any) {
+            ResponseHandler.error(res, error.message, 500);
         }
     }
 
-    async parseRequestBody(req) {
+    async parseRequestBody(req: ExtendedIncomingMessage): Promise<void> {
         return new Promise((resolve, reject) => {
-            let body = '';
+            let body: string = '';
 
             req.on('data', chunk => {
                 body += chunk.toString();
@@ -97,8 +129,8 @@ export class Router {
         });
     }
 
-    findRoute(method, path) {
-        const methodRoutes = this.routes[method];
+    findRoute(method: string, path: string): RouteResult {
+        const methodRoutes = this.routes[method as keyof Routes];
 
         if (!methodRoutes) {
             return {handler: null, params: {}};
@@ -120,14 +152,14 @@ export class Router {
         return {handler: null, params: {}};
     }
 
-    matchDynamicRoute(routePath, requestPath) {
+    matchDynamicRoute(routePath: string, requestPath: string): MatchResult {
         if (!routePath.includes(':')) {
             return {
                 matched: routePath === requestPath, params: {}
             };
         }
 
-        const paramNames = [];
+        const paramNames: string[] = [];
         const regexPattern = routePath.replace(/:([a-zA-Z0-9_]+)/g, (match, paramName) => {
             paramNames.push(paramName);
             return '([^/]+)';
@@ -137,7 +169,7 @@ export class Router {
         const match = requestPath.match(regex);
 
         if (match) {
-            const params = {};
+            const params: Record<string, string> = {};
             paramNames.forEach((name, index) => {
                 params[name] = match[index + 1];
             });

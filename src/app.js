@@ -1,5 +1,5 @@
 import http from 'http';
-import {Router} from './utils/Routes.js';
+import {Router} from './utils/Routes.ts';
 import {ResponseHandler} from "./utils/ResponseHandler.ts";
 import {userService} from "./services/UserService.js";
 import userRouter from "./routes/UserRoutes.js";

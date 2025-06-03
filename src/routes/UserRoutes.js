@@ -1,4 +1,4 @@
-import {Router} from '../utils/Routes.js';
+import {Router} from '../utils/Routes.ts';
 import {userController} from "../controllers/UserController.js";
 
 const userRouter = new Router();
