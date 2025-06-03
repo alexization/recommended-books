@@ -3,21 +3,8 @@ import {UserData} from "../domain/User";
 import {ValidationError} from "../utils/AppError";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
-import {IncomingMessage, ServerResponse} from "http";
-
-interface ExtendedIncomingMessage extends IncomingMessage {
-    body: {
-        email: string;
-        name: string;
-        birth: number;
-    };
-    params: {
-        id: string | number;
-    };
-    query: {
-        email: string;
-    };
-}
+import {ServerResponse} from "http";
+import {UserRequest} from "../requests/UserRequest";
 
 export class UserController {
     private readonly userService: UserServiceInterface;
@@ -26,7 +13,7 @@ export class UserController {
         this.userService = userService;
     }
 
-    async createUser(req: ExtendedIncomingMessage, res: ServerResponse): Promise<void> {
+    async createUser(req: UserRequest, res: ServerResponse): Promise<void> {
         this.validateEmail(req.body.email);
         this.validateName(req.body.name);
 
@@ -41,13 +28,13 @@ export class UserController {
         ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
     }
 
-    async findUserById(req: ExtendedIncomingMessage, res: ServerResponse): Promise<void> {
+    async findUserById(req: UserRequest, res: ServerResponse): Promise<void> {
         const user = await this.userService.findUserById(req.params.id);
 
         ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    async findUserByEmail(req: ExtendedIncomingMessage, res: ServerResponse): Promise<void> {
+    async findUserByEmail(req: UserRequest, res: ServerResponse): Promise<void> {
         this.validateEmail(req.query.email);
 
         const user = await this.userService.findUserByEmail(req.query.email);
@@ -55,7 +42,7 @@ export class UserController {
         ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    async updateUser(req: ExtendedIncomingMessage, res: ServerResponse): Promise<void> {
+    async updateUser(req: UserRequest, res: ServerResponse): Promise<void> {
         const userData: UserData = {
             id: 1,
             ...req.body,
@@ -67,7 +54,7 @@ export class UserController {
         ResponseHandler.success(res, '사용자 정보를 성공적으로 수정했습니다.', updatedUser);
     }
 
-    async deleteUser(req: ExtendedIncomingMessage, res: ServerResponse): Promise<void> {
+    async deleteUser(req: UserRequest, res: ServerResponse): Promise<void> {
         await this.userService.deleteUser(req.params.id);
 
         ResponseHandler.success(res, '사용자를 성공적으로 삭제했습니다.', null);
