@@ -8,7 +8,7 @@ import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-class UserRepository implements UserRepositoryInterface{
+class UserRepository implements UserRepositoryInterface {
     private readonly dataFilePath: string;
 
     constructor() {
@@ -56,7 +56,6 @@ class UserRepository implements UserRepositoryInterface{
             throw new AppError("이미 가입한 이메일입니다.", 400);
         }
 
-        userData.id = 1;
         if (users.length !== 0) {
             userData.id = Math.max(...users.map(user => user.id)) + 1;
         }

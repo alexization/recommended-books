@@ -1,5 +1,5 @@
 import {Router} from '../utils/Routes.ts';
-import {userController} from "../controllers/UserController.js";
+import {userController} from "../controllers/UserController.ts";
 
 const userRouter = new Router();
 

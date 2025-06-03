@@ -1,8 +1,9 @@
 import {userRepository} from "../repositories/UserRepository";
 import {User, UserData} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
+import {UserServiceInterface} from "../interfaces/UserServiceInterface";
 
-export class UserService {
+export class UserService implements UserServiceInterface{
     private readonly userRepository: UserRepositoryInterface;
 
     constructor(userRepository: UserRepositoryInterface) {
