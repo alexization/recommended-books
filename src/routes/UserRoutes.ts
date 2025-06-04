@@ -1,9 +1,9 @@
-import {Router} from '../utils/Routes';
+import {Router} from "express";
 import {userController} from "../controllers/UserController";
 import {UserRequest} from "../requests/UserRequest";
 import {ServerResponse} from "http";
 
-const userRouter = new Router();
+const userRouter = Router();
 
 /* 회원 등록 */
 userRouter.post('/users', async (req: UserRequest.CreateRequest, res: ServerResponse): Promise<void> => {
