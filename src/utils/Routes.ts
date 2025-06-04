@@ -1,7 +1,7 @@
 import {URL} from 'url';
-import {AppError} from "./AppError";
+import {AppError, BadRequestError} from "./AppError";
 import {ResponseHandler} from "./ResponseHandler";
-import {MiddlewareManager, RouteHandler, Middleware} from "../middlewares/MiddlewareManager";
+import {Middleware, MiddlewareManager, RouteHandler} from "../middlewares/MiddlewareManager";
 import {IncomingMessage, ServerResponse} from "http";
 
 interface ExtendedIncomingMessage extends IncomingMessage {
@@ -101,8 +101,10 @@ export class Router {
             } else {
                 ResponseHandler.error(res, '요청한 리소스를 찾을 수 없습니다.', 400);
             }
-        } catch (error: any) {
-            ResponseHandler.error(res, error.message, 500);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                ResponseHandler.error(res, error.message, 500);
+            }
         }
     }
 
@@ -119,7 +121,7 @@ export class Router {
                     req.body = body ? JSON.parse(body) : {};
                     resolve();
                 } catch (error) {
-                    reject(new AppError("잘못된 JSON 형식입니다.", 400));
+                    reject(new BadRequestError("잘못된 JSON 형식입니다."));
                 }
             });
 
@@ -160,7 +162,7 @@ export class Router {
         }
 
         const paramNames: string[] = [];
-        const regexPattern = routePath.replace(/:([a-zA-Z0-9_]+)/g, (match, paramName) => {
+        const regexPattern = routePath.replace(/:([a-zA-Z0-9_]+)/g, (match, paramName: string): string => {
             paramNames.push(paramName);
             return '([^/]+)';
         });
@@ -170,7 +172,7 @@ export class Router {
 
         if (match) {
             const params: Record<string, string> = {};
-            paramNames.forEach((name, index) => {
+            paramNames.forEach((name, index): void => {
                 params[name] = match[index + 1];
             });
 

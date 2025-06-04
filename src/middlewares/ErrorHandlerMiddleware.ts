@@ -6,11 +6,7 @@ import {NextFunction} from "./MiddlewareManager";
 export const errorHandlerMiddleware = async (req: IncomingMessage, res: ServerResponse, next: NextFunction) => {
     try {
         await next();
-    } catch (error: any) {
-        console.error({
-            message: error.message, stack: error.stack,
-        })
-
+    } catch (error: unknown) {
         if (error instanceof ValidationError) {
             return ResponseHandler.error(res, error.message, 400);
         }

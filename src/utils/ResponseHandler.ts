@@ -1,7 +1,7 @@
 import {ServerResponse} from "http";
 
 export class ResponseHandler {
-    static success(res: ServerResponse, message: string, data: any): void {
+    static success<T>(res: ServerResponse, message: string, data: T): void {
         res.end(JSON.stringify({
             status: 'success', message: message, data
         }));

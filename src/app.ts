@@ -17,7 +17,7 @@ export function createServer(): Server {
     const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
         try {
             await router.handleRequest(req, res);
-        } catch (error: any) {
+        } catch (error: unknown) {
             ResponseHandler.error(res, '서버 오류가 발생했습니다.', 500);
         }
     });
