@@ -6,7 +6,7 @@ import bookRouter from "./routes/BookRoutes";
 import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware";
 
 export async function startServer(port: number = 3000): Promise<Server> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve, reject): Promise<void> => {
         try {
             await userService.initialize();
 
@@ -28,6 +28,7 @@ export function createServer(): Application {
     const app: Application = express();
 
     app.use(express.json());
+    app.use(express.urlencoded({extended: true}));
 
     app.use(userRouter);
     app.use(bookRouter);
