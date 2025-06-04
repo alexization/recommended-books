@@ -16,7 +16,7 @@ export class UserService implements UserServiceInterface {
         return await this.userRepository.createUser(createUserData);
     }
 
-    async findUserById(id: number): Promise<UserData[]> {
+    async findUserById(id: string): Promise<UserData[]> {
         return await this.userRepository.findUserById(id);
     }
 
@@ -24,11 +24,11 @@ export class UserService implements UserServiceInterface {
         return await this.userRepository.findUserByEmail(email);
     }
 
-    async updateUser(id: number, updateUserData: UpdateUserData): Promise<void> {
+    async updateUser(id: string, updateUserData: UpdateUserData): Promise<void> {
         return await this.userRepository.updateUser(id, updateUserData);
     }
 
-    async deleteUser(id: number): Promise<void> {
+    async deleteUser(id: string): Promise<void> {
         return await this.userRepository.deleteUser(id);
     }
 }
