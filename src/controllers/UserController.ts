@@ -1,8 +1,8 @@
 import {userService} from "../services/UserService";
+import {Response} from "express";
 import {ValidationError} from "../utils/AppError";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
-import {ServerResponse} from "http";
 import {UserRequest} from "../requests/UserRequest";
 import {UpdateUserData} from "../domain/dto/UserDto";
 
@@ -11,7 +11,7 @@ export class UserController {
         this.userService = userService;
     }
 
-    async createUser(req: UserRequest, res: ServerResponse): Promise<void> {
+    async createUser(req: UserRequest, res: Response): Promise<void> {
         this.validateEmail(req.body.email);
         this.validateName(req.body.name);
 
@@ -20,13 +20,13 @@ export class UserController {
         ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
     }
 
-    async findUserById(req: UserRequest, res: ServerResponse): Promise<void> {
+    async findUserById(req: UserRequest, res: Response): Promise<void> {
         const user = await this.userService.findUserById(req.params.id);
 
         ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    async findUserByEmail(req: UserRequest, res: ServerResponse): Promise<void> {
+    async findUserByEmail(req: UserRequest, res: Response): Promise<void> {
         this.validateEmail(req.query.email);
 
         const user = await this.userService.findUserByEmail(req.query.email);
@@ -34,7 +34,7 @@ export class UserController {
         ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    async updateUser(req: UserRequest, res: ServerResponse): Promise<void> {
+    async updateUser(req: UserRequest, res: Response): Promise<void> {
         const updateUserData: UpdateUserData = {...req.body};
 
         await this.userService.updateUser(req.params.id, updateUserData);
@@ -42,7 +42,7 @@ export class UserController {
         ResponseHandler.success(res, '사용자 정보를 성공적으로 수정했습니다.', null);
     }
 
-    async deleteUser(req: UserRequest, res: ServerResponse): Promise<void> {
+    async deleteUser(req: UserRequest, res: Response): Promise<void> {
         await this.userService.deleteUser(req.params.id);
 
         ResponseHandler.success(res, '사용자를 성공적으로 삭제했습니다.', null);
