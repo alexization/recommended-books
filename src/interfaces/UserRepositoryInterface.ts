@@ -1,5 +1,5 @@
 import {User} from "../domain/User";
-import {CreateUserData, UserData} from "../domain/dto/UserDto";
+import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
 
 export interface UserRepositoryInterface {
     initialize(): Promise<void>;
@@ -10,7 +10,7 @@ export interface UserRepositoryInterface {
 
     findUserByEmail(email: string): Promise<UserData[]>;
 
-    updateUser(updateUserData: UserData): Promise<UserData>;
+    updateUser(id: number, updateUserData: UpdateUserData): Promise<void>;
 
     deleteUser(id: number): Promise<void>;
 }

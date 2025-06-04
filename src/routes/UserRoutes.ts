@@ -22,7 +22,7 @@ userRouter.get('/users', (async (req: UserRequest, res: ServerResponse): Promise
 }) as RouteHandler);
 
 /* 회원 정보 수정 */
-userRouter.put('/users', (async (req: UserRequest, res: ServerResponse): Promise<void> => {
+userRouter.put('/users/:id', (async (req: UserRequest, res: ServerResponse): Promise<void> => {
     await userController.updateUser(req, res);
 }) as RouteHandler);
 

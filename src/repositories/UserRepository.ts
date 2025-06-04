@@ -4,7 +4,7 @@ import {fileURLToPath} from 'url';
 import {NotFoundError, ValidationError} from "../utils/AppError";
 import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
-import {CreateUserData, UserData} from "../domain/dto/UserDto";
+import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -64,7 +64,7 @@ class UserRepository implements UserRepositoryInterface {
 
         const newUser = User.create(id, createUserData);
 
-        users.push(newUser.toJSON());
+        users.push(newUser);
         await this.save(users);
 
         return newUser;
@@ -80,21 +80,22 @@ class UserRepository implements UserRepositoryInterface {
         return users.filter(user => user.email === email);
     }
 
-    async updateUser(updateUserData: UserData): Promise<UserData> {
+    async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
         const users = await this.load();
 
-        const updateUser = users.find(user => user.email === updateUserData.email);
+        const userData = users.find(user => user.id === Number(userId));
 
-        if (!updateUser) {
-            throw new NotFoundError("해당 이메일을 가진 사용자가 없습니다.");
+        if (userData === undefined) {
+            throw new NotFoundError("해당 유저가 없습니다.");
         }
 
-        updateUser.name = updateUserData.name;
-        updateUser.birth = updateUserData.birth;
-        updateUser.updatedAt = new Date().toISOString();
+        const updateUser = User.fromJson(userData);
+        updateUser.update(updateUserData);
+
+        const userIndex = users.findIndex(user => user.id === Number(userId));
+        users[userIndex] = updateUser.toJSON();
 
         await this.save(users);
-        return updateUser;
     }
 
     async deleteUser(id: number): Promise<void> {

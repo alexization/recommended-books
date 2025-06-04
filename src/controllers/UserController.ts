@@ -4,7 +4,7 @@ import {ResponseHandler} from "../utils/ResponseHandler";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
 import {ServerResponse} from "http";
 import {UserRequest} from "../requests/UserRequest";
-import {UserData} from "../domain/dto/UserDto";
+import {UpdateUserData} from "../domain/dto/UserDto";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -35,15 +35,11 @@ export class UserController {
     }
 
     async updateUser(req: UserRequest, res: ServerResponse): Promise<void> {
-        const userData: UserData = {
-            id: 1,
-            ...req.body,
-            createdAt: "",
-            updatedAt: "",
-        };
+        const updateUserData: UpdateUserData = {...req.body};
 
-        const updatedUser = await this.userService.updateUser(userData);
-        ResponseHandler.success(res, '사용자 정보를 성공적으로 수정했습니다.', updatedUser);
+        await this.userService.updateUser(req.params.id, updateUserData);
+
+        ResponseHandler.success(res, '사용자 정보를 성공적으로 수정했습니다.', null);
     }
 
     async deleteUser(req: UserRequest, res: ServerResponse): Promise<void> {

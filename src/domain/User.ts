@@ -1,4 +1,4 @@
-import {CreateUserData, UserData} from "./dto/UserDto";
+import {CreateUserData, UpdateUserData, UserData} from "./dto/UserDto";
 
 export class User {
     public readonly id: number;
@@ -17,6 +17,10 @@ export class User {
         this.createdAt = createdAt ? createdAt : new Date().toISOString();
     }
 
+    static fromJson(userData: UserData): User {
+        return new User(userData.id, userData.email, userData.name, userData.birth, userData.createdAt, userData.createdAt);
+    }
+
     toJSON(): UserData {
         return {
             id: this.id,
@@ -26,6 +30,12 @@ export class User {
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
         };
+    }
+
+    update(updateUserData: UpdateUserData): void {
+        this.name = updateUserData.name;
+        this.birth = updateUserData.birth;
+        this.updatedAt = new Date().toISOString();
     }
 
     static create(id: number, createUserData: CreateUserData): User {

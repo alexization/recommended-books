@@ -1,7 +1,7 @@
 import {userRepository} from "../repositories/UserRepository";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
-import {CreateUserData, UserData} from "../domain/dto/UserDto";
+import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
 
 export class UserService implements UserServiceInterface {
     constructor(private readonly userRepository: UserRepositoryInterface) {
@@ -24,8 +24,8 @@ export class UserService implements UserServiceInterface {
         return await this.userRepository.findUserByEmail(email);
     }
 
-    async updateUser(updateUserData: UserData): Promise<UserData> {
-        return await this.userRepository.updateUser(updateUserData);
+    async updateUser(id: number, updateUserData: UpdateUserData): Promise<void> {
+        return await this.userRepository.updateUser(id, updateUserData);
     }
 
     async deleteUser(id: number): Promise<void> {
