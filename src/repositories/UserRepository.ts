@@ -1,19 +1,23 @@
 import fs from 'fs/promises';
 import path from 'path';
 import {fileURLToPath} from 'url';
-import {AppError, NotFoundError} from "../utils/AppError.js";
-import {User} from "../domain/User.js";
+import {NotFoundError, ValidationError} from "../utils/AppError";
+import {User} from "../domain/User";
+import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
+import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-class UserRepository {
+class UserRepository implements UserRepositoryInterface {
+    private readonly dataFilePath: string;
+
     constructor() {
         this.dataFilePath = path.join(__dirname, '../../data/users.json');
         this.initialize();
     }
 
-    async initialize() {
+    async initialize(): Promise<void> {
         try {
             const dataDir = path.dirname(this.dataFilePath);
             await fs.mkdir(dataDir, {recursive: true});
@@ -28,7 +32,7 @@ class UserRepository {
         }
     }
 
-    async load() {
+    private async load(): Promise<UserData[]> {
         try {
             const data = await fs.readFile(this.dataFilePath, 'utf8');
             return JSON.parse(data);
@@ -38,7 +42,7 @@ class UserRepository {
         }
     }
 
-    async save(data) {
+    private async save(data: UserData[]): Promise<void> {
         try {
             await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
         } catch (error) {
@@ -46,62 +50,62 @@ class UserRepository {
         }
     }
 
-    async createUser(userData) {
+    async createUser(createUserData: CreateUserData): Promise<User> {
         const users = await this.load();
 
-        if (this.isEmailExists(users, userData.email)) {
-            throw new AppError("이미 가입한 이메일입니다.", 400);
+        if (this.isEmailExists(users, createUserData.email)) {
+            throw new ValidationError("이미 가입한 이메일입니다.");
         }
 
-        userData.id = 1;
+        let id = 1;
         if (users.length !== 0) {
-            userData.id = Math.max(...users.map(user => user.id)) + 1;
+            id = Math.max(...users.map(user => user.id)) + 1;
         }
 
-        const newUser = new User({...userData});
+        const newUser = User.create(id, createUserData);
 
         users.push(newUser);
         await this.save(users);
+
         return newUser;
     }
 
-    async findUserById(id) {
+    async findUserById(id: number): Promise<UserData[]> {
         const users = await this.load();
-
         return users.filter(user => user.id === Number(id));
     }
 
-    async findUserByEmail(email) {
+    async findUserByEmail(email: string): Promise<UserData[]> {
         const users = await this.load();
-
         return users.filter(user => user.email === email);
     }
 
-    async updateUser(updateUserData) {
+    async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
         const users = await this.load();
 
-        const updateUser = users.find(user => user.email === updateUserData.email);
+        const userData = users.find(user => user.id === Number(userId));
 
-        if (!updateUser) {
-            throw new NotFoundError("해당 이메일을 가진 사용자가 없습니다.");
+        if (userData === undefined) {
+            throw new NotFoundError("해당 유저가 없습니다.");
         }
 
-        updateUser.name = updateUserData.name;
-        updateUser.birth = updateUserData.birth;
-        updateUser.updatedAt = new Date().toISOString();
+        const updateUser = User.fromJson(userData);
+        updateUser.update(updateUserData);
+
+        const userIndex = users.findIndex(user => user.id === Number(userId));
+        users[userIndex] = updateUser.toJSON();
 
         await this.save(users);
-        return updateUser;
     }
 
-    async deleteUser(id) {
+    async deleteUser(id: number): Promise<void> {
         const users = await this.load();
         const newUsers = users.filter(user => user.id !== Number(id));
 
         await this.save(newUsers);
     }
 
-    isEmailExists(users, email) {
+    isEmailExists(users: UserData[], email: string): boolean {
         const result = users.filter(user => user.email === email);
 
         return result.length !== 0;
