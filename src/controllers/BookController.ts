@@ -1,8 +1,8 @@
 import {bookService} from "../services/BookService";
+import {Response} from "express";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {ValidationError} from "../utils/AppError";
 import {BookServiceInterface} from "../interfaces/BookServiceInterface";
-import {ServerResponse} from "http";
 import {BookRequest} from "../requests/BookRequest";
 
 export class BookController {
@@ -10,8 +10,8 @@ export class BookController {
         this.bookService = bookService;
     }
 
-    async getBooks(req: BookRequest, res: ServerResponse): Promise<void> {
-        const pageNo = req.query?.pageNo!;
+    async getBooks(req: BookRequest, res: Response): Promise<void> {
+        const pageNo = req.query.pageNo;
         const numberPageNo = Number(pageNo);
 
         if (isNaN(numberPageNo) || numberPageNo < 1) {
