@@ -1,9 +1,10 @@
-import {User, UserData} from "../domain/User";
+import {User} from "../domain/User";
+import {CreateUserData, UserData} from "../domain/dto/UserDto";
 
 export interface UserRepositoryInterface {
     initialize(): Promise<void>;
 
-    createUser(userData: UserData): Promise<User>;
+    createUser(createUserData: CreateUserData): Promise<User>;
 
     findUserById(id: number): Promise<UserData[]>;
 

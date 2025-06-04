@@ -1,9 +1,9 @@
-import {UserData} from "../domain/User";
+import {CreateUserData, UserData} from "../domain/dto/UserDto";
 
 export interface UserServiceInterface {
     initialize(): Promise<void>;
 
-    createUser(userData: UserData): Promise<UserData>;
+    createUser(userData: CreateUserData): Promise<UserData>;
 
     findUserById(id: number): Promise<UserData[]>;
 

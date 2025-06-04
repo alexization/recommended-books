@@ -1,9 +1,9 @@
 import {userRepository} from "../repositories/UserRepository";
-import {User, UserData} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
+import {CreateUserData, UserData} from "../domain/dto/UserDto";
 
-export class UserService implements UserServiceInterface{
+export class UserService implements UserServiceInterface {
     constructor(private readonly userRepository: UserRepositoryInterface) {
         this.userRepository = userRepository;
     }
@@ -12,9 +12,8 @@ export class UserService implements UserServiceInterface{
         await this.userRepository.initialize();
     }
 
-    async createUser(userData: UserData): Promise<UserData> {
-        const newUser = new User({...userData});
-        return await this.userRepository.createUser(newUser);
+    async createUser(createUserData: CreateUserData): Promise<UserData> {
+        return await this.userRepository.createUser(createUserData);
     }
 
     async findUserById(id: number): Promise<UserData[]> {

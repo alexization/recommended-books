@@ -1,11 +1,4 @@
-export interface UserData {
-    id: number;
-    email: string;
-    name: string;
-    birth: number;
-    createdAt: string;
-    updatedAt: string;
-}
+import {CreateUserData, UserData} from "./dto/UserDto";
 
 export class User {
     public readonly id: number;
@@ -15,17 +8,13 @@ export class User {
     public readonly createdAt: string;
     public updatedAt: string;
 
-    constructor(userData: UserData) {
-        this.id = userData.id;
-        this.email = userData.email;
-        this.name = userData.name;
-        this.birth = userData.birth;
-        this.createdAt = new Date().toISOString();
-        this.updatedAt = new Date().toISOString();
-    }
-
-    static fromJSON(userData: UserData): User {
-        return new User(userData);
+    constructor(id: number, email: string, name: string, birth: number, updatedAt?: string, createdAt?: string) {
+        this.id = id;
+        this.email = email;
+        this.name = name;
+        this.birth = birth;
+        this.updatedAt = updatedAt ? updatedAt : new Date().toISOString();
+        this.createdAt = createdAt ? createdAt : new Date().toISOString();
     }
 
     toJSON(): UserData {
@@ -37,5 +26,9 @@ export class User {
             createdAt: this.createdAt,
             updatedAt: this.updatedAt,
         };
+    }
+
+    static create(id: number, createUserData: CreateUserData): User {
+        return new User(id, createUserData.email, createUserData.name, createUserData.birth, undefined, undefined);
     }
 }

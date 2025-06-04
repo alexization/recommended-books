@@ -1,10 +1,10 @@
 import {userService} from "../services/UserService";
-import {UserData} from "../domain/User";
 import {ValidationError} from "../utils/AppError";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
 import {ServerResponse} from "http";
 import {UserRequest} from "../requests/UserRequest";
+import {UserData} from "../domain/dto/UserDto";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -15,13 +15,7 @@ export class UserController {
         this.validateEmail(req.body.email);
         this.validateName(req.body.name);
 
-        const userData: UserData = {
-            id: 1,
-            ...req.body,
-            createdAt: "",
-            updatedAt: "",
-        };
-        const newUser = await this.userService.createUser(userData);
+        const newUser = await this.userService.createUser({...req.body});
 
         ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
     }

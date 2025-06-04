@@ -2,8 +2,9 @@ import fs from 'fs/promises';
 import path from 'path';
 import {fileURLToPath} from 'url';
 import {NotFoundError, ValidationError} from "../utils/AppError";
-import {User, UserData} from "../domain/User";
+import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
+import {CreateUserData, UserData} from "../domain/dto/UserDto";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -49,18 +50,19 @@ class UserRepository implements UserRepositoryInterface {
         }
     }
 
-    async createUser(userData: UserData): Promise<User> {
+    async createUser(createUserData: CreateUserData): Promise<User> {
         const users = await this.load();
 
-        if (this.isEmailExists(users, userData.email)) {
+        if (this.isEmailExists(users, createUserData.email)) {
             throw new ValidationError("이미 가입한 이메일입니다.");
         }
 
+        let id = 1;
         if (users.length !== 0) {
-            userData.id = Math.max(...users.map(user => user.id)) + 1;
+            id = Math.max(...users.map(user => user.id)) + 1;
         }
 
-        const newUser = new User({...userData});
+        const newUser = User.create(id, createUserData);
 
         users.push(newUser.toJSON());
         await this.save(users);
