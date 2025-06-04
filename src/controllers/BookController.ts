@@ -17,9 +17,9 @@ export class BookController {
             throw new ValidationError('페이지 번호는 1 이상이어야 합니다.');
         }
 
-        const result = await this.bookService.getBooks(pageNo);
+        const bookData = await this.bookService.getBooks(pageNo);
 
-        ResponseHandler.success(res, result.message, result.items);
+        ResponseHandler.success(res, `${pageNo}번 페이지 도서를 성공적으로 가져왔습니다.`, bookData);
     }
 }
 

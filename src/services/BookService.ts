@@ -1,18 +1,19 @@
 import dotenv from 'dotenv';
 import https from 'https';
 import {AppError, BadRequestError} from "../utils/AppError";
-import {ApiResponse, BookServiceInterface} from "../interfaces/BookServiceInterface";
+import {BookServiceInterface} from "../interfaces/BookServiceInterface";
+import {BookData} from "../domain/Book";
 
 dotenv.config();
 
-export class BookService implements BookServiceInterface{
+export class BookService implements BookServiceInterface {
     private readonly baseUrl: string;
 
     constructor() {
         this.baseUrl = process.env.OPEN_API_BASE_URL as string;
     }
 
-    async getBooks(pageNo: number): Promise<ApiResponse> {
+    async getBooks(pageNo: number): Promise<BookData[]> {
         try {
             const url = this.buildBookSearchUrl(pageNo);
 
@@ -29,7 +30,7 @@ export class BookService implements BookServiceInterface{
         return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&${params.toString()}`;
     }
 
-    executeHttpRequest(url: string): Promise<ApiResponse> {
+    executeHttpRequest(url: string): Promise<BookData[]> {
         return new Promise((resolve, reject) => {
             const request = https.get(url, (response) => {
                 let data = '';
@@ -41,8 +42,8 @@ export class BookService implements BookServiceInterface{
                 response.on('end', () => {
                     try {
                         if (response.statusCode === 200) {
-                            const jsonData: ApiResponse = JSON.parse(data);
-                            resolve(jsonData);
+                            const bookData: BookData[] = JSON.parse(data);
+                            resolve(bookData);
                         } else {
                             reject(new BadRequestError('API 요청 실패'));
                         }
