@@ -1,20 +1,18 @@
 import {bookService} from "../services/BookService";
-import {Response} from "express";
+import {Request, Response} from "express";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {ValidationError} from "../utils/AppError";
 import {BookServiceInterface} from "../interfaces/BookServiceInterface";
-import {BookRequest} from "../requests/BookRequest";
 
 export class BookController {
     constructor(private readonly bookService: BookServiceInterface) {
         this.bookService = bookService;
     }
 
-    async getBooks(req: BookRequest, res: Response): Promise<void> {
-        const pageNo = req.query.pageNo;
-        const numberPageNo = Number(pageNo);
+    getBooks = async (req: Request, res: Response): Promise<void> => {
+        const pageNo = parseInt(req.query.pageNo as string);
 
-        if (isNaN(numberPageNo) || numberPageNo < 1) {
+        if (isNaN(pageNo) || pageNo < 1) {
             throw new ValidationError('페이지 번호는 1 이상이어야 합니다.');
         }
 
