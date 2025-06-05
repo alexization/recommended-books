@@ -1,9 +1,11 @@
 import Router from '@koa/router';
 import {bookController} from "../controllers/BookController";
 
-const bookRouter = new Router();
+const bookRouter = new Router({
+    prefix: '/books'
+});
 
-bookRouter.get('/books', async (ctx): Promise<void> => {
+bookRouter.get('/', async (ctx): Promise<void> => {
     await bookController.getBooks(ctx);
 });
 
