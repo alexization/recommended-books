@@ -70,7 +70,7 @@ class UserRepository implements UserRepositoryInterface {
         return newUser;
     }
 
-    async findUserById(id: number): Promise<UserData[]> {
+    async findUserById(id: string): Promise<UserData[]> {
         const users = await this.load();
         return users.filter(user => user.id === Number(id));
     }
@@ -80,7 +80,7 @@ class UserRepository implements UserRepositoryInterface {
         return users.filter(user => user.email === email);
     }
 
-    async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
+    async updateUser(userId: string, updateUserData: UpdateUserData): Promise<void> {
         const users = await this.load();
 
         const userData = users.find(user => user.id === Number(userId));
@@ -98,7 +98,7 @@ class UserRepository implements UserRepositoryInterface {
         await this.save(users);
     }
 
-    async deleteUser(id: number): Promise<void> {
+    async deleteUser(id: string): Promise<void> {
         const users = await this.load();
         const newUsers = users.filter(user => user.id !== Number(id));
 

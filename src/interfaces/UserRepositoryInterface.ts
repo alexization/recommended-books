@@ -6,11 +6,11 @@ export interface UserRepositoryInterface {
 
     createUser(createUserData: CreateUserData): Promise<User>;
 
-    findUserById(id: number): Promise<UserData[]>;
+    findUserById(id: string): Promise<UserData[]>;
 
     findUserByEmail(email: string): Promise<UserData[]>;
 
-    updateUser(id: number, updateUserData: UpdateUserData): Promise<void>;
+    updateUser(id: string, updateUserData: UpdateUserData): Promise<void>;
 
-    deleteUser(id: number): Promise<void>;
+    deleteUser(id: string): Promise<void>;
 }
