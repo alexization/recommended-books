@@ -1,47 +1,42 @@
-import http, {IncomingMessage, Server, ServerResponse} from 'http';
-import {Router} from './utils/Routes';
-import {ResponseHandler} from "./utils/ResponseHandler";
+import Koa from 'koa';
 import {userService} from "./services/UserService";
+import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware";
+import {bodyParser} from "@koa/bodyparser";
 import userRouter from "./routes/UserRoutes";
 import bookRouter from "./routes/BookRoutes";
-import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware";
 
-export function createServer(): Server {
-    const router = new Router();
+export function createApp(): Koa {
+    const app = new Koa();
 
-    router.useMiddleware(errorHandlerMiddleware);
+    app.use(errorHandlerMiddleware);
 
-    router.use(userRouter);
-    router.use(bookRouter);
+    /* Body parser 미들웨어 (JSON 요청 자동 파싱) */
+    app.use(bodyParser({
+        enableTypes: ['json']
+    }));
 
-    const server: Server = http.createServer(async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
-        try {
-            await router.handleRequest(req, res);
-        } catch (error: unknown) {
-            ResponseHandler.error(res, '서버 오류가 발생했습니다.', 500);
-        }
-    });
+    /* 라우터 등록 */
+    app.use(userRouter.routes());
+    app.use(userRouter.allowedMethods());
+    app.use(bookRouter.routes());
+    app.use(bookRouter.allowedMethods());
 
-    server.on('error', (error: Error): void => {
-        console.error(error);
-        process.exit(1);
-    });
-
-    return server;
+    return app;
 }
 
-export async function startServer(port: number = 3000): Promise<Server> {
-    return new Promise(async (resolve, reject) => {
-        try {
-            await userService.initialize();
-            const server: Server = createServer();
+export async function startServer(port: number = 3000): Promise<Koa> {
+    try {
+        await userService.initialize();
 
-            server.listen(port, () => {
-                resolve(server);
-            });
-            server.on('error', reject);
-        } catch (error) {
-            reject(error);
-        }
-    });
+        const app = createApp();
+
+        app.listen(port, () => {
+            console.log((`Server started at ${port}`));
+        });
+
+        return app;
+    } catch (error) {
+        console.error('Server start failed: ', error);
+        throw error;
+    }
 }
