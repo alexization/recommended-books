@@ -1,13 +1,8 @@
 import {Router} from "express";
 import {bookController} from "../controllers/BookController";
-import {RouteHandler} from "../middlewares/MiddlewareManager";
-import {BookRequest} from "../requests/BookRequest";
-import {ServerResponse} from "http";
 
 const bookRouter = Router();
 
-bookRouter.get('/books', (async (req: BookRequest, res: ServerResponse): Promise<void> => {
-    await bookController.getBooks(req, res);
-}) as RouteHandler);
+bookRouter.get('/books', bookController.getBooks);
 
 export default bookRouter;

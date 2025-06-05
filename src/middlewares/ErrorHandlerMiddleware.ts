@@ -3,6 +3,7 @@ import {ResponseHandler} from "../utils/ResponseHandler";
 import {NextFunction, Request, Response} from "express";
 
 export const errorHandlerMiddleware = (error: Error, req: Request, res: Response, next: NextFunction): void => {
+    console.error(error);
 
     if (error instanceof ValidationError) {
         return ResponseHandler.error(res, error.message, 400);
