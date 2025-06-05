@@ -1,10 +1,10 @@
-import {Router} from '../utils/Routes';
+import {Router} from "express";
 import {userController} from "../controllers/UserController";
 import {UserRequest} from "../requests/UserRequest";
 import {ServerResponse} from "http";
 import {RouteHandler} from "../middlewares/MiddlewareManager";
 
-const userRouter = new Router();
+const userRouter = Router();
 
 /* 회원 등록 */
 userRouter.post('/users', (async (req: UserRequest, res: ServerResponse): Promise<void> => {
