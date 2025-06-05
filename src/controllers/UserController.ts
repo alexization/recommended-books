@@ -44,7 +44,7 @@ export class UserController {
 
         await this.userService.updateUser(id, updateUserData);
 
-        ResponseHandler.success(ctx, '사용자 정보를 성공적으로 수정했습니다.', null);
+        ResponseHandler.success(ctx, '사용자 정보를 성공적으로 수정했습니다.');
     }
 
     async deleteUser(ctx: Context): Promise<void> {
@@ -52,7 +52,7 @@ export class UserController {
 
         await this.userService.deleteUser(id);
 
-        ResponseHandler.success(ctx, '사용자를 성공적으로 삭제했습니다.', null);
+        ResponseHandler.success(ctx, '사용자를 성공적으로 삭제했습니다.');
     }
 
     validateEmail(email?: string): void {
