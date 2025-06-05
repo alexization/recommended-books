@@ -1,19 +1,15 @@
 import fs from 'fs/promises';
 import path from 'path';
-import {fileURLToPath} from 'url';
 import {NotFoundError, ValidationError} from "../utils/AppError";
 import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 class UserRepository implements UserRepositoryInterface {
     private readonly dataFilePath: string;
 
     constructor() {
-        this.dataFilePath = path.join(__dirname, '../../data/users.json');
+        this.dataFilePath = path.join(process.cwd(), 'data', 'users.json');
         this.initialize();
     }
 
