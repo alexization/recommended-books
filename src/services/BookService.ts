@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import https from 'https';
 import {AppError, BadRequestError} from "../utils/AppError";
 import {BookServiceInterface} from "../interfaces/BookServiceInterface";
-import {BookData} from "../domain/Book";
+import {BookData} from "../domain/dto/BookDto";
 
 dotenv.config();
 
