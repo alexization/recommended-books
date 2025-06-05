@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import {userService} from "./services/UserService";
 import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware";
-import {bodyParser} from "@koa/bodyparser";
+import bodyParser from "koa-bodyparser";
 import userRouter from "./routes/UserRoutes";
 import bookRouter from "./routes/BookRoutes";
 
