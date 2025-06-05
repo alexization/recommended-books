@@ -8,7 +8,6 @@ const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 async function main(): Promise<void> {
     try {
         await startServer(PORT);
-        console.log(`Server started at ${PORT}`);
     } catch (error) {
         console.error(error);
         process.exit(1);

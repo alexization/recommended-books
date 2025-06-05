@@ -1,13 +1,10 @@
-import {Router} from '../utils/Routes';
+import Router from '@koa/router';
 import {bookController} from "../controllers/BookController";
-import {RouteHandler} from "../middlewares/MiddlewareManager";
-import {BookRequest} from "../requests/BookRequest";
-import {ServerResponse} from "http";
 
 const bookRouter = new Router();
 
-bookRouter.get('/books', (async (req: BookRequest, res: ServerResponse): Promise<void> => {
-    await bookController.getBooks(req, res);
-}) as RouteHandler);
+bookRouter.get('/books', async (ctx): Promise<void> => {
+    await bookController.getBooks(ctx);
+});
 
 export default bookRouter;
