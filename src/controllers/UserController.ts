@@ -1,9 +1,8 @@
+import {Context} from "koa";
 import {userService} from "../services/UserService";
 import {ValidationError} from "../utils/AppError";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
-import {ServerResponse} from "http";
-import {UserRequest} from "../requests/UserRequest";
 import {UpdateUserData} from "../domain/dto/UserDto";
 
 export class UserController {
@@ -11,41 +10,49 @@ export class UserController {
         this.userService = userService;
     }
 
-    async createUser(req: UserRequest, res: ServerResponse): Promise<void> {
-        this.validateEmail(req.body.email);
-        this.validateName(req.body.name);
+    async createUser(ctx: Context): Promise<void> {
+        this.validateEmail(ctx.request.body.email);
+        this.validateName(ctx.request.body.name);
 
-        const newUser = await this.userService.createUser({...req.body});
+        const newUser = await this.userService.createUser({...ctx.request.body});
 
-        ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
+        ResponseHandler.success(ctx, '사용자가 정상적으로 등록되었습니다.', newUser);
     }
 
-    async findUserById(req: UserRequest, res: ServerResponse): Promise<void> {
-        const user = await this.userService.findUserById(req.params.id);
+    async findUserById(ctx: Context): Promise<void> {
+        const id = parseInt(ctx.params.id);
 
-        ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
+        const user = await this.userService.findUserById(id);
+
+        ResponseHandler.success(ctx, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    async findUserByEmail(req: UserRequest, res: ServerResponse): Promise<void> {
-        this.validateEmail(req.query.email);
+    async findUserByEmail(ctx: Context): Promise<void> {
+        const email = ctx.request.body.email as string;
 
-        const user = await this.userService.findUserByEmail(req.query.email);
+        this.validateEmail(email);
 
-        ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
+        const user = await this.userService.findUserByEmail(email);
+
+        ResponseHandler.success(ctx, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    async updateUser(req: UserRequest, res: ServerResponse): Promise<void> {
-        const updateUserData: UpdateUserData = {...req.body};
+    async updateUser(ctx: Context): Promise<void> {
+        const id = parseInt(ctx.params.id);
 
-        await this.userService.updateUser(req.params.id, updateUserData);
+        const updateUserData: UpdateUserData = {...ctx.request.body};
 
-        ResponseHandler.success(res, '사용자 정보를 성공적으로 수정했습니다.', null);
+        await this.userService.updateUser(id, updateUserData);
+
+        ResponseHandler.success(ctx, '사용자 정보를 성공적으로 수정했습니다.');
     }
 
-    async deleteUser(req: UserRequest, res: ServerResponse): Promise<void> {
-        await this.userService.deleteUser(req.params.id);
+    async deleteUser(ctx: Context): Promise<void> {
+        const id = parseInt(ctx.params.id);
 
-        ResponseHandler.success(res, '사용자를 성공적으로 삭제했습니다.', null);
+        await this.userService.deleteUser(id);
+
+        ResponseHandler.success(ctx, '사용자를 성공적으로 삭제했습니다.');
     }
 
     validateEmail(email?: string): void {
