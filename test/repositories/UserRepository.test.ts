@@ -1,99 +1,98 @@
-import {UserRepositoryInterface} from "../../src/interfaces/UserRepositoryInterface";
-import {CreateUserData, UpdateUserData, UserData} from "../../src/domain/dto/UserDto";
-import {User} from "../../src/domain/User";
-import {AppError} from "../../src/utils/AppError";
-import {UserService} from "../../src/services/UserService";
+import {CreateUserData} from "../../src/domain/dto/UserDto";
+import fs from "fs/promises";
+import {userRepository} from '../../src/repositories/UserRepository';
+import {ValidationError} from '../../src/utils/AppError'
 
-class MockUserRepository implements UserRepositoryInterface {
-    private users: UserData[] = []
-    private nextId = 1;
+jest.mock('fs/promises');
+const mockedFs = fs as jest.Mocked<typeof fs>;
 
-    async initialize(): Promise<void> {
-        this.users = [];
-        this.nextId = 1;
-    }
+describe('createUser', () => {
 
-    async createUser(createUserData: CreateUserData): Promise<User> {
-        const existingUser = this.users.find(user => user.email === createUserData.email);
-        if (existingUser) {
-            throw new AppError("이미 가입한 이메일입니다.");
-        }
+    it('빈 파일에 첫 번째 사용자를 생성해야 한다.', async () => {
+        /* Arrange */
+        const createUserData: CreateUserData = {
+            email: "test@email.com",
+            name: "testUser",
+            birth: 2000,
+        };
 
-        const newUser = User.create(this.nextId++, createUserData);
-        this.users.push(newUser.toJSON());
+        mockedFs.readFile.mockResolvedValue('[]');
+        mockedFs.writeFile.mockResolvedValue();
 
-        return newUser;
-    }
+        /* Act */
+        const result = await userRepository.createUser(createUserData);
 
-    async deleteUser(id: number): Promise<void> {
-        return Promise.resolve(undefined);
-    }
-
-    async findUserByEmail(email: string): Promise<UserData[]> {
-        return Promise.resolve([]);
-    }
-
-    async findUserById(id: number): Promise<UserData[]> {
-        return Promise.resolve([]);
-    }
-
-    async updateUser(id: number, updateUserData: UpdateUserData): Promise<void> {
-        return Promise.resolve(undefined);
-    }
-
-
-}
-
-describe("UserRepository", () => {
-    let userService: UserService;
-    let mockRepository: MockUserRepository;
-
-    beforeEach(async () => {
-        mockRepository = new MockUserRepository();
-        userService = new UserService(mockRepository);
-        await userService.initialize();
+        /* Assert */
+        expect(result.id).toBe(1);
+        expect(result.email).toBe(createUserData.email);
+        expect(result.name).toBe(createUserData.name);
+        expect(result.birth).toBe(createUserData.birth);
+        expect(result.createdAt).toBeDefined();
+        expect(result.updatedAt).toBeDefined();
     });
 
-    describe("createUser", () => {
-        it('새로운 사용자를 성공적으로 생성해야 한다.', async () => {
-            /* Arrange */
-            const createUserData: CreateUserData = {
-                email: "test@example.com",
-                name: "테스트",
-                birth: 2000
-            };
+    it('기존 사용자가 있으면 다음 ID를 사용해야 한다.', async () => {
+        /* Arrange */
+        const existedUsers = [
+            {
+                id: 1,
+                email: 'user1@example.com',
+                name: '유저1',
+                birth: 1990,
+                createdAt: '2025-01-01',
+                updatedAt: '2025-01-01'
+            },
+            {
+                id: 3,
+                email: 'user3@example.com',
+                name: '유저3',
+                birth: 1995,
+                createdAt: '2025-01-01',
+                updatedAt: '2025-01-01'
+            }
+        ]
 
-            /* Act */
-            const result = await userService.createUser(createUserData);
+        const createUserData: CreateUserData = {
+            email: 'new@email.com',
+            name: 'newUser',
+            birth: 2000
+        };
 
-            /* Assert */
-            expect(result).toBeDefined();
-            expect(result.email).toBe(createUserData.email);
-            expect(result.name).toBe(createUserData.name);
-            expect(result.birth).toBe(createUserData.birth);
-            expect(result.id).toBe(1);
-        });
+        mockedFs.readFile.mockResolvedValue(JSON.stringify(existedUsers));
+        mockedFs.writeFile.mockResolvedValue();
 
-        it("중복된 이메일로 사용자를 생성할 경우 에러가 발생해야 한다.", async () => {
-            /* Arrange */
-            const createUserData: CreateUserData = {
-                email: "test@example.com",
-                name: "테스트",
-                birth: 2000
-            };
+        /* Act */
+        const result = await userRepository.createUser(createUserData);
 
-            await userService.createUser(createUserData);
-
-            const duplicateUserData: CreateUserData = {
-                email: "test@example.com",
-                name: "이메일 중복 테스트 유저",
-                birth: 2000
-            };
-
-            /* Act */
-            /* Assert */
-            await expect(userService.createUser(duplicateUserData))
-                .rejects.toThrow("이미 가입한 이메일입니다.");
-        });
+        /* Assert */
+        expect(result.id).toBe(4);
     });
+
+    it('중복된 이메일로 사용자 생성 시 ValidationError가 발생해야 한다.', async () => {
+        /* Arrange */
+        const existedUser = [
+            {
+                id: 1,
+                email: 'exist@email.com',
+                name: 'existUser',
+                birth: 1990,
+                createdAt: '2025-01-01',
+                updatedAt: '2025-01-01'
+            }
+        ];
+
+        const createUserData: CreateUserData = {
+            email: 'exist@email.com',
+            name: 'newUser',
+            birth: 2000,
+        };
+
+        mockedFs.readFile.mockResolvedValue(JSON.stringify(existedUser));
+
+        /* Act & Assert */
+        await expect(userRepository.createUser(createUserData))
+            .rejects.toThrow(ValidationError);
+
+        expect(mockedFs.writeFile).not.toHaveBeenCalled();
+    })
 });
