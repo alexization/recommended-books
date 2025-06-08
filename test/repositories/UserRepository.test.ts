@@ -1,7 +1,7 @@
-import {CreateUserData} from "../../src/domain/dto/UserDto";
+import {CreateUserData, UpdateUserData} from "../../src/domain/dto/UserDto";
 import fs from "fs/promises";
 import {userRepository} from '../../src/repositories/UserRepository';
-import {ValidationError} from '../../src/utils/AppError'
+import {NotFoundError, ValidationError} from '../../src/utils/AppError'
 
 jest.mock('fs/promises');
 const mockedFs = fs as jest.Mocked<typeof fs>;
@@ -166,6 +166,57 @@ describe('UserRepository Tests', () => {
 
             /* Assert */
             expect(result).toHaveLength(0);
+        });
+    });
+
+    describe('updateUser', () => {
+        it('존재하는 사용자 정보를 성공적으로 수정해야 한다.', async () => {
+            /* Arrange */
+            const user = [{
+                id: 1,
+                email: "exist@email.com",
+                name: 'existUser',
+                birth: 1990,
+                updatedAt: '2025-01-01',
+                createdAt: '2025-01-01'
+            }];
+
+            const updateUserData: UpdateUserData = {
+                name: "updateName", birth: 2000,
+            }
+
+            mockedFs.readFile.mockResolvedValue(JSON.stringify(user));
+            mockedFs.writeFile.mockResolvedValue();
+
+            /* Act */
+            await userRepository.updateUser(1, updateUserData);
+
+            /* Assert */
+            expect(mockedFs.writeFile).toHaveBeenCalled();
+
+            const writeFileCall = mockedFs.writeFile.mock.calls[0];
+            const savedData = JSON.parse(writeFileCall[1] as string);
+
+            expect(savedData).toHaveLength(1);
+            expect(savedData[0].id).toBe(1);
+            expect(savedData[0].email).toBe("exist@email.com");
+            expect(savedData[0].name).toBe('updateName');
+            expect(savedData[0].birth).toBe(2000);
+            expect(savedData[0].createdAt).toBe('2025-01-01');
+            expect(new Date(savedData[0].updatedAt).getTime()).toBeGreaterThan(new Date('2024-01-01T00:00:00.000Z').getTime());
+        });
+
+        it('존재하지 않는 사용자 수정 시 NotFoundError가 발생해야 한다.', async () => {
+            /* Arrange */
+            mockedFs.readFile.mockResolvedValue('[]');
+
+            const updateUserData: UpdateUserData = {
+                name: 'updateName', birth: 2000
+            };
+
+            /* Act & Assert */
+            await expect(userRepository.updateUser(999, updateUserData))
+                .rejects.toThrow(NotFoundError);
         });
     });
 })
