@@ -219,4 +219,40 @@ describe('UserRepository Tests', () => {
                 .rejects.toThrow(NotFoundError);
         });
     });
+
+    describe('deleteUser', () => {
+        it('존재하는 사용자를 성공적으로 삭제해야 한다.', async () => {
+            /* Arrange */
+            const existedUsers = [{
+                id: 1,
+                email: 'user1@example.com',
+                name: '유저1',
+                birth: 1990,
+                createdAt: '2025-01-01',
+                updatedAt: '2025-01-01'
+            }, {
+                id: 3,
+                email: 'user3@example.com',
+                name: '유저3',
+                birth: 1995,
+                createdAt: '2025-01-01',
+                updatedAt: '2025-01-01'
+            }]
+
+            mockedFs.readFile.mockResolvedValue(JSON.stringify(existedUsers));
+            mockedFs.writeFile.mockResolvedValue();
+
+            /* Act */
+            await userRepository.deleteUser(1);
+
+            /* Assert */
+            expect(mockedFs.writeFile).toHaveBeenCalled();
+
+            const writeFileCall = mockedFs.writeFile.mock.calls[0];
+            const savedData = JSON.parse(writeFileCall[1] as string);
+
+            expect(savedData).toHaveLength(1);
+            expect(savedData[0].id).toBe(3);
+        });
+    });
 })
