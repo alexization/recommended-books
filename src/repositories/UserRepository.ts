@@ -5,7 +5,7 @@ import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
 
-class UserRepository implements UserRepositoryInterface {
+export class UserRepository implements UserRepositoryInterface {
     private readonly dataFilePath: string;
 
     constructor() {

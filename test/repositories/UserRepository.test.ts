@@ -1,12 +1,25 @@
 import {CreateUserData, UpdateUserData} from "../../src/domain/dto/UserDto";
 import fs from "fs/promises";
-import {userRepository} from '../../src/repositories/UserRepository';
 import {NotFoundError, ValidationError} from '../../src/utils/AppError'
+import {UserRepository} from "../../src/repositories/UserRepository";
 
 jest.mock('fs/promises');
 const mockedFs = fs as jest.Mocked<typeof fs>;
 
 describe('UserRepository Tests', () => {
+
+    let userRepository: UserRepository;
+
+    beforeEach(() => {
+        jest.clearAllMocks();
+
+        userRepository = new UserRepository();
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
     describe('createUser', () => {
 
         it('빈 파일에 첫 번째 사용자를 생성해야 한다.', async () => {
