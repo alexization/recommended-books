@@ -1,7 +1,9 @@
 import Koa from 'koa';
+import cors from '@koa/cors';
+import helmet from 'koa-helmet';
+import bodyParser from "koa-bodyparser";
 import {userService} from "./services/UserService";
 import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware";
-import bodyParser from "koa-bodyparser";
 import userRouter from "./routes/UserRoutes";
 import bookRouter from "./routes/BookRoutes";
 
@@ -14,6 +16,10 @@ export function createApp(): Koa {
     app.use(bodyParser({
         enableTypes: ['json']
     }));
+
+    app.use(helmet());
+
+    app.use(cors());
 
     /* 라우터 등록 */
     app.use(userRouter.routes());
