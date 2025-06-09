@@ -5,8 +5,6 @@ const bookRouter = new Router({
     prefix: '/books'
 });
 
-bookRouter.get('/', async (ctx): Promise<void> => {
-    await bookController.getBooks(ctx);
-});
+bookRouter.get('/', bookController.getBooks);
 
 export default bookRouter;

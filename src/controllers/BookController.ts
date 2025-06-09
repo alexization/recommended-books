@@ -9,7 +9,7 @@ export class BookController {
         this.bookService = bookService;
     }
 
-    async getBooks(ctx: Context): Promise<void> {
+    getBooks = async (ctx: Context): Promise<void> => {
         const pageNo = parseInt(ctx.query.pageNo as string);
 
         if (isNaN(pageNo) || pageNo < 1) {
