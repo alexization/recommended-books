@@ -12,12 +12,16 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@koa/cors": "^5.0.0",
     "@koa/router": "^13.1.0",
     "@types/node": "^22.15.29",
     "axios": "^1.9.0",
     "dotenv": "^16.5.0",
+    "helmet": "^8.1.0",
     "koa": "^3.0.0",
-    "koa-bodyparser": "^4.4.1"
+    "koa-bodyparser": "^4.4.1",
+    "koa-helmet": "^8.0.1",
+    "koa-jwt": "^4.0.4"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
@@ -31,8 +35,12 @@
   },
   "jest": {
     "preset": "ts-jest/presets/default-esm",
-    "extensionsToTreatAsEsm": [".ts"],
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
     "testEnvironment": "node",
-    "testMatch": ["**/test/**/*.ts"]
+    "testMatch": [
+      "**/test/**/*.ts"
+    ]
   }
 }
