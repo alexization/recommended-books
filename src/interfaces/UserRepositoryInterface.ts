@@ -6,9 +6,9 @@ export interface UserRepositoryInterface {
 
     createUser(createUserData: CreateUserData): Promise<User>;
 
-    findUserById(id: number): Promise<UserData[]>;
+    findUserById(id: number): Promise<User>;
 
-    findUserByEmail(email: string): Promise<UserData[]>;
+    findUserByEmail(email: string): Promise<User>;
 
     updateUser(id: number, updateUserData: UpdateUserData): Promise<void>;
 

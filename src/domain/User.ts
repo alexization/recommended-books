@@ -25,24 +25,13 @@ export class User {
         return new User(userData.id, userData.email, userData.name, userData.birth, userData.createdAt, userData.createdAt);
     }
 
-    toJSON(): UserData {
-        return {
-            id: this.id,
-            email: this.email,
-            name: this.name,
-            birth: this.birth,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
-        };
+    static create(id: number, createUserData: CreateUserData): User {
+        return new User(id, createUserData.email, createUserData.name, createUserData.birth);
     }
 
     update(updateUserData: UpdateUserData): void {
         this.name = updateUserData.name;
         this.birth = updateUserData.birth;
         this.updatedAt = new Date().toISOString();
-    }
-
-    static create(id: number, createUserData: CreateUserData): User {
-        return new User(id, createUserData.email, createUserData.name, createUserData.birth);
     }
 }

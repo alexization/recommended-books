@@ -32,24 +32,6 @@ class UserRepository implements UserRepositoryInterface {
         }
     }
 
-    private async load(): Promise<UserData[]> {
-        try {
-            const data = await fs.readFile(this.dataFilePath, 'utf8');
-            return JSON.parse(data);
-        } catch (error) {
-            console.error("데이터 로드 실패", error);
-            return [];
-        }
-    }
-
-    private async save(data: UserData[]): Promise<void> {
-        try {
-            await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
-        } catch (error) {
-            console.error("데이터 저장 실패", error);
-        }
-    }
-
     async createUser(createUserData: CreateUserData): Promise<User> {
         const users = await this.load();
 
@@ -70,30 +52,38 @@ class UserRepository implements UserRepositoryInterface {
         return newUser;
     }
 
-    async findUserById(id: number): Promise<UserData[]> {
+    async findUserById(id: number): Promise<User> {
         const users = await this.load();
-        return users.filter(user => user.id === Number(id));
+        const findUser = users.find(user => user.id === Number(id));
+
+        if (findUser === undefined) {
+            throw new NotFoundError("요청하신 사용자의 정보가 없습니다.");
+        }
+
+        return findUser;
     }
 
-    async findUserByEmail(email: string): Promise<UserData[]> {
+    async findUserByEmail(email: string): Promise<User> {
         const users = await this.load();
-        return users.filter(user => user.email === email);
+        const findUser = users.find(user => user.email === email);
+
+        if (findUser === undefined) {
+            throw new NotFoundError("요청하신 사용자의 정보가 없습니다.");
+        }
+
+        return findUser;
     }
 
     async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
         const users = await this.load();
 
-        const userData = users.find(user => user.id === Number(userId));
+        const updateUser = users.find(user => user.id === Number(userId));
 
-        if (userData === undefined) {
+        if (updateUser === undefined) {
             throw new NotFoundError("해당 유저가 없습니다.");
         }
 
-        const updateUser = User.fromJson(userData);
         updateUser.update(updateUserData);
-
-        const userIndex = users.findIndex(user => user.id === Number(userId));
-        users[userIndex] = updateUser.toJSON();
 
         await this.save(users);
     }
@@ -105,10 +95,30 @@ class UserRepository implements UserRepositoryInterface {
         await this.save(newUsers);
     }
 
-    isEmailExists(users: UserData[], email: string): boolean {
+    isEmailExists(users: User[], email: string): boolean {
         const result = users.filter(user => user.email === email);
 
         return result.length !== 0;
+    }
+
+    private async load(): Promise<User[]> {
+        try {
+            const data = await fs.readFile(this.dataFilePath, 'utf8');
+            const jsonData = JSON.parse(data);
+
+            return jsonData.map((userData: UserData) => User.fromJson(userData));
+        } catch (error) {
+            console.error("데이터 로드 실패", error);
+            return [];
+        }
+    }
+
+    private async save(data: User[]): Promise<void> {
+        try {
+            await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
+        } catch (error) {
+            console.error("데이터 저장 실패", error);
+        }
     }
 }
 
