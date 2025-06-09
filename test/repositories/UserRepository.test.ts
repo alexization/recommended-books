@@ -11,13 +11,9 @@ describe('UserRepository Tests', () => {
     let userRepository: UserRepository;
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        jest.resetAllMocks();
 
         userRepository = new UserRepository();
-    });
-
-    afterEach(() => {
-        jest.resetAllMocks();
     });
 
     describe('createUser', () => {
