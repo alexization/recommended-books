@@ -5,12 +5,8 @@ export class User {
     public readonly email: string;
     public name: string;
     public birth: number;
-    public readonly createdAt: string;
     public updatedAt: string;
-
-    constructor(id: number, email: string, name: string, birth: number, updatedAt: string, createdAt: string);
-
-    constructor(id: number, email: string, name: string, birth: number);
+    public readonly createdAt: string;
 
     constructor(id: number, email: string, name: string, birth: number, updatedAt?: string, createdAt?: string) {
         this.id = id;
@@ -22,7 +18,7 @@ export class User {
     }
 
     static fromJson(userData: UserData): User {
-        return new User(userData.id, userData.email, userData.name, userData.birth, userData.createdAt, userData.createdAt);
+        return new User(userData.id, userData.email, userData.name, userData.birth, userData.updatedAt, userData.createdAt);
     }
 
     static create(id: number, createUserData: CreateUserData): User {
