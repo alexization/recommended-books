@@ -6,28 +6,18 @@ const userRouter = new Router({
 });
 
 /* 회원 등록 */
-userRouter.post('/', async (ctx): Promise<void> => {
-    await userController.createUser(ctx);
-});
+userRouter.post('/', userController.createUser);
 
 /* 회원 조회 (id) */
-userRouter.get('/:id', async (ctx): Promise<void> => {
-    await userController.findUserById(ctx);
-});
+userRouter.get('/:id', userController.findUserById);
 
 /* 회원 조회 (email) */
-userRouter.get('/', async (ctx): Promise<void> => {
-    await userController.findUserByEmail(ctx);
-});
+userRouter.get('/', userController.findUserByEmail);
 
 /* 회원 정보 수정 */
-userRouter.put('/:id', async (ctx): Promise<void> => {
-    await userController.updateUser(ctx);
-});
+userRouter.put('/:id', userController.updateUser);
 
 /* 회원 정보 삭제 */
-userRouter.delete('/:id', async (ctx): Promise<void> => {
-    await userController.deleteUser(ctx);
-});
+userRouter.delete('/:id', userController.deleteUser);
 
 export default userRouter;

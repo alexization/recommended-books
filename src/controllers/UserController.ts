@@ -10,7 +10,7 @@ export class UserController {
         this.userService = userService;
     }
 
-    async createUser(ctx: Context): Promise<void> {
+    createUser = async (ctx: Context): Promise<void> => {
         this.validateEmail(ctx.request.body.email);
         this.validateName(ctx.request.body.name);
 
@@ -19,7 +19,7 @@ export class UserController {
         ResponseHandler.success(ctx, '사용자가 정상적으로 등록되었습니다.', newUser);
     }
 
-    async findUserById(ctx: Context): Promise<void> {
+    findUserById = async (ctx: Context): Promise<void> => {
         const id = parseInt(ctx.params.id);
 
         const user = await this.userService.findUserById(id);
@@ -27,7 +27,7 @@ export class UserController {
         ResponseHandler.success(ctx, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    async findUserByEmail(ctx: Context): Promise<void> {
+    findUserByEmail = async (ctx: Context): Promise<void> => {
         const email = ctx.request.body.email as string;
 
         this.validateEmail(email);
@@ -37,7 +37,7 @@ export class UserController {
         ResponseHandler.success(ctx, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    async updateUser(ctx: Context): Promise<void> {
+    updateUser = async (ctx: Context): Promise<void> => {
         const id = parseInt(ctx.params.id);
 
         const updateUserData: UpdateUserData = {...ctx.request.body};
@@ -47,7 +47,7 @@ export class UserController {
         ResponseHandler.success(ctx, '사용자 정보를 성공적으로 수정했습니다.');
     }
 
-    async deleteUser(ctx: Context): Promise<void> {
+    deleteUser = async (ctx: Context): Promise<void> => {
         const id = parseInt(ctx.params.id);
 
         await this.userService.deleteUser(id);
