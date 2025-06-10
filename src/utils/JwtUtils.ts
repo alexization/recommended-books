@@ -54,7 +54,7 @@ export class JwtUtils {
         }
     }
 
-    static extractToken(authToken: string): string {
+    static extractToken(authToken?: string): string {
         if (!authToken) {
             throw new AppError('Authorization 헤더가 없습니다.', 401);
         }

@@ -4,6 +4,7 @@ import {JwtUtils, TokenPair} from "../utils/JwtUtils";
 import {userRepository} from "../repositories/UserRepository";
 import {NotFoundError, ValidationError} from "../utils/AppError";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
+import {User} from "../domain/User";
 
 export class AuthService implements AuthServiceInterface {
 
@@ -25,6 +26,12 @@ export class AuthService implements AuthServiceInterface {
         }
 
         return JwtUtils.generateJwtToken(user.id, user.email);
+    }
+
+    async validateAccessToken(accessToken: string): Promise<User> {
+        const payload = JwtUtils.verifyAccessToken(accessToken);
+
+        return await this.userRepository.findUserByEmail(payload.email);
     }
 }
 

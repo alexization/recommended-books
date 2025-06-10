@@ -7,11 +7,13 @@ import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware";
 import userRouter from "./routes/UserRoutes";
 import bookRouter from "./routes/BookRoutes";
 import authRouter from "./routes/AuthRoutes";
+import {jwtAuthMiddleware} from "./middlewares/JwtAuthMiddleware";
 
 export function createApp(): Koa {
     const app = new Koa();
 
     app.use(errorHandlerMiddleware);
+    // app.use(jwtAuthMiddleware);
 
     /* Body parser 미들웨어 (JSON 요청 자동 파싱) */
     app.use(bodyParser({
