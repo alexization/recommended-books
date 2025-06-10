@@ -1,4 +1,4 @@
-import bcypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import {CreateUserData, UpdateUserData, UserData} from "./dto/UserDto";
 
 export class User {
@@ -25,7 +25,7 @@ export class User {
     }
 
     static async create(id: number, createUserData: CreateUserData): Promise<User> {
-        const hashedPassword = await bcypt.hash(createUserData.password, 10);
+        const hashedPassword = await bcrypt.hash(createUserData.password, 10);
 
         return new User(id, createUserData.email, hashedPassword, createUserData.name, createUserData.birth);
     }
