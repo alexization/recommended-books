@@ -1,33 +1,23 @@
-import {Router} from '../utils/Routes';
+import Router from '@koa/router';
 import {userController} from "../controllers/UserController";
-import {UserRequest} from "../requests/UserRequest";
-import {ServerResponse} from "http";
 
-const userRouter = new Router();
+const userRouter = new Router({
+    prefix: '/users'
+});
 
 /* 회원 등록 */
-userRouter.post('/users', async (req: UserRequest.CreateRequest, res: ServerResponse): Promise<void> => {
-    await userController.createUser(req, res);
-});
+userRouter.post('/', userController.createUser);
 
 /* 회원 조회 (id) */
-userRouter.get('/users/:id', async (req: UserRequest.FindByIdRequest, res: ServerResponse): Promise<void> => {
-    await userController.findUserById(req, res);
-});
+userRouter.get('/:id', userController.findUserById);
 
 /* 회원 조회 (email) */
-userRouter.get('/users', async (req: UserRequest.FindByEmailRequest, res: ServerResponse): Promise<void> => {
-    await userController.findUserByEmail(req, res);
-});
+userRouter.get('/', userController.findUserByEmail);
 
 /* 회원 정보 수정 */
-userRouter.put('/users/:id', async (req: UserRequest.UpdateRequest, res: ServerResponse): Promise<void> => {
-    await userController.updateUser(req, res);
-});
+userRouter.put('/:id', userController.updateUser);
 
 /* 회원 정보 삭제 */
-userRouter.delete('/users/:id', async (req: UserRequest.DeleteRequest, res: ServerResponse): Promise<void> => {
-    await userController.deleteUser(req, res);
-});
+userRouter.delete('/:id', userController.deleteUser);
 
 export default userRouter;
