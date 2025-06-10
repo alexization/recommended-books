@@ -6,6 +6,7 @@ import {userService} from "./services/UserService";
 import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware";
 import userRouter from "./routes/UserRoutes";
 import bookRouter from "./routes/BookRoutes";
+import authRouter from "./routes/AuthRoutes";
 
 export function createApp(): Koa {
     const app = new Koa();
@@ -26,6 +27,8 @@ export function createApp(): Koa {
     app.use(userRouter.allowedMethods());
     app.use(bookRouter.routes());
     app.use(bookRouter.allowedMethods());
+    app.use(authRouter.routes());
+    app.use(authRouter.allowedMethods());
 
     return app;
 }
