@@ -1,19 +1,15 @@
 import fs from 'fs/promises';
 import path from 'path';
-import {fileURLToPath} from 'url';
 import {NotFoundError, ValidationError} from "../utils/AppError";
 import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-class UserRepository implements UserRepositoryInterface {
+export class UserRepository implements UserRepositoryInterface {
     private readonly dataFilePath: string;
 
     constructor() {
-        this.dataFilePath = path.join(__dirname, '../../data/users.json');
+        this.dataFilePath = path.join(process.cwd(), 'data', 'users.json');
         this.initialize();
     }
 
@@ -52,7 +48,7 @@ class UserRepository implements UserRepositoryInterface {
         return newUser;
     }
 
-    async findUserById(id: string): Promise<User> {
+    async findUserById(id: number): Promise<User> {
         const users = await this.load();
         const findUser = users.find(user => user.id === Number(id));
 
@@ -74,7 +70,7 @@ class UserRepository implements UserRepositoryInterface {
         return findUser;
     }
 
-    async updateUser(userId: string, updateUserData: UpdateUserData): Promise<void> {
+    async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
         const users = await this.load();
 
         const updateUser = users.find(user => user.id === Number(userId));
@@ -88,7 +84,7 @@ class UserRepository implements UserRepositoryInterface {
         await this.save(users);
     }
 
-    async deleteUser(id: string): Promise<void> {
+    async deleteUser(id: number): Promise<void> {
         const users = await this.load();
         const newUsers = users.filter(user => user.id !== Number(id));
 

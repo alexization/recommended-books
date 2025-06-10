@@ -3,7 +3,7 @@ import {userService} from "../services/UserService";
 import {ValidationError} from "../utils/AppError";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
-import {UpdateUserData} from "../domain/dto/UserDto";
+import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -11,10 +11,12 @@ export class UserController {
     }
 
     createUser = async (ctx: Context): Promise<void> => {
-        this.validateEmail(ctx.request.body.email);
-        this.validateName(ctx.request.body.name);
+        const createUserData = ctx.request.body as CreateUserData;
 
-        const newUser = await this.userService.createUser({...ctx.request.body});
+        this.validateEmail(createUserData.email);
+        this.validateName(createUserData.name);
+
+        const newUser = await this.userService.createUser(createUserData);
 
         ResponseHandler.success(ctx, '사용자가 정상적으로 등록되었습니다.', newUser);
     }
@@ -28,7 +30,7 @@ export class UserController {
     }
 
     findUserByEmail = async (ctx: Context): Promise<void> => {
-        const email = ctx.request.body.email as string;
+        const email = ctx.query.email as string;
 
         this.validateEmail(email);
 
@@ -40,7 +42,7 @@ export class UserController {
     updateUser = async (ctx: Context): Promise<void> => {
         const id = parseInt(ctx.params.id);
 
-        const updateUserData: UpdateUserData = {...ctx.request.body};
+        const updateUserData = ctx.request.body as UpdateUserData;
 
         await this.userService.updateUser(id, updateUserData);
 
