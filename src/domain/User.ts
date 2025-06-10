@@ -30,6 +30,10 @@ export class User {
         return new User(id, createUserData.email, hashedPassword, createUserData.name, createUserData.birth);
     }
 
+    async validatePassword(password: string): Promise<boolean> {
+        return await bcrypt.compare(password, this.password);
+    }
+
     update(updateUserData: UpdateUserData): void {
         this.name = updateUserData.name;
         this.birth = updateUserData.birth;

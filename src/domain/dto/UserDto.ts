@@ -19,3 +19,8 @@ export interface UpdateUserData {
     name: string;
     birth: number;
 }
+
+export interface LoginUserData {
+    email: string;
+    password: string;
+}
