@@ -1,0 +1,125 @@
+import fs from 'fs/promises';
+import path from 'path';
+import {fileURLToPath} from 'url';
+import {NotFoundError, ValidationError} from "../utils/AppError";
+import {User} from "../domain/User";
+import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
+import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+class UserRepository implements UserRepositoryInterface {
+    private readonly dataFilePath: string;
+
+    constructor() {
+        this.dataFilePath = path.join(__dirname, '../../data/users.json');
+        this.initialize();
+    }
+
+    async initialize(): Promise<void> {
+        try {
+            const dataDir = path.dirname(this.dataFilePath);
+            await fs.mkdir(dataDir, {recursive: true});
+
+            try {
+                await fs.access(this.dataFilePath);
+            } catch {
+                await this.save([]);
+            }
+        } catch (error) {
+            console.error("데이터 파일 초기화 실패: ", error);
+        }
+    }
+
+    async createUser(createUserData: CreateUserData): Promise<User> {
+        const users = await this.load();
+
+        if (this.isEmailExists(users, createUserData.email)) {
+            throw new ValidationError("이미 가입한 이메일입니다.");
+        }
+
+        let id = 1;
+        if (users.length !== 0) {
+            id = Math.max(...users.map(user => user.id)) + 1;
+        }
+
+        const newUser = User.create(id, createUserData);
+
+        users.push(newUser);
+        await this.save(users);
+
+        return newUser;
+    }
+
+    async findUserById(id: string): Promise<User> {
+        const users = await this.load();
+        const findUser = users.find(user => user.id === Number(id));
+
+        if (findUser === undefined) {
+            throw new NotFoundError("요청하신 사용자의 정보가 없습니다.");
+        }
+
+        return findUser;
+    }
+
+    async findUserByEmail(email: string): Promise<User> {
+        const users = await this.load();
+        const findUser = users.find(user => user.email === email);
+
+        if (findUser === undefined) {
+            throw new NotFoundError("요청하신 사용자의 정보가 없습니다.");
+        }
+
+        return findUser;
+    }
+
+    async updateUser(userId: string, updateUserData: UpdateUserData): Promise<void> {
+        const users = await this.load();
+
+        const updateUser = users.find(user => user.id === Number(userId));
+
+        if (updateUser === undefined) {
+            throw new NotFoundError("해당 유저가 없습니다.");
+        }
+
+        updateUser.update(updateUserData);
+
+        await this.save(users);
+    }
+
+    async deleteUser(id: string): Promise<void> {
+        const users = await this.load();
+        const newUsers = users.filter(user => user.id !== Number(id));
+
+        await this.save(newUsers);
+    }
+
+    isEmailExists(users: User[], email: string): boolean {
+        const result = users.filter(user => user.email === email);
+
+        return result.length !== 0;
+    }
+
+    private async load(): Promise<User[]> {
+        try {
+            const data = await fs.readFile(this.dataFilePath, 'utf8');
+            const jsonData = JSON.parse(data);
+
+            return jsonData.map((userData: UserData) => User.fromJson(userData));
+        } catch (error) {
+            console.error("데이터 로드 실패", error);
+            return [];
+        }
+    }
+
+    private async save(data: User[]): Promise<void> {
+        try {
+            await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
+        } catch (error) {
+            console.error("데이터 저장 실패", error);
+        }
+    }
+}
+
+export const userRepository = new UserRepository();

@@ -1,25 +1,26 @@
 import dotenv from 'dotenv';
-import {startServer} from "./src/app.js";
+import {startServer} from "./src/app";
 
 dotenv.config();
 
-const PORT = process.env.PORT;
+const PORT: number = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
-async function main() {
+async function main(): Promise<void> {
     try {
         await startServer(PORT);
         console.log(`Server started at ${PORT}`);
     } catch (error) {
+        console.error(error);
         process.exit(1);
     }
 }
 
-process.on('uncaughtException', error => {
+process.on('uncaughtException', (error: Error) => {
     console.error(error);
     process.exit(1);
 })
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason, promise: Promise<any>) => {
     console.error(reason);
     process.exit(1);
 })

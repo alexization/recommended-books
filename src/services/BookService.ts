@@ -1,16 +1,19 @@
 import dotenv from 'dotenv';
 import https from 'https';
-import {AppError, BadRequestError} from "../utils/AppError.js";
+import {AppError, BadRequestError} from "../utils/AppError";
+import {BookServiceInterface} from "../interfaces/BookServiceInterface";
+import {BookData} from "../domain/Book";
 
 dotenv.config();
 
-export class BookService {
+export class BookService implements BookServiceInterface {
+    private readonly baseUrl: string;
 
     constructor() {
-        this.baseUrl = process.env.OPEN_API_BASE_URL;
+        this.baseUrl = process.env.OPEN_API_BASE_URL as string;
     }
 
-    async getBooks(pageNo) {
+    async getBooks(pageNo: string): Promise<BookData[]> {
         try {
             const url = this.buildBookSearchUrl(pageNo);
 
@@ -20,14 +23,14 @@ export class BookService {
         }
     }
 
-    buildBookSearchUrl(pageNo) {
+    buildBookSearchUrl(pageNo: string): string {
         const params = new URLSearchParams({
             numOfRows: '10', pageNo: pageNo.toString(),
         });
         return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&${params.toString()}`;
     }
 
-    executeHttpRequest(url) {
+    executeHttpRequest(url: string): Promise<BookData[]> {
         return new Promise((resolve, reject) => {
             const request = https.get(url, (response) => {
                 let data = '';
@@ -39,8 +42,8 @@ export class BookService {
                 response.on('end', () => {
                     try {
                         if (response.statusCode === 200) {
-                            const jsonData = JSON.parse(data);
-                            resolve(jsonData);
+                            const bookData: BookData[] = JSON.parse(data);
+                            resolve(bookData);
                         } else {
                             reject(new BadRequestError('API 요청 실패'));
                         }
