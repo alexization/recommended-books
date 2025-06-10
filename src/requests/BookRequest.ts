@@ -1,7 +1,5 @@
-import {IncomingMessage} from "http";
+import {ExtendedIncomingMessage} from "../utils/Routes";
 
-export interface BookRequest extends IncomingMessage {
-    query: {
-        pageNo: number;
-    };
+export interface BookRequest extends ExtendedIncomingMessage {
+    query?: { pageNo: string } | Record<string, string>;
 }

@@ -4,7 +4,7 @@ import {ResponseHandler} from "./ResponseHandler";
 import {Middleware, MiddlewareManager, RouteHandler} from "../middlewares/MiddlewareManager";
 import {IncomingMessage, ServerResponse} from "http";
 
-interface ExtendedIncomingMessage extends IncomingMessage {
+export interface ExtendedIncomingMessage extends IncomingMessage {
     body?: any;
     query?: Record<string, string>;
     params?: Record<string, string>;

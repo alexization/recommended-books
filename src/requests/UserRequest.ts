@@ -1,15 +1,9 @@
-import {IncomingMessage} from "http";
+import {ExtendedIncomingMessage} from "../utils/Routes";
 
-export interface UserRequest extends IncomingMessage {
-    body: {
-        email: string;
-        name: string;
-        birth: number;
+export interface UserRequest extends ExtendedIncomingMessage {
+    body?: {
+        email: string; name: string; birth: number;
     };
-    params: {
-        id: number;
-    };
-    query: {
-        email: string;
-    };
+    params?: { id: string } | Record<string, string>;
+    query?: { email: string } | Record<string, string>;
 }

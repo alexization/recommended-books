@@ -1,7 +1,8 @@
 import {IncomingMessage, ServerResponse} from "http";
+import {ExtendedIncomingMessage} from "../utils/Routes";
 
 export type NextFunction = (error ?: Error) => Promise<void>;
-export type RouteHandler = (req: IncomingMessage, res: ServerResponse) => Promise<void>;
+export type RouteHandler<T = ExtendedIncomingMessage> = (req: T, res: ServerResponse) => Promise<void>;
 export type Middleware = (req: IncomingMessage, res: ServerResponse, next: NextFunction) => Promise<void>;
 
 export class MiddlewareManager {
@@ -13,7 +14,7 @@ export class MiddlewareManager {
         return this;
     }
 
-    async execute(req: IncomingMessage, res: ServerResponse, finalHandler: RouteHandler): Promise<void> {
+    async execute(req: ExtendedIncomingMessage, res: ServerResponse, finalHandler: RouteHandler): Promise<void> {
         let currentIndex = 0;
 
         const next: NextFunction = async (error?: Error): Promise<void> => {

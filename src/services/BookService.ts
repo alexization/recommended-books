@@ -13,7 +13,7 @@ export class BookService implements BookServiceInterface {
         this.baseUrl = process.env.OPEN_API_BASE_URL as string;
     }
 
-    async getBooks(pageNo: number): Promise<BookData[]> {
+    async getBooks(pageNo: string): Promise<BookData[]> {
         try {
             const url = this.buildBookSearchUrl(pageNo);
 
@@ -23,7 +23,7 @@ export class BookService implements BookServiceInterface {
         }
     }
 
-    buildBookSearchUrl(pageNo: number): string {
+    buildBookSearchUrl(pageNo: string): string {
         const params = new URLSearchParams({
             numOfRows: '10', pageNo: pageNo.toString(),
         });

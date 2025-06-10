@@ -12,38 +12,38 @@ export class UserController {
     }
 
     async createUser(req: UserRequest, res: ServerResponse): Promise<void> {
-        this.validateEmail(req.body.email);
-        this.validateName(req.body.name);
+        this.validateEmail(req.body?.email);
+        this.validateName(req.body?.name);
 
-        const newUser = await this.userService.createUser({...req.body});
+        const newUser = await this.userService.createUser({...req.body!});
 
         ResponseHandler.success(res, '사용자가 정상적으로 등록되었습니다.', newUser);
     }
 
     async findUserById(req: UserRequest, res: ServerResponse): Promise<void> {
-        const user = await this.userService.findUserById(req.params.id);
+        const user = await this.userService.findUserById(req.params?.id!);
 
         ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
     async findUserByEmail(req: UserRequest, res: ServerResponse): Promise<void> {
-        this.validateEmail(req.query.email);
+        this.validateEmail(req.query?.email);
 
-        const user = await this.userService.findUserByEmail(req.query.email);
+        const user = await this.userService.findUserByEmail(req.query?.email!);
 
         ResponseHandler.success(res, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
     async updateUser(req: UserRequest, res: ServerResponse): Promise<void> {
-        const updateUserData: UpdateUserData = {...req.body};
+        const updateUserData: UpdateUserData = {...req.body!};
 
-        await this.userService.updateUser(req.params.id, updateUserData);
+        await this.userService.updateUser(req.params?.id!, updateUserData);
 
         ResponseHandler.success(res, '사용자 정보를 성공적으로 수정했습니다.', null);
     }
 
     async deleteUser(req: UserRequest, res: ServerResponse): Promise<void> {
-        await this.userService.deleteUser(req.params.id);
+        await this.userService.deleteUser(req.params?.id!);
 
         ResponseHandler.success(res, '사용자를 성공적으로 삭제했습니다.', null);
     }

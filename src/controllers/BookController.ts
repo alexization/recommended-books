@@ -11,9 +11,10 @@ export class BookController {
     }
 
     async getBooks(req: BookRequest, res: ServerResponse): Promise<void> {
-        const pageNo = req.query.pageNo;
+        const pageNo = req.query?.pageNo!;
+        const numberPageNo = Number(pageNo);
 
-        if (isNaN(pageNo) || pageNo < 1) {
+        if (isNaN(numberPageNo) || numberPageNo < 1) {
             throw new ValidationError('페이지 번호는 1 이상이어야 합니다.');
         }
 

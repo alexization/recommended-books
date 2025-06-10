@@ -1,4 +1,4 @@
-import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
+import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto";
 import {User} from "../domain/User";
 
 export interface UserServiceInterface {
@@ -6,11 +6,11 @@ export interface UserServiceInterface {
 
     createUser(userData: CreateUserData): Promise<User>;
 
-    findUserById(id: number): Promise<User>;
+    findUserById(id: string): Promise<User>;
 
     findUserByEmail(email: string): Promise<User>;
 
-    updateUser(id: number, updateUserData: UpdateUserData): Promise<void>;
+    updateUser(id: string, updateUserData: UpdateUserData): Promise<void>;
 
-    deleteUser(id: number): Promise<void>;
+    deleteUser(id: string): Promise<void>;
 }

@@ -52,7 +52,7 @@ class UserRepository implements UserRepositoryInterface {
         return newUser;
     }
 
-    async findUserById(id: number): Promise<User> {
+    async findUserById(id: string): Promise<User> {
         const users = await this.load();
         const findUser = users.find(user => user.id === Number(id));
 
@@ -74,7 +74,7 @@ class UserRepository implements UserRepositoryInterface {
         return findUser;
     }
 
-    async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
+    async updateUser(userId: string, updateUserData: UpdateUserData): Promise<void> {
         const users = await this.load();
 
         const updateUser = users.find(user => user.id === Number(userId));
@@ -88,7 +88,7 @@ class UserRepository implements UserRepositoryInterface {
         await this.save(users);
     }
 
-    async deleteUser(id: number): Promise<void> {
+    async deleteUser(id: string): Promise<void> {
         const users = await this.load();
         const newUsers = users.filter(user => user.id !== Number(id));
 
