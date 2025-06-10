@@ -119,20 +119,17 @@ describe('UserRepository Tests', () => {
             const result = await userRepository.findUserById(1);
 
             /* Assert */
-            expect(result).toHaveLength(1);
-            expect(result[0].id).toBe(1);
-            expect(result[0].email).toBe('user1@example.com');
+            expect(result.id).toBe(1);
+            expect(result.email).toBe('user1@example.com');
         });
 
-        it('존재하지 않는 사용자 ID로 조회 시 빈 배열을 반환해야 한다.', async () => {
+        it('존재하지 않는 사용자 ID로 조회 시 NotFoundError가 발생해야 한다.', async () => {
             /* Arrange */
             mockedFs.readFile.mockResolvedValue(JSON.stringify(users));
 
-            /* Act */
-            const result = await userRepository.findUserById(999);
-
-            /* Assert */
-            expect(result).toHaveLength(0);
+            /* Act & Assert */
+            await expect(userRepository.findUserById(999))
+                .rejects.toThrow(NotFoundError);
         });
     });
 
@@ -161,20 +158,18 @@ describe('UserRepository Tests', () => {
             const result = await userRepository.findUserByEmail('user3@example.com');
 
             /* Assert */
-            expect(result).toHaveLength(1);
-            expect(result[0].id).toBe(3);
-            expect(result[0].email).toBe('user3@example.com');
+            expect(result.id).toBe(3);
+            expect(result.email).toBe('user3@example.com');
         });
 
-        it('존재하지 않는 사용자 Email로 조회 시 빈 배열을 반환해야 한다.', async () => {
+        it('존재하지 않는 사용자 Email로 조회 시 NotFoundError가 발생해야 한다.', async () => {
             /* Arrange */
             mockedFs.readFile.mockResolvedValue(JSON.stringify(users));
 
-            /* Act */
-            const result = await userRepository.findUserByEmail('user999@example.com');
+            /* Act & Assert */
+            await expect(userRepository.findUserByEmail("noUser@email.com"))
+                .rejects.toThrow(NotFoundError);
 
-            /* Assert */
-            expect(result).toHaveLength(0);
         });
     });
 

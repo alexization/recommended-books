@@ -48,7 +48,7 @@ export class UserRepository implements UserRepositoryInterface {
         return newUser;
     }
 
-    async findUserById(id: string): Promise<User> {
+    async findUserById(id: number): Promise<User> {
         const users = await this.load();
         const findUser = users.find(user => user.id === Number(id));
 
@@ -70,7 +70,7 @@ export class UserRepository implements UserRepositoryInterface {
         return findUser;
     }
 
-    async updateUser(userId: string, updateUserData: UpdateUserData): Promise<void> {
+    async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
         const users = await this.load();
 
         const updateUser = users.find(user => user.id === Number(userId));
@@ -84,7 +84,7 @@ export class UserRepository implements UserRepositoryInterface {
         await this.save(users);
     }
 
-    async deleteUser(id: string): Promise<void> {
+    async deleteUser(id: number): Promise<void> {
         const users = await this.load();
         const newUsers = users.filter(user => user.id !== Number(id));
 
