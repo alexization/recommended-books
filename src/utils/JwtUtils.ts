@@ -33,7 +33,7 @@ export class JwtUtils {
             return jwt.verify(token, this.ACCESS_TOKEN_SECRET) as JwtPayload;
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
-                throw new AppError('토큰이 만료되었습니다.', 401);
+                throw new AppError('ACCESS_TOKEN_EXPIRED', 401);
             } else if (error instanceof jwt.JsonWebTokenError) {
                 throw new AppError('유효하지 않는 토큰입니다.', 401);
             }

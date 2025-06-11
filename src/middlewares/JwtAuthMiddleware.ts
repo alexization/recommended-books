@@ -2,6 +2,7 @@ import {Context, Next} from "koa";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {JwtUtils} from "../utils/JwtUtils";
 import {authService} from "../services/AuthService";
+import {CookieUtils} from "../utils/CookieUtils";
 
 const PUBLIC_PATTERNS: string[] = ['POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id',];
 
@@ -25,11 +26,36 @@ export const jwtAuthMiddleware = async (ctx: Context, next: Next): Promise<void>
         const token = JwtUtils.extractToken(authHeader);
 
         const user = await authService.validateAccessToken(token);
-
         ctx.state.user = user;
 
         await next();
-    } catch (error) {
-        return ResponseHandler.error(ctx, "인증에 실패했습니다.", 401);
+
+    } catch (error: any) {
+        if (error.message === 'ACCESS_TOKEN_EXPIRED') {
+            const refreshToken = CookieUtils.getRefreshToken(ctx);
+
+            if (!refreshToken) {
+                return ResponseHandler.error(ctx, '다시 로그인해주세요.', 401);
+            }
+
+            try {
+                const {user, tokenPair} = await authService.refreshToken(refreshToken);
+                ctx.state.user = user;
+
+                CookieUtils.setRefreshTokenCookie(ctx, tokenPair.refreshToken);
+
+                ctx.set('X-New-Access-Token', tokenPair.accessToken);
+                ctx.set('X-Token-Refreshed', 'true');
+
+                await next();
+
+            } catch (error) {
+                CookieUtils.clearRefreshToken(ctx);
+
+                return ResponseHandler.error(ctx, '다시 로그인해주세요.', 401);
+            }
+        } else {
+            return ResponseHandler.error(ctx, '유효하지 않는 토큰입니다.', 401);
+        }
     }
 };
