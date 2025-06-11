@@ -13,7 +13,7 @@ export function createApp(): Koa {
     const app = new Koa();
 
     app.use(errorHandlerMiddleware);
-    // app.use(jwtAuthMiddleware);
+    app.use(jwtAuthMiddleware);
 
     /* Body parser 미들웨어 (JSON 요청 자동 파싱) */
     app.use(bodyParser({
