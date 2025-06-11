@@ -4,6 +4,7 @@ import {ValidationError} from "../utils/AppError";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface";
 import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto";
+import {ErrorMessage} from "../utils/ErrorMessage";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -59,21 +60,21 @@ export class UserController {
 
     validateEmail(email?: string): void {
         if (!email || email.trim() === '') {
-            throw new ValidationError("이메일은 필수 입력 사항입니다.");
+            throw new ValidationError(ErrorMessage.EMAIL_REQUIRED);
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            throw new ValidationError("올바른 이메일 형식이 아닙니다.");
+            throw new ValidationError(ErrorMessage.EMAIL_INVALID_FORMAT);
         }
     }
 
     validateName(name?: string): void {
         if (!name || name.trim() === '') {
-            throw new ValidationError("이름은 필수 입력 사항입니다.");
+            throw new ValidationError(ErrorMessage.NAME_REQUIRED);
         }
         if (name.length > 10) {
-            throw new ValidationError("이름은 10글자 이내여야 합니다.");
+            throw new ValidationError(ErrorMessage.NAME_TOO_LONG);
         }
     }
 }
