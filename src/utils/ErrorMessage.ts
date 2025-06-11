@@ -18,6 +18,18 @@ export const ErrorMessage = {
 
     /* 인증 및 인가 관련 에러 4xxx */
     PASSWORD_INVALID: {message: "비밀번호가 올바르지 않습니다.", code: 4001},
+    ACCESS_TOKEN_EXPIRED: {message: "access 토큰이 만료되었습니다.", code: 4002},
+    REFRESH_TOKEN_EXPIRED: {message: "refresh 토큰이 만료되었습니다.", code: 4003},
+    INVALID_TOKEN: {message: "유효하지 않는 토큰입니다.", code: 4004},
+    TOKEN_VERIFICATION_FAILED: {message: "토큰 검증에 실패했습니다.", code: 4005},
+    AUTHORIZATION_HEADER_MISSING: {message: "Authorization 헤더가 없습니다.", code: 4006},
+    INVALID_BEARER_TOKEN: {message: "Bearer 토큰이 아닙니다.", code: 4007},
+    TOKEN_MISSING: {message: "토큰이 제공되지 않았습니다.", code: 4008},
+    UNAUTHORIZED_ACCESS: {message: "인증되지 않은 접근입니다.", code: 4009},
+    FORBIDDEN_ACCESS: {message: "접근 권한이 없습니다.", code: 4010},
+
+    /* Open API 관련 에러 5xxx */
+    API_CALL_ERROR: {message: "Open API 호출 중 오류가 발생했습니다.", code: 5001},
 
 } as const;
 

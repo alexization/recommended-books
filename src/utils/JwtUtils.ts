@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import {AppError} from "./AppError";
+import {ErrorMessage} from "./ErrorMessage";
 
 export interface JwtPayload {
     userId: number;
@@ -33,11 +34,11 @@ export class JwtUtils {
             return jwt.verify(token, this.ACCESS_TOKEN_SECRET) as JwtPayload;
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
-                throw new AppError('ACCESS_TOKEN_EXPIRED', 401);
+                throw new AppError(ErrorMessage.ACCESS_TOKEN_EXPIRED);
             } else if (error instanceof jwt.JsonWebTokenError) {
-                throw new AppError('유효하지 않는 토큰입니다.', 401);
+                throw new AppError(ErrorMessage.INVALID_TOKEN);
             }
-            throw new AppError('토큰 검증에 실패했습니다.', 401);
+            throw new AppError(ErrorMessage.TOKEN_VERIFICATION_FAILED);
         }
     }
 
@@ -46,23 +47,23 @@ export class JwtUtils {
             return jwt.verify(token, this.REFRESH_TOKEN_SECRET) as JwtPayload;
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
-                throw new AppError('토큰이 만료되었습니다.', 401);
+                throw new AppError(ErrorMessage.REFRESH_TOKEN_EXPIRED);
             } else if (error instanceof jwt.JsonWebTokenError) {
-                throw new AppError('유효하지 않는 토큰입니다.', 401);
+                throw new AppError(ErrorMessage.INVALID_TOKEN);
             }
-            throw new AppError('토큰 검증에 실패했습니다.', 401);
+            throw new AppError(ErrorMessage.TOKEN_VERIFICATION_FAILED);
         }
     }
 
     static extractToken(authToken?: string): string {
         if (!authToken) {
-            throw new AppError('Authorization 헤더가 없습니다.', 401);
+            throw new AppError(ErrorMessage.AUTHORIZATION_HEADER_MISSING);
         }
 
         const parts = authToken.split(' ');
 
         if (parts.length !== 2 || parts[0] !== 'Bearer') {
-            throw new AppError('Bearer 토큰이 아닙니다.', 401);
+            throw new AppError(ErrorMessage.INVALID_BEARER_TOKEN);
         }
 
         return parts[1];
