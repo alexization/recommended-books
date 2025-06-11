@@ -15,8 +15,20 @@ export class AuthController {
 
         const tokens = await this.authService.login(loginUserData);
 
-        ResponseHandler.success(ctx, "성공적으로 로그인했습니다.", tokens);
+        this.setRefreshTokenCookie(ctx, tokens.refreshToken);
+
+        ResponseHandler.success(ctx, "성공적으로 로그인했습니다.", tokens.accessToken);
     };
+
+    private setRefreshTokenCookie(ctx: Context, refreshToken: string): void {
+        ctx.cookies.set('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: '/',
+        });
+    }
 }
 
 export const authController = new AuthController(authService);
