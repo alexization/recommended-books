@@ -40,7 +40,7 @@ export class UserRepository implements UserRepositoryInterface {
             id = Math.max(...users.map(user => user.id)) + 1;
         }
 
-        const newUser = User.create(id, createUserData);
+        const newUser = await User.create(id, createUserData);
 
         users.push(newUser);
         await this.save(users);

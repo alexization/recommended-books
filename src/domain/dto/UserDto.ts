@@ -1,6 +1,7 @@
 export interface UserData {
     id: number;
     email: string;
+    password: string;
     name: string;
     birth: number;
     createdAt: string;
@@ -9,6 +10,7 @@ export interface UserData {
 
 export interface CreateUserData {
     email: string;
+    password: string;
     name: string;
     birth: number;
 }
@@ -16,4 +18,9 @@ export interface CreateUserData {
 export interface UpdateUserData {
     name: string;
     birth: number;
+}
+
+export interface LoginUserData {
+    email: string;
+    password: string;
 }

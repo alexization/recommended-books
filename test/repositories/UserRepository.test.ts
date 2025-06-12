@@ -21,7 +21,7 @@ describe('UserRepository Tests', () => {
         it('빈 파일에 첫 번째 사용자를 생성해야 한다.', async () => {
             /* Arrange */
             const createUserData: CreateUserData = {
-                email: "test@email.com", name: "testUser", birth: 2000,
+                email: "test@email.com", password: 'test', name: "testUser", birth: 2000,
             };
 
             mockedFs.readFile.mockResolvedValue('[]');
@@ -58,7 +58,7 @@ describe('UserRepository Tests', () => {
             }]
 
             const createUserData: CreateUserData = {
-                email: 'new@email.com', name: 'newUser', birth: 2000
+                email: 'new@email.com', password: 'test', name: 'newUser', birth: 2000
             };
 
             mockedFs.readFile.mockResolvedValue(JSON.stringify(existedUsers));
@@ -83,7 +83,7 @@ describe('UserRepository Tests', () => {
             }];
 
             const createUserData: CreateUserData = {
-                email: 'exist@email.com', name: 'newUser', birth: 2000,
+                email: 'exist@email.com', password: 'test', name: 'newUser', birth: 2000,
             };
 
             mockedFs.readFile.mockResolvedValue(JSON.stringify(existedUser));
