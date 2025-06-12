@@ -3,6 +3,7 @@ import {ResponseHandler} from "../utils/ResponseHandler";
 import {JwtUtils} from "../utils/JwtUtils";
 import {authService} from "../services/AuthService";
 import {CookieUtils} from "../utils/CookieUtils";
+import {ErrorMessage} from "../utils/ErrorMessage";
 
 const PUBLIC_PATTERNS: string[] = ['POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id',];
 
@@ -31,7 +32,7 @@ export const jwtAuthMiddleware = async (ctx: Context, next: Next): Promise<void>
         await next();
 
     } catch (error: any) {
-        if (error.message === 'ACCESS_TOKEN_EXPIRED') {
+        if (error === ErrorMessage.ACCESS_TOKEN_EXPIRED) {
             const refreshToken = CookieUtils.getRefreshToken(ctx);
 
             if (!refreshToken) {

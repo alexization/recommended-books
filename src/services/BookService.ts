@@ -3,6 +3,7 @@ import axios from "axios";
 import {AppError} from "../utils/AppError";
 import {BookServiceInterface} from "../interfaces/BookServiceInterface";
 import {BookData} from "../domain/dto/BookDto";
+import {ErrorMessage} from "../utils/ErrorMessage";
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ export class BookService implements BookServiceInterface {
 
             return response.data as BookData[];
         } catch (error) {
-            throw new AppError('API 호출 중 오류가 발생했습니다.', 500);
+            throw new AppError(ErrorMessage.API_CALL_ERROR);
         }
     }
 

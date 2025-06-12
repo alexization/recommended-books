@@ -4,6 +4,7 @@ import {NotFoundError, ValidationError} from "../utils/AppError";
 import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
+import {ErrorMessage} from "../utils/ErrorMessage";
 
 export class UserRepository implements UserRepositoryInterface {
     private readonly dataFilePath: string;
@@ -32,7 +33,7 @@ export class UserRepository implements UserRepositoryInterface {
         const users = await this.load();
 
         if (this.isEmailExists(users, createUserData.email)) {
-            throw new ValidationError("이미 가입한 이메일입니다.");
+            throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
         }
 
         let id = 1;
@@ -53,7 +54,7 @@ export class UserRepository implements UserRepositoryInterface {
         const findUser = users.find(user => user.id === Number(id));
 
         if (findUser === undefined) {
-            throw new NotFoundError("요청하신 사용자의 정보가 없습니다.");
+            throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
         }
 
         return findUser;
@@ -64,7 +65,7 @@ export class UserRepository implements UserRepositoryInterface {
         const findUser = users.find(user => user.email === email);
 
         if (findUser === undefined) {
-            throw new NotFoundError("요청하신 사용자의 정보가 없습니다.");
+            throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
         }
 
         return findUser;
@@ -76,7 +77,7 @@ export class UserRepository implements UserRepositoryInterface {
         const updateUser = users.find(user => user.id === Number(userId));
 
         if (updateUser === undefined) {
-            throw new NotFoundError("해당 유저가 없습니다.");
+            throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
         }
 
         updateUser.update(updateUserData);

@@ -3,6 +3,7 @@ import {bookService} from "../services/BookService";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {ValidationError} from "../utils/AppError";
 import {BookServiceInterface} from "../interfaces/BookServiceInterface";
+import {ErrorMessage} from "../utils/ErrorMessage";
 
 export class BookController {
     constructor(private readonly bookService: BookServiceInterface) {
@@ -13,7 +14,7 @@ export class BookController {
         const pageNo = parseInt(ctx.query.pageNo as string);
 
         if (isNaN(pageNo) || pageNo < 1) {
-            throw new ValidationError('페이지 번호는 1 이상이어야 합니다.');
+            throw new ValidationError(ErrorMessage.BOOK_PAGE_NUMBER_INVALID);
         }
 
         const bookData = await this.bookService.getBooks(pageNo);
