@@ -82,10 +82,16 @@ export class UserRepository implements UserRepositoryInterface {
     }
 
     async deleteUser(id: number): Promise<void> {
-        const users = await this.load();
-        const newUsers = users.filter(user => user.id !== Number(id));
+        try {
+            const query = `DELETE
+                           FROM users
+                           WHERE id = ?`;
 
-        await this.save(newUsers);
+            await this.db.executeQuery(query, [id]);
+
+        } catch (error) {
+            console.error("사용자 정보 삭제 중 오류", error);
+        }
     }
 
     async isEmailExists(email: string): Promise<boolean> {
