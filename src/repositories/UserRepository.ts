@@ -67,17 +67,18 @@ export class UserRepository implements UserRepositoryInterface {
     }
 
     async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
-        const users = await this.load();
+        try {
+            const query = `UPDATE users
+                           SET name       = ?,
+                               birth      = ?,
+                               updated_at = ?
+                           WHERE id = ?`;
 
-        const updateUser = users.find(user => user.id === Number(userId));
+            await this.db.executeQuery(query, [updateUserData.name, updateUserData.birth, new Date(), userId]);
 
-        if (updateUser === undefined) {
-            throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
+        } catch (error) {
+            console.error("사용자 정보 수정 중 오류", error);
         }
-
-        updateUser.update(updateUserData);
-
-        await this.save(users);
     }
 
     async deleteUser(id: number): Promise<void> {
