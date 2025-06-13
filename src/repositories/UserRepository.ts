@@ -41,7 +41,9 @@ export class UserRepository implements UserRepositoryInterface {
                            FROM users
                            WHERE id = ?`;
 
-            return await this.db.executeQuery<User>(query, [id]);
+            const userData = await this.db.executeQuery<UserData[]>(query, [id]);
+
+            return User.fromJson(userData[0]);
 
         } catch (error) {
             console.error("사용자 조회 중 오류", error);
