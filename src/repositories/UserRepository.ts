@@ -1,52 +1,37 @@
 import fs from 'fs/promises';
-import path from 'path';
 import {NotFoundError, ValidationError} from "../utils/AppError";
 import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
 import {ErrorMessage} from "../utils/ErrorMessage";
+import {DatabaseConnection} from "../config/DatabaseConfig";
 
 export class UserRepository implements UserRepositoryInterface {
-    private readonly dataFilePath: string;
+    private db: DatabaseConnection;
 
     constructor() {
-        this.dataFilePath = path.join(process.cwd(), 'data', 'users.json');
-        this.initialize();
+        this.db = DatabaseConnection.getInstance();
     }
 
-    async initialize(): Promise<void> {
-        try {
-            const dataDir = path.dirname(this.dataFilePath);
-            await fs.mkdir(dataDir, {recursive: true});
+    async createUser(createUserData: CreateUserData): Promise<boolean> {
 
-            try {
-                await fs.access(this.dataFilePath);
-            } catch {
-                await this.save([]);
-            }
-        } catch (error) {
-            console.error("데이터 파일 초기화 실패: ", error);
-        }
-    }
-
-    async createUser(createUserData: CreateUserData): Promise<User> {
-        const users = await this.load();
-
-        if (this.isEmailExists(users, createUserData.email)) {
+        if (await this.isEmailExists(createUserData.email)) {
             throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
         }
 
-        let id = 1;
-        if (users.length !== 0) {
-            id = Math.max(...users.map(user => user.id)) + 1;
+        const newUser = await User.create(0, createUserData);
+
+        try {
+            const query = `INSERT users (email, password, name, birth, updated_at, created_at) VALUES(?,?,?,?,?,?)`;
+
+            await this.db.executeQuery(query, [newUser.email, newUser.password, newUser.name, newUser.birth, newUser.updatedAt, newUser.createdAt]);
+
+            return true;
+
+        } catch (error) {
+            console.error("사용자 생성 중 오류", error);
+            return false;
         }
-
-        const newUser = await User.create(id, createUserData);
-
-        users.push(newUser);
-        await this.save(users);
-
-        return newUser;
     }
 
     async findUserById(id: number): Promise<User> {
@@ -92,10 +77,21 @@ export class UserRepository implements UserRepositoryInterface {
         await this.save(newUsers);
     }
 
-    isEmailExists(users: User[], email: string): boolean {
-        const result = users.filter(user => user.email === email);
+    async isEmailExists(email: string): Promise<boolean> {
+        try {
+            const query = `SELECT COUNT(*) as count
+                           FROM users
+                           WHERE email = ?`;
 
-        return result.length !== 0;
+            const rows = await this.db.executeQuery<{ count: bigint }>(query, [email]);
+
+            return rows[0].count !== 0n;
+
+
+        } catch (error) {
+            console.error("이메일 중복 확인 중 오류", error);
+            return false;
+        }
     }
 
     private async load(): Promise<User[]> {

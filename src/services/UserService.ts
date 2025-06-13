@@ -9,11 +9,7 @@ export class UserService implements UserServiceInterface {
         this.userRepository = userRepository;
     }
 
-    async initialize(): Promise<void> {
-        await this.userRepository.initialize();
-    }
-
-    async createUser(createUserData: CreateUserData): Promise<User> {
+    async createUser(createUserData: CreateUserData): Promise<boolean> {
         return await this.userRepository.createUser(createUserData);
     }
 

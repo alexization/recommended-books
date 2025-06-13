@@ -55,8 +55,6 @@ export async function startServer(port: number = 3000): Promise<Koa> {
 
         DatabaseConnection.getInstance();
 
-        await userService.initialize();
-
         const app = createApp();
 
         app.listen(port, () => {

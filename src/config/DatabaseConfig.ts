@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import mariadb from "mariadb";
+import mariadb, {PoolConnection} from "mariadb";
 
 dotenv.config();
 
@@ -38,5 +38,24 @@ export class DatabaseConnection {
             DatabaseConnection.instance = new DatabaseConnection();
         }
         return DatabaseConnection.instance;
+    }
+
+    public async executeQuery<T>(query: string, params?: any[]): Promise<T[]> {
+        let connection: PoolConnection | undefined;
+
+        try {
+            connection = await this.pool.getConnection();
+            const result = await connection.query(query, params);
+
+            return result as T[];
+
+        } catch (error) {
+            console.error("쿼리 실행 오류: ", error);
+            throw error;
+        } finally {
+            if (connection) {
+                await connection.release();
+            }
+        }
     }
 }

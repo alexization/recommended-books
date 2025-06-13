@@ -7,17 +7,17 @@ export class User {
     public password: string;
     public name: string;
     public birth: number;
-    public updatedAt: string;
-    public readonly createdAt: string;
+    public updatedAt: Date;
+    public readonly createdAt: Date;
 
-    constructor(id: number, email: string, password: string, name: string, birth: number, updatedAt?: string, createdAt?: string) {
+    constructor(id: number, email: string, password: string, name: string, birth: number, updatedAt?: Date, createdAt?: Date) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.birth = birth;
-        this.updatedAt = updatedAt ?? new Date().toISOString();
-        this.createdAt = createdAt ?? new Date().toISOString();
+        this.updatedAt = updatedAt ?? new Date();
+        this.createdAt = createdAt ?? new Date();
     }
 
     static fromJson(userData: UserData): User {
@@ -37,6 +37,6 @@ export class User {
     update(updateUserData: UpdateUserData): void {
         this.name = updateUserData.name;
         this.birth = updateUserData.birth;
-        this.updatedAt = new Date().toISOString();
+        this.updatedAt = new Date();
     }
 }
