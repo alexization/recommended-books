@@ -50,14 +50,19 @@ export class UserRepository implements UserRepositoryInterface {
     }
 
     async findUserByEmail(email: string): Promise<User> {
-        const users = await this.load();
-        const findUser = users.find(user => user.email === email);
+        try {
+            const query = `SELECT *
+                           FROM users
+                           WHERE email = ?`;
 
-        if (findUser === undefined) {
+            const userData = await this.db.executeQuery<UserData[]>(query, [email]);
+
+            return User.fromJson(userData[0]);
+
+        } catch (error) {
+            console.error("사용자 조회 중 오류", error);
             throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
         }
-
-        return findUser;
     }
 
     async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
