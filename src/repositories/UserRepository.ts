@@ -1,4 +1,3 @@
-import fs from 'fs/promises';
 import {AppError, NotFoundError, ValidationError} from "../utils/AppError";
 import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
@@ -101,26 +100,6 @@ export class UserRepository implements UserRepositoryInterface {
         } catch (error) {
             console.error("이메일 중복 확인 중 오류", error);
             return false;
-        }
-    }
-
-    private async load(): Promise<User[]> {
-        try {
-            const data = await fs.readFile(this.dataFilePath, 'utf8');
-            const jsonData = JSON.parse(data);
-
-            return jsonData.map((userData: UserData) => User.fromJson(userData));
-        } catch (error) {
-            console.error("데이터 로드 실패", error);
-            return [];
-        }
-    }
-
-    private async save(data: User[]): Promise<void> {
-        try {
-            await fs.writeFile(this.dataFilePath, JSON.stringify(data, null, 2));
-        } catch (error) {
-            console.error("데이터 저장 실패", error);
         }
     }
 }
