@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import {NotFoundError, ValidationError} from "../utils/AppError";
+import {AppError, NotFoundError, ValidationError} from "../utils/AppError";
 import {User} from "../domain/User";
 import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
 import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
@@ -30,19 +30,23 @@ export class UserRepository implements UserRepositoryInterface {
 
         } catch (error) {
             console.error("사용자 생성 중 오류", error);
-            return false;
+            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
         }
     }
 
     async findUserById(id: number): Promise<User> {
-        const users = await this.load();
-        const findUser = users.find(user => user.id === Number(id));
 
-        if (findUser === undefined) {
+        try {
+            const query = `SELECT *
+                           FROM users
+                           WHERE id = ?`;
+
+            return await this.db.executeQuery<User>(query, [id]);
+
+        } catch (error) {
+            console.error("사용자 조회 중 오류", error);
             throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
         }
-
-        return findUser;
     }
 
     async findUserByEmail(email: string): Promise<User> {
@@ -83,10 +87,9 @@ export class UserRepository implements UserRepositoryInterface {
                            FROM users
                            WHERE email = ?`;
 
-            const rows = await this.db.executeQuery<{ count: bigint }>(query, [email]);
+            const rowCounts = await this.db.executeQuery<bigint>(query, [email]);
 
-            return rows[0].count !== 0n;
-
+            return rowCounts !== 0n;
 
         } catch (error) {
             console.error("이메일 중복 확인 중 오류", error);

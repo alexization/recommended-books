@@ -40,14 +40,14 @@ export class DatabaseConnection {
         return DatabaseConnection.instance;
     }
 
-    public async executeQuery<T>(query: string, params?: any[]): Promise<T[]> {
+    public async executeQuery<T>(query: string, params?: any[]): Promise<T> {
         let connection: PoolConnection | undefined;
 
         try {
             connection = await this.pool.getConnection();
             const result = await connection.query(query, params);
 
-            return result as T[];
+            return result as T;
 
         } catch (error) {
             console.error("쿼리 실행 오류: ", error);
