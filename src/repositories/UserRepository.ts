@@ -100,9 +100,9 @@ export class UserRepository implements UserRepositoryInterface {
                            FROM users
                            WHERE email = ?`;
 
-            const rowCounts = await this.db.executeQuery<bigint>(query, [email]);
+            const rows = await this.db.executeQuery<{ count: bigint }[]>(query, [email]);
 
-            return rowCounts !== 0n;
+            return rows[0].count !== 0n;
 
         } catch (error) {
             console.error("이메일 중복 확인 중 오류", error);
