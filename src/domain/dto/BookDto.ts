@@ -1,5 +1,5 @@
 export interface BookData {
-    id: number,
+    bookId: number,
     title: string,
     author: string,
     publisher: string,
