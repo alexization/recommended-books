@@ -21,9 +21,9 @@ export class UserRepository implements UserRepositoryInterface {
         const newUser = await User.create(0, createUserData);
 
         try {
-            const query = `INSERT users (email, password, name, birth, updated_at, created_at) VALUES(?,?,?,?,?,?)`;
+            const query = `INSERT users (email, password, name, birth, grade, updated_at, created_at) VALUES(?,?,?,?,?,?,?)`;
 
-            await this.db.executeQuery(query, [newUser.getEmail, newUser.getPassword, newUser.getName, newUser.getBirth, newUser.getUpdatedAt, newUser.getCreatedAt]);
+            await this.db.executeQuery(query, [newUser.email, newUser.password, newUser.name, newUser.birth, newUser.grade, newUser.updatedAt, newUser.createdAt]);
 
             return true;
 

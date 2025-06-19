@@ -1,9 +1,12 @@
+import {Grade} from "../enums/Grade";
+
 export interface UserData {
-    id: number;
+    userId: number;
     email: string;
     password: string;
     name: string;
     birth: number;
+    grade: Grade;
     createdAt: Date;
     updatedAt: Date;
 }
