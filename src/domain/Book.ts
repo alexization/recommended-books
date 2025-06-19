@@ -8,13 +8,13 @@ export class Book {
     private readonly _publicationYear: number;
     private readonly _createdAt: Date;
 
-    constructor(id: number, title: string, author: string, publisher: string, publicationYear: number, createdAt: Date) {
+    constructor(id: number, title: string, author: string, publisher: string, publicationYear: number, createdAt?: Date) {
         this._id = id;
         this._title = title;
         this._author = author;
         this._publisher = publisher;
         this._publicationYear = publicationYear;
-        this._createdAt = createdAt;
+        this._createdAt = createdAt ?? new Date();
     }
 
     get id(): number {
