@@ -3,20 +3,20 @@ import {PostData} from "./dto/PostDto";
 export class Post {
     private readonly _id: number;
     private readonly _userId: number;
-    private readonly _bookId?: number;
+    private readonly _bookId: number | undefined;
     private readonly _title: string;
     private readonly _content: string;
-    private readonly _image?: string;
+    private readonly _image: string | undefined;
     private readonly _createdAt: Date;
 
-    constructor(id: number, userId: number, bookId: number | undefined, title: string, content: string, image: string | undefined, createdAt?: Date) {
+    constructor(id: number, userId: number, bookId: number | undefined, title: string, content: string, image: string | undefined, createdAt: Date) {
         this._id = id;
         this._userId = userId;
         this._bookId = bookId;
         this._title = title;
         this._content = content;
         this._image = image;
-        this._createdAt = createdAt ?? new Date();
+        this._createdAt = createdAt;
     }
 
     get id(): number {

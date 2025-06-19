@@ -12,15 +12,15 @@ export class User {
     private readonly _updatedAt: Date;
     private readonly _createdAt: Date;
 
-    constructor(id: number, email: string, password: string, name: string, birth: number, grade: Grade, updatedAt?: Date, createdAt?: Date) {
+    constructor(id: number, email: string, password: string, name: string, birth: number, grade: Grade, updatedAt: Date, createdAt: Date) {
         this._id = id;
         this._email = email;
         this._password = password;
         this._name = name;
         this._birth = birth;
         this._grade = grade;
-        this._updatedAt = updatedAt ?? new Date();
-        this._createdAt = createdAt ?? new Date();
+        this._updatedAt = updatedAt;
+        this._createdAt = createdAt;
     }
 
     get id(): number {
@@ -62,7 +62,7 @@ export class User {
     static async create(id: number, createUserData: CreateUserData): Promise<User> {
         const hashedPassword = await bcrypt.hash(createUserData.password, 10);
 
-        return new User(id, createUserData.email, hashedPassword, createUserData.name, createUserData.birth, Grade.BRONZE);
+        return new User(id, createUserData.email, hashedPassword, createUserData.name, createUserData.birth, Grade.BRONZE, new Date(), new Date());
     }
 
     async validatePassword(password: string): Promise<boolean> {
