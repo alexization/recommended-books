@@ -3,7 +3,7 @@
     "target": "ES2022",
     "module": "ESNext",
     "outDir": "./dist",
-    "moduleResolution": "Node16",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
