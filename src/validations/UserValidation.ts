@@ -16,12 +16,6 @@ export const CreateUserScheme = z.object({
         .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
 })
 
-export const ParamsIdScheme = z
-    .string({required_error: ErrorMessage.ID_INVALID_FORMAT.message})
-    .regex(/^\d+$/, ErrorMessage.ID_INVALID_FORMAT.message)
-    .transform(val => parseInt(val, 10))
-    .refine(val => val > 0, ErrorMessage.ID_NEGATIVE_NUMBER.message);
-
 export const FindUserByEmailScheme = z
     .string({required_error: ErrorMessage.EMAIL_REQUIRED.message})
     .email(ErrorMessage.EMAIL_INVALID_FORMAT.message)
@@ -35,3 +29,9 @@ export const UpdateUserScheme = z.object({
         .min(1900, ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
         .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
 })
+
+export const ParamsIdScheme = z
+    .string({required_error: ErrorMessage.ID_INVALID_FORMAT.message})
+    .regex(/^\d+$/, ErrorMessage.ID_INVALID_FORMAT.message)
+    .transform(val => parseInt(val, 10))
+    .refine(val => val > 0, ErrorMessage.ID_NEGATIVE_NUMBER.message);

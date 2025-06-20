@@ -44,7 +44,7 @@ export class UserController {
     }
 
     deleteUser = async (ctx: Context): Promise<void> => {
-        const id = parseInt(ctx.params.id);
+        const id = ParamsIdScheme.parse(ctx.params.id);
 
         await this.userService.deleteUser(id);
 
