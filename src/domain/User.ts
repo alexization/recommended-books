@@ -1,5 +1,5 @@
-import {CreateUserData, UserData} from "./dto/UserDto";
-import {Grade} from "./enums/Grade";
+import {CreateUserData, UserData} from "./dto/UserDto.js";
+import {Grade} from "./enums/Grade.js";
 import bcrypt from 'bcryptjs';
 
 export class User {

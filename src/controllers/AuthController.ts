@@ -1,9 +1,9 @@
-import {AuthServiceInterface} from "../interfaces/AuthServiceInterface";
-import {authService} from "../services/AuthService";
 import {Context} from "koa";
-import {LoginUserData} from "../domain/dto/UserDto";
-import {ResponseHandler} from "../utils/ResponseHandler";
-import {CookieUtils} from "../utils/CookieUtils";
+import {AuthServiceInterface} from "../interfaces/AuthServiceInterface.js";
+import {authService} from "../services/AuthService.js";
+import {LoginUserData} from "../domain/dto/UserDto.js";
+import {ResponseHandler} from "../utils/ResponseHandler.js";
+import {CookieUtils} from "../utils/CookieUtils.js";
 
 export class AuthController {
 

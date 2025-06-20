@@ -1,4 +1,4 @@
-import {FollowData} from "./dto/FollowDto";
+import {FollowData} from "./dto/FollowDto.js";
 
 export class Follow {
     private readonly _id: number;

@@ -1,4 +1,4 @@
-import {BookmarkData} from "./dto/BookmarkDto";
+import {BookmarkData} from "./dto/BookmarkDto.js";
 
 export class Bookmark {
     private readonly _userId: number;

@@ -1,10 +1,10 @@
 import {Context} from "koa";
-import {userService} from "../services/UserService";
-import {ValidationError} from "../utils/AppError";
-import {ResponseHandler} from "../utils/ResponseHandler";
-import {UserServiceInterface} from "../interfaces/UserServiceInterface";
-import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {userService} from "../services/UserService.js";
+import {ValidationError} from "../utils/AppError.js";
+import {ResponseHandler} from "../utils/ResponseHandler.js";
+import {UserServiceInterface} from "../interfaces/UserServiceInterface.js";
+import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto.js";
+import {ErrorMessage} from "../utils/ErrorMessage.js";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {

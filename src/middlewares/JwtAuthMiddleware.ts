@@ -1,9 +1,9 @@
 import {Context, Next} from "koa";
-import {ResponseHandler} from "../utils/ResponseHandler";
-import {JwtUtils} from "../utils/JwtUtils";
-import {authService} from "../services/AuthService";
-import {CookieUtils} from "../utils/CookieUtils";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {ResponseHandler} from "../utils/ResponseHandler.js";
+import {JwtUtils} from "../utils/JwtUtils.js";
+import {authService} from "../services/AuthService.js";
+import {CookieUtils} from "../utils/CookieUtils.js";
+import {ErrorMessage} from "../utils/ErrorMessage.js";
 
 const PUBLIC_PATTERNS: string[] = ['POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id',];
 

@@ -1,6 +1,6 @@
-import {LoginUserData} from "../domain/dto/UserDto";
-import {TokenPair} from "../utils/JwtUtils";
-import {User} from "../domain/User";
+import {LoginUserData} from "../domain/dto/UserDto.js";
+import {TokenPair} from "../utils/JwtUtils.js";
+import {User} from "../domain/User.js";
 
 export interface AuthServiceInterface {
     login(loginUserData: LoginUserData): Promise<TokenPair>;

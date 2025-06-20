@@ -1,9 +1,9 @@
 import {Context} from "koa";
-import {bookService} from "../services/BookService";
-import {ResponseHandler} from "../utils/ResponseHandler";
-import {ValidationError} from "../utils/AppError";
-import {BookServiceInterface} from "../interfaces/BookServiceInterface";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {bookService} from "../services/BookService.js";
+import {ResponseHandler} from "../utils/ResponseHandler.js";
+import {ValidationError} from "../utils/AppError.js";
+import {BookServiceInterface} from "../interfaces/BookServiceInterface.js";
+import {ErrorMessage} from "../utils/ErrorMessage.js";
 
 export class BookController {
     constructor(private readonly bookService: BookServiceInterface) {

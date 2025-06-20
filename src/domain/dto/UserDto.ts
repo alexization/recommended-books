@@ -1,4 +1,4 @@
-import {Grade} from "../enums/Grade";
+import {Grade} from "../enums/Grade.js";
 
 export interface UserData {
     userId: number;

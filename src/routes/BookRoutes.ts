@@ -1,5 +1,5 @@
 import Router from '@koa/router';
-import {bookController} from "../controllers/BookController";
+import {bookController} from "../controllers/BookController.js";
 
 const bookRouter = new Router({
     prefix: '/books'

@@ -1,4 +1,4 @@
-import {CommentData} from "./dto/CommentDto";
+import {CommentData} from "./dto/CommentDto.js";
 
 export class Comment {
     private readonly _id: number;

@@ -1,15 +1,14 @@
 import Koa from 'koa';
 import cors from '@koa/cors';
 import dotenv from "dotenv";
-import helmet from 'koa-helmet';
 import bodyParser from "koa-bodyparser";
-import {userService} from "./services/UserService";
-import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware";
-import userRouter from "./routes/UserRoutes";
-import bookRouter from "./routes/BookRoutes";
-import authRouter from "./routes/AuthRoutes";
-import {jwtAuthMiddleware} from "./middlewares/JwtAuthMiddleware";
-import {DatabaseConnection} from "./config/DatabaseConfig";
+import helmet from 'koa-helmet';
+import {errorHandlerMiddleware} from "./middlewares/ErrorHandlerMiddleware.js";
+import userRouter from "./routes/UserRoutes.js";
+import bookRouter from "./routes/BookRoutes.js";
+import authRouter from "./routes/AuthRoutes.js";
+import {jwtAuthMiddleware} from "./middlewares/JwtAuthMiddleware.js";
+import {DatabaseConnection} from "./config/DatabaseConfig.js";
 
 dotenv.config();
 

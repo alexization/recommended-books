@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import {AppError} from "./AppError";
-import {ErrorMessage} from "./ErrorMessage";
+import {AppError} from "./AppError.js";
+import {ErrorMessage} from "./ErrorMessage.js";
 
 export interface JwtPayload {
     userId: number;

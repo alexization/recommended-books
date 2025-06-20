@@ -24,7 +24,8 @@
     "koa-bodyparser": "^4.4.1",
     "koa-helmet": "^8.0.1",
     "koa-jwt": "^4.0.4",
-    "mariadb": "^3.4.2"
+    "mariadb": "^3.4.2",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
