@@ -16,6 +16,8 @@ export const ErrorMessage = {
     PASSWORD_INVALID_LENGTH: {message: "비밀번호는 6글자 이상 12글자 이내여야 합니다.", code: 2006},
     BIRTH_YEAR_REQUIRED: {message: "생년은 필수 입력 사항입니다.", code: 2007},
     BIRTH_YEAR_INVALID_RANGE: {message: "올바르지 않는 생년 범위입니다.", code: 2008},
+    ID_INVALID_FORMAT: {message: "올바른 ID 형식이 아닙니다.", code: 2009},
+    ID_NEGATIVE_NUMBER: {message: "ID는 양수여야 합니다.", code: 2010},
 
     /* 도서 관련 에러 3xxx */
     BOOK_PAGE_NUMBER_INVALID: {message: "페이지 번호는 1 이상이어야 합니다.", code: 3001},

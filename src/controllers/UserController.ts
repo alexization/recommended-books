@@ -1,11 +1,9 @@
 import {Context} from "koa";
 import {userService} from "../services/UserService.js";
-import {ValidationError} from "../utils/AppError.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface.js";
 import {UpdateUserData} from "../domain/dto/UserDto.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
-import {CreateUserScheme} from "../validations/UserValidation";
+import {CreateUserScheme, FindUserByEmailScheme, FindUserByIdScheme} from "../validations/UserValidation";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -21,7 +19,7 @@ export class UserController {
     }
 
     findUserById = async (ctx: Context): Promise<void> => {
-        const id = parseInt(ctx.params.id);
+        const id = FindUserByIdScheme.parse(ctx.params.id);
 
         const user = await this.userService.findUserById(id);
 
@@ -29,9 +27,7 @@ export class UserController {
     }
 
     findUserByEmail = async (ctx: Context): Promise<void> => {
-        const email = ctx.query.email as string;
-
-        this.validateEmail(email);
+        const email = FindUserByEmailScheme.parse(ctx.query.email);
 
         const user = await this.userService.findUserByEmail(email);
 
@@ -54,26 +50,6 @@ export class UserController {
         await this.userService.deleteUser(id);
 
         ResponseHandler.success(ctx, '사용자를 성공적으로 삭제했습니다.');
-    }
-
-    validateEmail(email?: string): void {
-        if (!email || email.trim() === '') {
-            throw new ValidationError(ErrorMessage.EMAIL_REQUIRED);
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            throw new ValidationError(ErrorMessage.EMAIL_INVALID_FORMAT);
-        }
-    }
-
-    validateName(name?: string): void {
-        if (!name || name.trim() === '') {
-            throw new ValidationError(ErrorMessage.NAME_REQUIRED);
-        }
-        if (name.length > 10) {
-            throw new ValidationError(ErrorMessage.NAME_INVALID_LENGTH);
-        }
     }
 }
 
