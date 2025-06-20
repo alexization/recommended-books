@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {ErrorMessage} from "../utils/ErrorMessage";
 
-export const CreateUserScheme = z.object({
+export const CreateUserSchema = z.object({
     email: z
         .string({required_error: ErrorMessage.EMAIL_REQUIRED.message})
         .email(ErrorMessage.EMAIL_INVALID_FORMAT.message), password: z
@@ -16,11 +16,11 @@ export const CreateUserScheme = z.object({
         .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
 })
 
-export const FindUserByEmailScheme = z
+export const FindUserByEmailSchema = z
     .string({required_error: ErrorMessage.EMAIL_REQUIRED.message})
     .email(ErrorMessage.EMAIL_INVALID_FORMAT.message)
 
-export const UpdateUserScheme = z.object({
+export const UpdateUserSchema = z.object({
     name: z
         .string({required_error: ErrorMessage.NAME_REQUIRED.message})
         .min(1, ErrorMessage.NAME_INVALID_LENGTH.message)
@@ -30,7 +30,7 @@ export const UpdateUserScheme = z.object({
         .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
 })
 
-export const ParamsIdScheme = z
+export const ParamsIdSchema = z
     .string({required_error: ErrorMessage.ID_INVALID_FORMAT.message})
     .regex(/^\d+$/, ErrorMessage.ID_INVALID_FORMAT.message)
     .transform(val => parseInt(val, 10))

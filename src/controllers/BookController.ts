@@ -2,7 +2,7 @@ import {Context} from "koa";
 import {bookService} from "../services/BookService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {BookServiceInterface} from "../interfaces/BookServiceInterface.js";
-import {PageNumberScheme} from "../validations/BookValidation";
+import {PageNumberSchema} from "../validations/BookValidation";
 
 export class BookController {
     constructor(private readonly bookService: BookServiceInterface) {
@@ -10,7 +10,7 @@ export class BookController {
     }
 
     getBooks = async (ctx: Context): Promise<void> => {
-        const pageNo = PageNumberScheme.parse(ctx.query.pageNo);
+        const pageNo = PageNumberSchema.parse(ctx.query.pageNo);
 
         const bookData = await this.bookService.getBooks(pageNo);
 

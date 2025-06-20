@@ -2,7 +2,7 @@ import {Context} from "koa";
 import {userService} from "../services/UserService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface.js";
-import {CreateUserScheme, FindUserByEmailScheme, ParamsIdScheme, UpdateUserScheme} from "../validations/UserValidation";
+import {CreateUserSchema, FindUserByEmailSchema, ParamsIdSchema, UpdateUserSchema} from "../validations/UserValidation";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -10,7 +10,7 @@ export class UserController {
     }
 
     createUser = async (ctx: Context): Promise<void> => {
-        const createUserData = CreateUserScheme.parse(ctx.request.body);
+        const createUserData = CreateUserSchema.parse(ctx.request.body);
 
         const newUser = await this.userService.createUser(createUserData);
 
@@ -18,7 +18,7 @@ export class UserController {
     }
 
     findUserById = async (ctx: Context): Promise<void> => {
-        const id = ParamsIdScheme.parse(ctx.params.id);
+        const id = ParamsIdSchema.parse(ctx.params.id);
 
         const user = await this.userService.findUserById(id);
 
@@ -26,7 +26,7 @@ export class UserController {
     }
 
     findUserByEmail = async (ctx: Context): Promise<void> => {
-        const email = FindUserByEmailScheme.parse(ctx.query.email);
+        const email = FindUserByEmailSchema.parse(ctx.query.email);
 
         const user = await this.userService.findUserByEmail(email);
 
@@ -34,9 +34,9 @@ export class UserController {
     }
 
     updateUser = async (ctx: Context): Promise<void> => {
-        const id = ParamsIdScheme.parse(ctx.params.id);
+        const id = ParamsIdSchema.parse(ctx.params.id);
 
-        const updateUserData = UpdateUserScheme.parse(ctx.request.body);
+        const updateUserData = UpdateUserSchema.parse(ctx.request.body);
 
         await this.userService.updateUser(id, updateUserData);
 
@@ -44,7 +44,7 @@ export class UserController {
     }
 
     deleteUser = async (ctx: Context): Promise<void> => {
-        const id = ParamsIdScheme.parse(ctx.params.id);
+        const id = ParamsIdSchema.parse(ctx.params.id);
 
         await this.userService.deleteUser(id);
 
