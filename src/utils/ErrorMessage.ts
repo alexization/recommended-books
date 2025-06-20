@@ -11,7 +11,11 @@ export const ErrorMessage = {
     EMAIL_REQUIRED: {message: "이메일은 필수 입력 사항입니다.", code: 2001},
     EMAIL_INVALID_FORMAT: {message: "올바른 이메일 형식이 아닙니다.", code: 2002},
     NAME_REQUIRED: {message: "이름은 필수 입력 사항입니다.", code: 2003},
-    NAME_TOO_LONG: {message: "이름은 10글자 이내여야 합니다.", code: 2004},
+    NAME_INVALID_LENGTH: {message: "이름은 1글자 이상 10글자 이내여야 합니다.", code: 2004},
+    PASSWORD_REQUIRED: {message: "비밀번호는 필수 입력 사항입니다.", code: 2005},
+    PASSWORD_INVALID_LENGTH: {message: "비밀번호는 6글자 이상 12글자 이내여야 합니다.", code: 2006},
+    BIRTH_YEAR_REQUIRED: {message: "생년은 필수 입력 사항입니다.", code: 2007},
+    BIRTH_YEAR_INVALID_RANGE: {message: "올바르지 않는 생년 범위입니다.", code: 2008},
 
     /* 도서 관련 에러 3xxx */
     BOOK_PAGE_NUMBER_INVALID: {message: "페이지 번호는 1 이상이어야 합니다.", code: 3001},

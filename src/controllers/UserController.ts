@@ -3,8 +3,9 @@ import {userService} from "../services/UserService.js";
 import {ValidationError} from "../utils/AppError.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface.js";
-import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto.js";
+import {UpdateUserData} from "../domain/dto/UserDto.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {CreateUserScheme} from "../validations/UserValidation";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -12,10 +13,7 @@ export class UserController {
     }
 
     createUser = async (ctx: Context): Promise<void> => {
-        const createUserData = ctx.request.body as CreateUserData;
-
-        this.validateEmail(createUserData.email);
-        this.validateName(createUserData.name);
+        const createUserData = CreateUserScheme.parse(ctx.request.body);
 
         const newUser = await this.userService.createUser(createUserData);
 
@@ -74,7 +72,7 @@ export class UserController {
             throw new ValidationError(ErrorMessage.NAME_REQUIRED);
         }
         if (name.length > 10) {
-            throw new ValidationError(ErrorMessage.NAME_TOO_LONG);
+            throw new ValidationError(ErrorMessage.NAME_INVALID_LENGTH);
         }
     }
 }
