@@ -2,8 +2,7 @@ import {Context} from "koa";
 import {userService} from "../services/UserService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {UserServiceInterface} from "../interfaces/UserServiceInterface.js";
-import {UpdateUserData} from "../domain/dto/UserDto.js";
-import {CreateUserScheme, FindUserByEmailScheme, FindUserByIdScheme} from "../validations/UserValidation";
+import {CreateUserScheme, FindUserByEmailScheme, ParamsIdScheme, UpdateUserScheme} from "../validations/UserValidation";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -19,7 +18,7 @@ export class UserController {
     }
 
     findUserById = async (ctx: Context): Promise<void> => {
-        const id = FindUserByIdScheme.parse(ctx.params.id);
+        const id = ParamsIdScheme.parse(ctx.params.id);
 
         const user = await this.userService.findUserById(id);
 
@@ -35,9 +34,9 @@ export class UserController {
     }
 
     updateUser = async (ctx: Context): Promise<void> => {
-        const id = parseInt(ctx.params.id);
+        const id = ParamsIdScheme.parse(ctx.params.id);
 
-        const updateUserData = ctx.request.body as UpdateUserData;
+        const updateUserData = UpdateUserScheme.parse(ctx.request.body);
 
         await this.userService.updateUser(id, updateUserData);
 
