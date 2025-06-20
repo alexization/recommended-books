@@ -2,12 +2,17 @@ import {Context, Next} from "koa";
 import {AppError, BadRequestError, NotFoundError, ValidationError} from "../utils/AppError.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {ZodError} from "zod";
 
 export const errorHandlerMiddleware = async (ctx: Context, next: Next): Promise<void> => {
     try {
         await next();
     } catch (error: unknown) {
         console.error(error);
+
+        if (error instanceof ZodError) {
+            return ResponseHandler.error(ctx, error.errors[0].message, 400);
+        }
 
         if (error instanceof ValidationError) {
             return ResponseHandler.error(ctx, error.message, 400);

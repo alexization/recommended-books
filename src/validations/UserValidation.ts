@@ -3,35 +3,35 @@ import {ErrorMessage} from "../utils/ErrorMessage";
 
 export const CreateUserSchema = z.object({
     email: z
-        .string({required_error: ErrorMessage.EMAIL_REQUIRED.message})
-        .email(ErrorMessage.EMAIL_INVALID_FORMAT.message), password: z
-        .string({required_error: ErrorMessage.PASSWORD_REQUIRED.message})
-        .min(6, ErrorMessage.PASSWORD_INVALID_LENGTH.message)
-        .max(12, ErrorMessage.PASSWORD_INVALID_LENGTH.message), name: z
-        .string({required_error: ErrorMessage.NAME_REQUIRED.message})
-        .min(1, ErrorMessage.NAME_INVALID_LENGTH.message)
-        .max(10, ErrorMessage.NAME_INVALID_LENGTH.message), birth: z
-        .number({required_error: ErrorMessage.BIRTH_YEAR_REQUIRED.message})
-        .min(1900, ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
-        .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
+        .string(ErrorMessage.EMAIL_REQUIRED)
+        .email(ErrorMessage.EMAIL_INVALID_FORMAT), password: z
+        .string(ErrorMessage.PASSWORD_REQUIRED)
+        .min(6, ErrorMessage.PASSWORD_INVALID_LENGTH)
+        .max(12, ErrorMessage.PASSWORD_INVALID_LENGTH), name: z
+        .string(ErrorMessage.NAME_REQUIRED)
+        .min(1, ErrorMessage.NAME_INVALID_LENGTH)
+        .max(10, ErrorMessage.NAME_INVALID_LENGTH), birth: z
+        .number(ErrorMessage.BIRTH_YEAR_REQUIRED)
+        .min(1900, ErrorMessage.BIRTH_YEAR_INVALID_RANGE)
+        .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE)
 })
 
 export const FindUserByEmailSchema = z
-    .string({required_error: ErrorMessage.EMAIL_REQUIRED.message})
-    .email(ErrorMessage.EMAIL_INVALID_FORMAT.message)
+    .string(ErrorMessage.EMAIL_REQUIRED)
+    .email(ErrorMessage.EMAIL_INVALID_FORMAT)
 
 export const UpdateUserSchema = z.object({
     name: z
-        .string({required_error: ErrorMessage.NAME_REQUIRED.message})
-        .min(1, ErrorMessage.NAME_INVALID_LENGTH.message)
-        .max(10, ErrorMessage.NAME_INVALID_LENGTH.message), birth: z
-        .number({required_error: ErrorMessage.BIRTH_YEAR_REQUIRED.message})
-        .min(1900, ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
-        .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE.message)
+        .string(ErrorMessage.NAME_REQUIRED)
+        .min(1, ErrorMessage.NAME_INVALID_LENGTH)
+        .max(10, ErrorMessage.NAME_INVALID_LENGTH), birth: z
+        .number(ErrorMessage.BIRTH_YEAR_REQUIRED)
+        .min(1900, ErrorMessage.BIRTH_YEAR_INVALID_RANGE)
+        .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE)
 })
 
 export const ParamsIdSchema = z
-    .string({required_error: ErrorMessage.ID_INVALID_FORMAT.message})
-    .regex(/^\d+$/, ErrorMessage.ID_INVALID_FORMAT.message)
+    .string(ErrorMessage.ID_INVALID_FORMAT)
+    .regex(/^\d+$/, ErrorMessage.ID_INVALID_FORMAT)
     .transform(val => parseInt(val, 10))
-    .refine(val => val > 0, ErrorMessage.ID_NEGATIVE_NUMBER.message);
+    .refine(val => val > 0, ErrorMessage.ID_NEGATIVE_NUMBER);
