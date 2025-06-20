@@ -7,9 +7,9 @@ const bookRouter = new Router({
 
 /**
  * @swagger
- * /books:
+ * /books/recent:
  *  get:
- *      summary: 경기도 용인시 신간 도서 조회
+ *      summary: 도서 조회 (최신순)
  *      tags: [Books]
  *      security:
  *          - BearerAuth: []
@@ -23,6 +23,6 @@ const bookRouter = new Router({
  *          200:
  *              description: 성공
  * */
-bookRouter.get('/', bookController.getBooks);
+bookRouter.get('/recent', bookController.getBooks);
 
 export default bookRouter;
