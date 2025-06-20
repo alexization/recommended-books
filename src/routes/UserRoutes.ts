@@ -5,19 +5,108 @@ const userRouter = new Router({
     prefix: '/users'
 });
 
-/* 회원 등록 */
+/**
+ * @swagger
+ * /users:
+ *  post:
+ *      summary: 신규 회원 등록
+ *      tags: [Users]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/CreateUserData'
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
 userRouter.post('/', userController.createUser);
 
-/* 회원 조회 (id) */
+/**
+ * @swagger
+ * /users/{id}:
+ *  get:
+ *      summary: 회원 조회 (ID)
+ *      tags: [Users]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
 userRouter.get('/:id', userController.findUserById);
 
-/* 회원 조회 (email) */
+/**
+ * @swagger
+ * /users:
+ *  get:
+ *      summary: 회원 조회 (email)
+ *      tags: [Users]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: query
+ *            name: email
+ *            required: true
+ *            schema:
+ *              type: string
+ *              format: email
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
 userRouter.get('/', userController.findUserByEmail);
 
-/* 회원 정보 수정 */
+/**
+ * @swagger
+ * /users/{id}:
+ *  put:
+ *      summary: 회원 정보 수정
+ *      tags: [Users]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *                type: integer
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/UpdateUserData'
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
 userRouter.put('/:id', userController.updateUser);
 
-/* 회원 정보 삭제 */
+/**
+ * @swagger
+ * /users/{id}:
+ *  delete:
+ *      summary: 회원 정보 삭제
+ *      tags: [Users]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            type: integer
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
 userRouter.delete('/:id', userController.deleteUser);
 
 export default userRouter;
