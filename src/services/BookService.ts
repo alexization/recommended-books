@@ -8,13 +8,14 @@ import {ErrorMessage} from "../utils/ErrorMessage.js";
 dotenv.config();
 
 export class BookService implements BookServiceInterface {
+    private readonly NUM_OF_ROWS = 10;
     private readonly baseUrl: string;
 
     constructor() {
         this.baseUrl = process.env.OPEN_API_BASE_URL as string;
     }
 
-    async getBooks(pageNo: number): Promise<BookData[]> {
+    async getRecentBooks(pageNo: number): Promise<BookData[]> {
         try {
             const url = this.buildBookSearchUrl(pageNo);
 
@@ -27,10 +28,7 @@ export class BookService implements BookServiceInterface {
     }
 
     buildBookSearchUrl(pageNo: number): string {
-        const params = new URLSearchParams({
-            numOfRows: '10', pageNo: pageNo.toString(),
-        });
-        return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&${params.toString()}`;
+        return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&numOfRows=${this.NUM_OF_ROWS}&pageNo=${pageNo}`;
     }
 }
 

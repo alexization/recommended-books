@@ -12,7 +12,7 @@ export class BookController {
     getBooks = async (ctx: Context): Promise<void> => {
         const pageNo = PageNumberSchema.parse(ctx.query.pageNo);
 
-        const bookData = await this.bookService.getBooks(pageNo);
+        const bookData = await this.bookService.getRecentBooks(pageNo);
 
         ResponseHandler.success(ctx, `${pageNo}번 페이지 도서를 성공적으로 가져왔습니다.`, bookData);
     }
