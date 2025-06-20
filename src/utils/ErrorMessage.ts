@@ -21,6 +21,7 @@ export const ErrorMessage = {
 
     /* 도서 관련 에러 3xxx */
     BOOK_PAGE_NUMBER_INVALID: {message: "페이지 번호는 1 이상이어야 합니다.", code: 3001},
+    BOOK_PAGE_NUMBER_REQUIRED: {message: "페이지 번호는 필수 입력 사항입니다.", code: 3002},
 
     /* 인증 및 인가 관련 에러 4xxx */
     PASSWORD_INVALID: {message: "비밀번호가 올바르지 않습니다.", code: 4001},

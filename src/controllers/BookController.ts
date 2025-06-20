@@ -1,9 +1,8 @@
 import {Context} from "koa";
 import {bookService} from "../services/BookService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
-import {ValidationError} from "../utils/AppError.js";
 import {BookServiceInterface} from "../interfaces/BookServiceInterface.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {PageNumberScheme} from "../validations/BookValidation";
 
 export class BookController {
     constructor(private readonly bookService: BookServiceInterface) {
@@ -11,11 +10,7 @@ export class BookController {
     }
 
     getBooks = async (ctx: Context): Promise<void> => {
-        const pageNo = parseInt(ctx.query.pageNo as string);
-
-        if (isNaN(pageNo) || pageNo < 1) {
-            throw new ValidationError(ErrorMessage.BOOK_PAGE_NUMBER_INVALID);
-        }
+        const pageNo = PageNumberScheme.parse(ctx.query.pageNo);
 
         const bookData = await this.bookService.getBooks(pageNo);
 
