@@ -6,3 +6,6 @@ export const PageNumberSchema = z
     .regex(/^\d+$/, ErrorMessage.BOOK_PAGE_NUMBER_INVALID)
     .transform(val => parseInt(val, 10))
     .refine(val => val > 0, ErrorMessage.BOOK_PAGE_NUMBER_INVALID);
+
+export const BookTitleSchema = z
+    .string(ErrorMessage.BOOK_TITLE_REQUIRED);

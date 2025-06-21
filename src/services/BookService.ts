@@ -17,17 +17,31 @@ export class BookService implements BookServiceInterface {
 
     async getRecentBooks(pageNo: number): Promise<BookData[]> {
         try {
-            const url = this.buildBookSearchUrl(pageNo);
+            const url = this.buildBaseSearchUrl(pageNo);
 
             const response = await axios.get(url, {timeout: 10000})
 
             return response.data as BookData[];
+
         } catch (error) {
             throw new AppError(ErrorMessage.API_CALL_ERROR);
         }
     }
 
-    buildBookSearchUrl(pageNo: number): string {
+    async getBooksByTitle(pageNo: number, title: string): Promise<BookData[]> {
+        try {
+            const url = this.buildBaseSearchUrl(pageNo) + `&bk_nm=${title}`;
+
+            const response = await axios.get(url, {timeout: 10000});
+
+            return response.data as BookData[];
+
+        } catch (error) {
+            throw new AppError(ErrorMessage.API_CALL_ERROR);
+        }
+    }
+
+    buildBaseSearchUrl(pageNo: number): string {
         return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&numOfRows=${this.NUM_OF_ROWS}&pageNo=${pageNo}`;
     }
 }
