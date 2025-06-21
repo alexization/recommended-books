@@ -41,6 +41,19 @@ export class BookService implements BookServiceInterface {
         }
     }
 
+    async getBooksByAuthor(pageNo: number, author: string): Promise<BookData[]> {
+        try {
+            const url = this.buildBaseSearchUrl(pageNo) + `&aut_nm=${author}`;
+
+            const response = await axios.get(url, {timeout: 10000});
+
+            return response.data as BookData[];
+
+        } catch (error) {
+            throw new AppError(ErrorMessage.API_CALL_ERROR);
+        }
+    }
+
     buildBaseSearchUrl(pageNo: number): string {
         return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&numOfRows=${this.NUM_OF_ROWS}&pageNo=${pageNo}`;
     }

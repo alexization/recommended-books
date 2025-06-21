@@ -9,3 +9,6 @@ export const PageNumberSchema = z
 
 export const BookTitleSchema = z
     .string(ErrorMessage.BOOK_TITLE_REQUIRED);
+
+export const BookAuthorSchema = z
+    .string(ErrorMessage.BOOK_AUTHOR_REQUIRED);

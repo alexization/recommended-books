@@ -50,4 +50,29 @@ bookRouter.get('/recent', bookController.getRecentBooks);
  * */
 bookRouter.get('/by-title', bookController.getBooksByTitle);
 
+/**
+ * @swagger
+ * /books/by-author:
+ *  get:
+ *      summary: 도서 조회 (저자명)
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: query
+ *            name: pageNo
+ *            required: true
+ *            schema:
+ *              type: integer
+ *          - in: query
+ *            name: author
+ *            required: true
+ *            schema:
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
+bookRouter.get('/by-author', bookController.getBooksByAuthor);
+
 export default bookRouter;
