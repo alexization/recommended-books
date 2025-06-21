@@ -1,7 +1,7 @@
 import {Context} from "koa";
 import {userService} from "../services/UserService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
-import {UserServiceInterface} from "../interfaces/UserServiceInterface.js";
+import {UserServiceInterface} from "../services/interfaces/UserServiceInterface";
 import {CreateUserSchema, FindUserByEmailSchema, ParamsIdSchema, UpdateUserSchema} from "../validations/UserValidation";
 
 export class UserController {

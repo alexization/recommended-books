@@ -1,5 +1,5 @@
 import {Context} from "koa";
-import {AuthServiceInterface} from "../interfaces/AuthServiceInterface.js";
+import {AuthServiceInterface} from "../services/interfaces/AuthServiceInterface";
 import {authService} from "../services/AuthService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {CookieUtils} from "../utils/CookieUtils.js";

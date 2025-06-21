@@ -1,7 +1,7 @@
 import {Context} from "koa";
 import {bookService} from "../services/BookService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
-import {BookServiceInterface} from "../interfaces/BookServiceInterface.js";
+import {BookServiceInterface} from "../services/interfaces/BookServiceInterface";
 import {BookAuthorSchema, BookTitleSchema, PageNumberSchema} from "../validations/BookValidation";
 
 export class BookController {

@@ -1,6 +1,6 @@
 import {AppError, NotFoundError, ValidationError} from "../utils/AppError.js";
 import {User} from "../domain/User.js";
-import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface.js";
+import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
 import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 import {DatabaseConnection} from "../config/DatabaseConfig.js";

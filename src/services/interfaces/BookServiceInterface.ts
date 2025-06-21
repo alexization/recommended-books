@@ -1,4 +1,4 @@
-import {BookData} from "../domain/dto/BookDto.js";
+import {BookData} from "../../domain/dto/BookDto";
 
 export interface BookServiceInterface {
     getRecentBooks(pageNo: number): Promise<BookData[]>;

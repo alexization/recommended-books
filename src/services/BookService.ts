@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 import axios from "axios";
 import {AppError} from "../utils/AppError.js";
-import {BookServiceInterface} from "../interfaces/BookServiceInterface.js";
+import {BookServiceInterface} from "./interfaces/BookServiceInterface";
 import {BookData} from "../domain/dto/BookDto.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 
