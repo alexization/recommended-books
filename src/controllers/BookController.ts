@@ -2,11 +2,19 @@ import {Context} from "koa";
 import {bookService} from "../services/BookService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {BookServiceInterface} from "../services/interfaces/BookServiceInterface";
-import {BookAuthorSchema, BookTitleSchema, PageNumberSchema} from "../validations/BookValidation";
+import {BookAuthorSchema, BookIdSchema, BookTitleSchema, PageNumberSchema} from "../validations/BookValidation";
 
 export class BookController {
     constructor(private readonly bookService: BookServiceInterface) {
         this.bookService = bookService;
+    }
+
+    findBookById = async(ctx: Context): Promise<void> => {
+        const id = BookIdSchema.parse(ctx.params.id);
+
+        const bookData = await this.bookService.findBookById(id);
+
+        ResponseHandler.success(ctx, '도서 정보를 성공적으로 가져왔습니다.', bookData);
     }
 
     getRecentBooks = async (ctx: Context): Promise<void> => {

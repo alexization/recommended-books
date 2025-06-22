@@ -7,6 +7,26 @@ const bookRouter = new Router({
 
 /**
  * @swagger
+ * /books/{id}:
+ *  get:
+ *      summary: 도서 조회 (도서 ID)
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
+bookRouter.get('/:id', bookController.findBookById);
+
+/**
+ * @swagger
  * /books/recent:
  *  get:
  *      summary: 도서 조회 (최신순)

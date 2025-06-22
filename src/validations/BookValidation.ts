@@ -12,3 +12,9 @@ export const BookTitleSchema = z
 
 export const BookAuthorSchema = z
     .string(ErrorMessage.BOOK_AUTHOR_REQUIRED);
+
+export const BookIdSchema = z
+    .string(ErrorMessage.BOOK_ID_REQUIRED)
+    .regex(/^\d+$/, ErrorMessage.BOOK_ID_INVALID)
+    .transform(val => parseInt(val, 10))
+    .refine(val => val > 0, ErrorMessage.BOOK_ID_INVALID);
