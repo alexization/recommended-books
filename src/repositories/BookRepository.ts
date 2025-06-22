@@ -25,6 +25,19 @@ export class BookRepository implements BookRepositoryInterface {
         }
     }
 
+    async findBookByTitleAndAuthor(title: string, author: string): Promise<Book> {
+        try {
+            const query = 'SELECT * FROM books WHERE title = ? AND author = ?';
+
+            const bookData = await this.db.executeQuery<BookData[]>(query, [title, author]);
+
+            return Book.fromJson(bookData[0]);
+
+        } catch (error) {
+            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+        }
+    }
+
     async findBookById(id: number): Promise<Book> {
         try {
             const query = 'SELECT * FROM books WHERE book_id = ?';

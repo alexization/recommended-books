@@ -23,7 +23,16 @@ export class BookController {
         ResponseHandler.success(ctx, '도서 정보를 성공적으로 등록했습니다.');
     }
 
-    findBookById = async(ctx: Context): Promise<void> => {
+    findBookByTitleAndAuthor = async (ctx: Context): Promise<void> => {
+        const title = BookTitleSchema.parse(ctx.query.title);
+        const author = BookAuthorSchema.parse(ctx.query.author);
+
+        const bookData = await this.bookService.findBookByTitleAndAuthor(title, author);
+
+        ResponseHandler.success(ctx, '도서 정보를 성공적으로 가져왔습니다.', bookData);
+    };
+
+    findBookById = async (ctx: Context): Promise<void> => {
         const id = BookIdSchema.parse(ctx.params.id);
 
         const bookData = await this.bookService.findBookById(id);

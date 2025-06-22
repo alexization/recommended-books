@@ -24,6 +24,10 @@ export class BookService implements BookServiceInterface {
         return await this.bookRepository.createBook(bookData);
     }
 
+    async findBookByTitleAndAuthor(title: string, author: string): Promise<Book> {
+        return await this.bookRepository.findBookByTitleAndAuthor(title, author);
+    }
+
     async findBookById(id: number): Promise<Book> {
         return await this.bookRepository.findBookById(id);
     }

@@ -27,6 +27,31 @@ bookRouter.post('/', bookController.createBook);
 
 /**
  * @swagger
+ * /books/by-title-author:
+ *  get:
+ *      summary: 도서 조회 (도서명 & 저자명)
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: query
+ *            name: title
+ *            required: true
+ *            schema:
+ *              type: string
+ *          - in: query
+ *            name: author
+ *            required: true
+ *            schema:
+ *              type: string
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
+bookRouter.get('/by-title-author', bookController.findBookByTitleAndAuthor);
+
+/**
+ * @swagger
  * /books/{id}:
  *  get:
  *      summary: 도서 조회 (도서 ID)
