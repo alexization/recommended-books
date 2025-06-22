@@ -1,7 +1,7 @@
 import {BookRepositoryInterface} from "./interfaces/BookRepositoryInterface";
 import {Book} from "../domain/Book";
 import {DatabaseConnection} from "../config/DatabaseConfig";
-import {BookData} from "../domain/dto/BookDto";
+import {BookData, CreateBookData} from "../domain/dto/BookDto";
 import {AppError} from "../utils/AppError";
 import {ErrorMessage} from "../utils/ErrorMessage";
 
@@ -10,6 +10,19 @@ export class BookRepository implements BookRepositoryInterface {
 
     constructor() {
         this.db = DatabaseConnection.getInstance();
+    }
+
+    async createBook(bookData: CreateBookData): Promise<void> {
+        try {
+            const newBook = Book.create(bookData);
+
+            const query = 'INSERT INTO books (title, author, publisher, publication_year, created_at) VALUES (?,?,?,?,?)';
+
+            await this.db.executeQuery(query, [newBook.title, newBook.author, newBook.publisher, newBook.publicationYear, newBook.createdAt]);
+
+        } catch (error) {
+            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+        }
     }
 
     async findBookById(id: number): Promise<Book> {

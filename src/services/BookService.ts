@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import axios from "axios";
 import {AppError} from "../utils/AppError.js";
 import {BookServiceInterface} from "./interfaces/BookServiceInterface";
-import {BookData} from "../domain/dto/BookDto.js";
+import {BookData, CreateBookData} from "../domain/dto/BookDto.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 import {Book} from "../domain/Book";
 import {BookRepositoryInterface} from "../repositories/interfaces/BookRepositoryInterface";
@@ -18,6 +18,10 @@ export class BookService implements BookServiceInterface {
     constructor() {
         this.bookRepository = bookRepository;
         this.baseUrl = process.env.OPEN_API_BASE_URL as string;
+    }
+
+    async createBook(bookData: CreateBookData): Promise<void> {
+        return await this.bookRepository.createBook(bookData);
     }
 
     async findBookById(id: number): Promise<Book> {

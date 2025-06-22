@@ -1,7 +1,9 @@
-import {BookData} from "../../domain/dto/BookDto";
+import {BookData, CreateBookData} from "../../domain/dto/BookDto";
 import {Book} from "../../domain/Book";
 
 export interface BookServiceInterface {
+    createBook(bookData: CreateBookData): Promise<void>;
+
     findBookById(id: number): Promise<Book>;
 
     getRecentBooks(pageNo: number): Promise<BookData[]>;

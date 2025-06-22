@@ -1,4 +1,4 @@
-import {BookData} from "./dto/BookDto.js";
+import {BookData, CreateBookData} from "./dto/BookDto.js";
 
 export class Book {
     private readonly _id: number;
@@ -43,5 +43,9 @@ export class Book {
 
     static fromJson(bookData: BookData) {
         return new Book(bookData.bookId, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, bookData.createdAt);
+    }
+
+    static create(bookData: CreateBookData): Book {
+        return new Book(0, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, new Date());
     }
 }

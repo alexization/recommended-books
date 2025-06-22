@@ -7,6 +7,26 @@ const bookRouter = new Router({
 
 /**
  * @swagger
+ * /books:
+ *  post:
+ *      summary: 신규 도서 등록
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/CreateBookData'
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
+bookRouter.post('/', bookController.createBook);
+
+/**
+ * @swagger
  * /books/{id}:
  *  get:
  *      summary: 도서 조회 (도서 ID)

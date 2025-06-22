@@ -2,11 +2,25 @@ import {Context} from "koa";
 import {bookService} from "../services/BookService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {BookServiceInterface} from "../services/interfaces/BookServiceInterface";
-import {BookAuthorSchema, BookIdSchema, BookTitleSchema, PageNumberSchema} from "../validations/BookValidation";
+import {
+    BookAuthorSchema,
+    BookIdSchema,
+    BookTitleSchema,
+    CreateBookSchema,
+    PageNumberSchema
+} from "../validations/BookValidation";
 
 export class BookController {
     constructor(private readonly bookService: BookServiceInterface) {
         this.bookService = bookService;
+    }
+
+    createBook = async (ctx: Context): Promise<void> => {
+        const bookData = CreateBookSchema.parse(ctx.request.body);
+
+        await this.bookService.createBook(bookData);
+
+        ResponseHandler.success(ctx, '도서 정보를 성공적으로 등록했습니다.');
     }
 
     findBookById = async(ctx: Context): Promise<void> => {
