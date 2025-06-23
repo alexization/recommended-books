@@ -45,6 +45,11 @@ export const ErrorMessage = {
     /* Open API 관련 에러 5xxx */
     API_CALL_ERROR: {message: "Open API 호출 중 오류가 발생했습니다.", code: 5001},
 
+    /* 게시물 관련 에러 6xxx */
+    POST_TITLE_REQUIRED: {message: "게시물 제목은 필수 입력 사항입니다.", code: 6001},
+    POST_TITLE_INVALID: {message: "게시물 제목은 최대 50자 이내 입니다.", code: 6002},
+    POST_CONTENT_REQUIRED: {message: "게시물 내용은 필수 입력 사항입니다.", code: 6003},
+
 } as const;
 
 export type ErrorMessageType = typeof ErrorMessage[keyof typeof ErrorMessage];

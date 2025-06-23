@@ -1,4 +1,4 @@
-import {PostData} from "./dto/PostDto.js";
+import {CreatePostData, PostData} from "./dto/PostDto.js";
 
 export class Post {
     private readonly _id: number;
@@ -49,5 +49,9 @@ export class Post {
 
     static fromJson(postData: PostData): Post {
         return new Post(postData.postId, postData.userId, postData.bookId, postData.title, postData.content, postData.image, postData.createdAt);
+    }
+
+    static create(userId: number, postData: CreatePostData): Post {
+        return new Post(0, userId, postData.bookId, postData.title, postData.content, postData.image, new Date());
     }
 }
