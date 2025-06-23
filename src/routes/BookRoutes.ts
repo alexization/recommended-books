@@ -52,26 +52,6 @@ bookRouter.get('/by-title-author', bookController.findBookByTitleAndAuthor);
 
 /**
  * @swagger
- * /books/{id}:
- *  get:
- *      summary: 도서 조회 (도서 ID)
- *      tags: [Books]
- *      security:
- *          - BearerAuth: []
- *      parameters:
- *          - in: path
- *            name: id
- *            required: true
- *            schema:
- *              type: integer
- *      responses:
- *          200:
- *              description: 성공
- * */
-bookRouter.get('/:id', bookController.findBookById);
-
-/**
- * @swagger
  * /books/recent:
  *  get:
  *      summary: 도서 조회 (최신순)
@@ -139,5 +119,25 @@ bookRouter.get('/by-title', bookController.getBooksByTitle);
  *              description: 성공
  * */
 bookRouter.get('/by-author', bookController.getBooksByAuthor);
+
+/**
+ * @swagger
+ * /books/{id}:
+ *  get:
+ *      summary: 도서 조회 (도서 ID)
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
+bookRouter.get('/:id', bookController.findBookById);
 
 export default bookRouter;

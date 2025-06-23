@@ -15,7 +15,7 @@ export interface TokenPair {
 export class JwtUtils {
     private static readonly ACCESS_TOKEN_SECRET = process.env.JWT_ACCESS_SECRET as string;
     private static readonly REFRESH_TOKEN_SECRET = process.env.JWT_REFRESH_SECRET as string;
-    private static readonly ACCESS_TOKEN_EXPIRE_TIME = '15m';
+    private static readonly ACCESS_TOKEN_EXPIRE_TIME = '15h';
     private static readonly REFRESH_TOKEN_EXPIRE_TIME = '7d';
 
     static generateJwtToken(userId: number, email: string): TokenPair {

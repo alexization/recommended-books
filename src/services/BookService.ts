@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import axios from "axios";
 import {AppError} from "../utils/AppError.js";
 import {BookServiceInterface} from "./interfaces/BookServiceInterface";
-import {BookData, CreateBookData} from "../domain/dto/BookDto.js";
+import {BookData, CreateBookData, OpenApiBookData, OpenApiBookResponse} from "../domain/dto/BookDto.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 import {Book} from "../domain/Book";
 import {BookRepositoryInterface} from "../repositories/interfaces/BookRepositoryInterface";
@@ -32,15 +32,24 @@ export class BookService implements BookServiceInterface {
         return await this.bookRepository.findBookById(id);
     }
 
-    async getRecentBooks(pageNo: number): Promise<BookData[]> {
+    async getRecentBooks(pageNo: number): Promise<OpenApiBookResponse[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo);
 
             const response = await axios.get(url, {timeout: 10000})
 
-            return response.data as BookData[];
+            const bookData = response.data.items as OpenApiBookData[];
+
+            return bookData.map(item => ({
+                title: item.bk_nm,
+                author: item.aut_nm,
+                publisher: item.pblshr,
+                loanStatus: item.loan_yn === 'Y',
+                returnDate: new Date(item.rtn_ed)
+            }));
 
         } catch (error) {
+            console.error(error);
             throw new AppError(ErrorMessage.API_CALL_ERROR);
         }
     }
