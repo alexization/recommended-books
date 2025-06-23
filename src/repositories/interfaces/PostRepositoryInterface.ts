@@ -1,5 +1,5 @@
 import {CountOfPostsPerUser} from "../../domain/dto/PostDto";
 
 export interface PostRepositoryInterface {
-    getCountOfPostsPerUserByMonth(month: number): Promise<CountOfPostsPerUser[]>;
+    getCountOfPostsPerUserByMonth(year: number, month: number): Promise<CountOfPostsPerUser[]>;
 }
