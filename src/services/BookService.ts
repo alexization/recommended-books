@@ -7,6 +7,7 @@ import {ErrorMessage} from "../utils/ErrorMessage.js";
 import {Book} from "../domain/Book";
 import {BookRepositoryInterface} from "../repositories/interfaces/BookRepositoryInterface";
 import {bookRepository} from "../repositories/BookRepository";
+import {User} from "../domain/User";
 
 dotenv.config();
 
@@ -72,6 +73,23 @@ export class BookService implements BookServiceInterface {
             const bookJson = response.data.items as OpenApiBookJson[];
 
             return this.mapToOpenApiBookData(bookJson);
+
+        } catch (error) {
+            throw new AppError(ErrorMessage.API_CALL_ERROR);
+        }
+    }
+
+    async getReservationAvailableBooks(pageNo: number, user: User): Promise<OpenApiBookData[]> {
+        try {
+            const url = this.buildBaseSearchUrl(pageNo);
+
+            const response = await axios.get(url, {timeout: 10000});
+
+            const bookJson = response.data.items as OpenApiBookJson[];
+
+            const openApiBookData = this.mapToOpenApiBookData(bookJson);
+
+            return openApiBookData.filter(book => book.loanStatus || user.isAvailableReservation(book.returnDate));
 
         } catch (error) {
             throw new AppError(ErrorMessage.API_CALL_ERROR);

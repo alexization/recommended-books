@@ -65,6 +65,14 @@ export class BookController {
 
         ResponseHandler.success(ctx, '검색 완료', bookData);
     };
+
+    getReservationAvailableBooks = async (ctx: Context): Promise<void> => {
+        const pageNo = PageNumberSchema.parse(ctx.query.pageNo);
+
+        const bookData = await this.bookService.getReservationAvailableBooks(pageNo, ctx.state.user);
+
+        ResponseHandler.success(ctx, '예약 가능한 도서 목록을 성공적으로 반환했습니다.', bookData);
+    };
 }
 
 export const bookController = new BookController(bookService);

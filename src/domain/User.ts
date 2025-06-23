@@ -1,5 +1,5 @@
 import {CreateUserData, UserData} from "./dto/UserDto.js";
-import {Grade} from "./enums/Grade.js";
+import {Grade, GradeUtils} from "./enums/Grade.js";
 import bcrypt from 'bcryptjs';
 
 export class User {
@@ -67,5 +67,14 @@ export class User {
 
     async validatePassword(password: string): Promise<boolean> {
         return await bcrypt.compare(password, this.password);
+    }
+
+    isAvailableReservation(date: Date): boolean {
+        const now = new Date();
+        const preOrderDays = GradeUtils.convertPreOrderDays(this._grade);
+
+        date.setDate(date.getDate() - preOrderDays);
+
+        return now >= date;
     }
 }
