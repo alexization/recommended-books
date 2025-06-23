@@ -1,7 +1,5 @@
-import {User} from "../../domain/User";
+import {CountOfPostsPerUser} from "../../domain/dto/PostDto";
 
 export interface PostRepositoryInterface {
-    getGoldUsers(): Promise<User[]>;
-
-    getSilverUsers(): Promise<User[]>;
+    getCountOfPostsPerUserByMonth(month: number): Promise<CountOfPostsPerUser[]>;
 }

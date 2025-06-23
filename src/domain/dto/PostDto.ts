@@ -7,3 +7,8 @@ export interface PostData {
     image: string | undefined;
     createdAt: Date;
 }
+
+export interface CountOfPostsPerUser {
+    userId: number;
+    numberOfPosts: number;
+}

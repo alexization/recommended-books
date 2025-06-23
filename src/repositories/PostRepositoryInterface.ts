@@ -1,6 +1,6 @@
 import {PostRepositoryInterface} from "./interfaces/PostRepositoryInterface";
-import {User} from "../domain/User";
 import {DatabaseConnection} from "../config/DatabaseConfig";
+import {CountOfPostsPerUser} from "../domain/dto/PostDto";
 
 export class PostRepository implements PostRepositoryInterface {
 
@@ -10,11 +10,7 @@ export class PostRepository implements PostRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    getGoldUsers(): Promise<User[]> {
-        return Promise.resolve([]);
-    }
-
-    getSilverUsers(): Promise<User[]> {
+    getCountOfPostsPerUserByMonth(month: number): Promise<CountOfPostsPerUser[]> {
         return Promise.resolve([]);
     }
 }
