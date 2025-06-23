@@ -77,4 +77,13 @@ export class User {
 
         return now >= date;
     }
+
+    expectedReturnDate(startDate: Date): Date {
+        const loanPeriod = GradeUtils.loanPeriod(this._grade);
+
+        const returnDate = startDate;
+        returnDate.setDate(returnDate.getDate() + loanPeriod);
+
+        return returnDate;
+    }
 }

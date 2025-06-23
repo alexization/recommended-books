@@ -16,4 +16,6 @@ export interface BookServiceInterface {
     getBooksByAuthor(pageNo: number, author: string): Promise<OpenApiBookData[]>;
 
     getReservationAvailableBooks(pageNo: number, user: User): Promise<OpenApiBookData[]>;
+
+    getReturnDate(startDate: Date, user: User): Date;
 }

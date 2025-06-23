@@ -96,6 +96,10 @@ export class BookService implements BookServiceInterface {
         }
     }
 
+    getReturnDate(startDate: Date, user: User): Date {
+        return user.expectedReturnDate(startDate);
+    }
+
     private buildBaseSearchUrl(pageNo: number): string {
         return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&numOfRows=${this.NUM_OF_ROWS}&pageNo=${pageNo}`;
     }

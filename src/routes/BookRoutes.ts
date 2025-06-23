@@ -120,6 +120,28 @@ bookRouter.get('/by-title', bookController.getBooksByTitle);
  * */
 bookRouter.get('/by-author', bookController.getBooksByAuthor);
 
+bookRouter.get('/return-date', bookController.getReturnDate);
+
+/**
+ * @swagger
+ * /books/available/reservation:
+ *  get:
+ *      summary: 예약 가능 도서 조회
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: query
+ *            name: pageNo
+ *            required: true
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
+bookRouter.get('/available/reservation', bookController.getReservationAvailableBooks);
+
 /**
  * @swagger
  * /books/{id}:
@@ -140,24 +162,5 @@ bookRouter.get('/by-author', bookController.getBooksByAuthor);
  * */
 bookRouter.get('/:id', bookController.findBookById);
 
-/**
- * @swagger
- * /books/available/reservation:
- *  get:
- *      summary: 예약 가능 도서 조회
- *      tags: [Books]
- *      security:
- *          - BearerAuth: []
- *      parameters:
- *          - in: query
- *            name: pageNo
- *            required: true
- *            schema:
- *              type: integer
- *       responses:
- *          200:
- *              description: 성공
- * */
-bookRouter.get('/available/reservation', bookController.getReservationAvailableBooks);
 
 export default bookRouter;

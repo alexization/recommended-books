@@ -15,4 +15,16 @@ export class GradeUtils {
 
         return preOrderDays;
     }
+
+    static loanPeriod(grade: Grade): number {
+        let loanPeriod: number = 14;
+
+        if (grade === Grade.GOLD) {
+            loanPeriod = 28;
+        } else if (grade === Grade.SILVER) {
+            loanPeriod = 21;
+        }
+
+        return loanPeriod;
+    }
 }
