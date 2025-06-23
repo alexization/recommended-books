@@ -1,4 +1,4 @@
-import {BookData, CreateBookData, OpenApiBookResponse} from "../../domain/dto/BookDto";
+import {BookData, CreateBookData, OpenApiBookData} from "../../domain/dto/BookDto";
 import {Book} from "../../domain/Book";
 
 export interface BookServiceInterface {
@@ -8,7 +8,7 @@ export interface BookServiceInterface {
 
     findBookById(id: number): Promise<Book>;
 
-    getRecentBooks(pageNo: number): Promise<OpenApiBookResponse[]>;
+    getRecentBooks(pageNo: number): Promise<OpenApiBookData[]>;
 
     getBooksByTitle(pageNo: number, title: string): Promise<BookData[]>;
 

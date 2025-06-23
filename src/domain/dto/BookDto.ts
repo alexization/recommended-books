@@ -39,7 +39,7 @@ export interface CreateBookData {
     publicationYear: number
 }
 
-export interface OpenApiBookData {
+export interface OpenApiBookJson {
     bk_nm: string;
     aut_nm: string;
     pblshr: string;
@@ -47,7 +47,7 @@ export interface OpenApiBookData {
     rtn_ed: string;
 }
 
-export interface OpenApiBookResponse {
+export interface OpenApiBookData {
     title: string;
     author: string;
     publisher: string;

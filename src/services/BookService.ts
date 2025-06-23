@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import axios from "axios";
 import {AppError} from "../utils/AppError.js";
 import {BookServiceInterface} from "./interfaces/BookServiceInterface";
-import {BookData, CreateBookData, OpenApiBookData, OpenApiBookResponse} from "../domain/dto/BookDto.js";
+import {BookData, CreateBookData, OpenApiBookData, OpenApiBookJson} from "../domain/dto/BookDto.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 import {Book} from "../domain/Book";
 import {BookRepositoryInterface} from "../repositories/interfaces/BookRepositoryInterface";
@@ -32,21 +32,15 @@ export class BookService implements BookServiceInterface {
         return await this.bookRepository.findBookById(id);
     }
 
-    async getRecentBooks(pageNo: number): Promise<OpenApiBookResponse[]> {
+    async getRecentBooks(pageNo: number): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo);
 
             const response = await axios.get(url, {timeout: 10000})
 
-            const bookData = response.data.items as OpenApiBookData[];
+            const bookJson = response.data.items as OpenApiBookJson[];
 
-            return bookData.map(item => ({
-                title: item.bk_nm,
-                author: item.aut_nm,
-                publisher: item.pblshr,
-                loanStatus: item.loan_yn === 'Y',
-                returnDate: new Date(item.rtn_ed)
-            }));
+            return this.mapToOpenApiBookData(bookJson);
 
         } catch (error) {
             console.error(error);
@@ -80,8 +74,18 @@ export class BookService implements BookServiceInterface {
         }
     }
 
-    buildBaseSearchUrl(pageNo: number): string {
+    private buildBaseSearchUrl(pageNo: number): string {
         return `${this.baseUrl}?serviceKey=${process.env.OPEN_API_SERVICE_KEY}&numOfRows=${this.NUM_OF_ROWS}&pageNo=${pageNo}`;
+    }
+
+    private mapToOpenApiBookData(openApiBookJson: OpenApiBookJson[]): OpenApiBookData[] {
+        return openApiBookJson.map(item => ({
+            title: item.bk_nm,
+            author: item.aut_nm,
+            publisher: item.pblshr,
+            loanStatus: item.loan_yn === 'Y',
+            returnDate: new Date(item.rtn_ed)
+        }));
     }
 }
 
