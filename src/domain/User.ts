@@ -56,7 +56,7 @@ export class User {
     }
 
     static fromJson(userData: UserData): User {
-        return new User(userData.userId, userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updatedAt, userData.createdAt);
+        return new User(userData.user_id, userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at);
     }
 
     static async create(id: number, createUserData: CreateUserData): Promise<User> {
