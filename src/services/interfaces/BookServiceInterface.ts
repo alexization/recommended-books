@@ -10,7 +10,7 @@ export interface BookServiceInterface {
 
     getRecentBooks(pageNo: number): Promise<OpenApiBookData[]>;
 
-    getBooksByTitle(pageNo: number, title: string): Promise<BookData[]>;
+    getBooksByTitle(pageNo: number, title: string): Promise<OpenApiBookData[]>;
 
-    getBooksByAuthor(pageNo: number, author: string): Promise<BookData[]>;
+    getBooksByAuthor(pageNo: number, author: string): Promise<OpenApiBookData[]>;
 }

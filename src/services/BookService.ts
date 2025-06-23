@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import axios from "axios";
 import {AppError} from "../utils/AppError.js";
 import {BookServiceInterface} from "./interfaces/BookServiceInterface";
-import {BookData, CreateBookData, OpenApiBookData, OpenApiBookJson} from "../domain/dto/BookDto.js";
+import {CreateBookData, OpenApiBookData, OpenApiBookJson} from "../domain/dto/BookDto.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 import {Book} from "../domain/Book";
 import {BookRepositoryInterface} from "../repositories/interfaces/BookRepositoryInterface";
@@ -48,26 +48,30 @@ export class BookService implements BookServiceInterface {
         }
     }
 
-    async getBooksByTitle(pageNo: number, title: string): Promise<BookData[]> {
+    async getBooksByTitle(pageNo: number, title: string): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo) + `&bk_nm=${title}`;
 
             const response = await axios.get(url, {timeout: 10000});
 
-            return response.data as BookData[];
+            const bookJson = response.data.items as OpenApiBookJson[];
+
+            return this.mapToOpenApiBookData(bookJson);
 
         } catch (error) {
             throw new AppError(ErrorMessage.API_CALL_ERROR);
         }
     }
 
-    async getBooksByAuthor(pageNo: number, author: string): Promise<BookData[]> {
+    async getBooksByAuthor(pageNo: number, author: string): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo) + `&aut_nm=${author}`;
 
             const response = await axios.get(url, {timeout: 10000});
 
-            return response.data as BookData[];
+            const bookJson = response.data.items as OpenApiBookJson[];
+
+            return this.mapToOpenApiBookData(bookJson);
 
         } catch (error) {
             throw new AppError(ErrorMessage.API_CALL_ERROR);
