@@ -1,16 +1,16 @@
 export interface PostData {
     postId: number;
     userId: number;
-    bookId: number | undefined;
     title: string;
     content: string;
-    image: string | undefined;
     createdAt: Date;
+    bookId?: number;
+    image?: string;
 }
 
 export interface CreatePostData {
-    bookId?: number | undefined;
     title: string;
     content: string;
-    image?: string | undefined;
+    bookId?: number;
+    image?: string;
 }

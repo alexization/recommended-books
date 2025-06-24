@@ -5,11 +5,11 @@ export const CreatePostSchema = z.object({
     bookId: z.number(ErrorMessage.BOOK_ID_REQUIRED)
         .int()
         .positive()
-        .or(z.undefined()),
+        .optional(),
     title: z.string(ErrorMessage.POST_TITLE_REQUIRED)
         .min(1, ErrorMessage.POST_TITLE_INVALID)
         .max(50, ErrorMessage.POST_TITLE_INVALID),
     content: z.string(ErrorMessage.POST_CONTENT_REQUIRED),
     image: z.string()
-        .or(z.undefined())
+        .optional()
 });

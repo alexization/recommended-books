@@ -16,12 +16,12 @@ export class PostRepository implements PostRepositoryInterface {
 
     async createPost(user: User, postData: CreatePostData): Promise<void> {
         try {
-            const query = `INSERT INTO posts (post_id, user_id, book_id, title, content, image, created_at)
+            const query = `INSERT INTO posts (post_id, user_id, title, content, created_at, book_id, image)
                            VALUES (?, ?, ?, ?, ?, ?, ?)`
 
             const newPost = Post.create(user.id, postData);
 
-            await this.db.executeQuery(query, [newPost.id, newPost.userId, newPost.bookId, newPost.title, newPost.content, newPost.image, newPost.createdAt]);
+            await this.db.executeQuery(query, [newPost.id, newPost.userId, newPost.title, newPost.content, newPost.createdAt, newPost.bookId, newPost.image]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
