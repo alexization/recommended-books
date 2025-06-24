@@ -2,8 +2,8 @@ import {BookRepositoryInterface} from "./interfaces/BookRepositoryInterface";
 import {Book} from "../domain/Book";
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {BookData, CreateBookData} from "../domain/dto/BookDto";
-import {AppError} from "../utils/AppError";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {AppError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class BookRepository implements BookRepositoryInterface {
     private db: DatabaseConnection;

@@ -2,8 +2,8 @@ import {Context, Next} from "koa";
 import {JwtUtils} from "../utils/JwtUtils.js";
 import {authService} from "../services/AuthService.js";
 import {CookieUtils} from "../utils/CookieUtils.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
-import {AppError} from "../utils/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
+import {AppError} from "../exception/AppError";
 
 const PUBLIC_PATTERNS: string[] = ['POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id', 'GET:/docs', 'GET:/favicon.png'];
 

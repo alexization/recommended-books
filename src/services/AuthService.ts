@@ -2,10 +2,10 @@ import {AuthServiceInterface} from "./interfaces/AuthServiceInterface";
 import {LoginUserData} from "../domain/dto/UserDto.js";
 import {JwtUtils, TokenPair} from "../utils/JwtUtils.js";
 import {userRepository} from "../repositories/UserRepository.js";
-import {NotFoundError, ValidationError} from "../utils/AppError.js";
+import {NotFoundError, ValidationError} from "../exception/AppError";
 import {UserRepositoryInterface} from "../repositories/interfaces/UserRepositoryInterface";
 import {User} from "../domain/User.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class AuthService implements AuthServiceInterface {
     private readonly userRepository: UserRepositoryInterface

@@ -1,4 +1,4 @@
-import {ErrorMessageType} from "./ErrorMessage.js";
+import {ErrorMessageType} from "./ErrorMessage";
 
 export class AppError extends Error {
     public readonly statusCode: number;

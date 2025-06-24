@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 import axios from "axios";
-import {AppError} from "../utils/AppError.js";
+import {AppError} from "../exception/AppError";
 import {BookServiceInterface} from "./interfaces/BookServiceInterface";
 import {CreateBookData, OpenApiBookData, OpenApiBookJson} from "../domain/dto/BookDto.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {ErrorMessage} from "../exception/ErrorMessage";
 import {Book} from "../domain/Book";
 import {BookRepositoryInterface} from "../repositories/interfaces/BookRepositoryInterface";
 import {bookRepository} from "../repositories/BookRepository";

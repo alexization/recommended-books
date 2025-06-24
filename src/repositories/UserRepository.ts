@@ -1,8 +1,8 @@
-import {AppError, ValidationError} from "../utils/AppError.js";
+import {AppError, ValidationError} from "../exception/AppError";
 import {User} from "../domain/User.js";
 import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
 import {CountOfPostsPerUser, CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {ErrorMessage} from "../exception/ErrorMessage";
 import {DatabaseConnection} from "../config/DatabaseConfig.js";
 import {Grade} from "../domain/enums/Grade";
 

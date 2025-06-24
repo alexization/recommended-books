@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export const LoginUserSchema = z.object({
     email: z
