@@ -120,6 +120,26 @@ bookRouter.get('/by-title', bookController.getBooksByTitle);
  * */
 bookRouter.get('/by-author', bookController.getBooksByAuthor);
 
+/**
+ * @swagger
+ * /books/return-date:
+ *  get:
+ *      summary: 반납 예정 날짜 조회
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: query
+ *            name: startDate
+ *            required: true
+ *            schema:
+ *              type: string
+ *              format: date
+ *              example: "2025-01-01"
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
 bookRouter.get('/return-date', bookController.getReturnDate);
 
 /**
