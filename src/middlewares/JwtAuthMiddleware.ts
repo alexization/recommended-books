@@ -5,16 +5,25 @@ import {authService} from "../services/AuthService.js";
 import {CookieUtils} from "../utils/CookieUtils.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 
-const PUBLIC_PATTERNS: string[] = [
-    'POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id',
-    'GET:/docs', 'GET:/favicon.png'
-];
+const PUBLIC_PATTERNS: string[] = ['POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id', 'GET:/docs', 'GET:/favicon.png'];
 
 function isPublicRequest(method: string, path: string): boolean {
     const requestPattern = `${method}:${path}`;
 
     return PUBLIC_PATTERNS.some(pattern => {
-        return pattern === requestPattern;
+        if (pattern === requestPattern) {
+            return true;
+        }
+
+        if (pattern.includes(':')) {
+            const regexPattern = pattern
+                .replace(/\//g, '\\/')
+                .replace(/:[^\/]+/g, '[^\\/]+') + '$';
+
+            const regex = new RegExp(regexPattern);
+            return regex.test(requestPattern);
+        }
+        return false;
     });
 }
 
