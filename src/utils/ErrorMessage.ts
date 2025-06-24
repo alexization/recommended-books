@@ -1,6 +1,7 @@
 export const ErrorMessage = {
-    /* 예상치 못한 에러 */
+    /* 기타 에러 */
     UNEXPECTED_ERROR: {message: "예상치 못한 오류 입니다.", code: 500},
+    DATABASE_ERROR: {message: "데이터베이스 관련 오류가 발생했습니다.", code: 500},
 
     /* 사용자 관련 에러 1xxx */
     USER_NOT_FOUND: {message: "사용자의 정보가 없습니다.", code: 1001},
