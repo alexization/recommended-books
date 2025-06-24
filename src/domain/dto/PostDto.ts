@@ -5,12 +5,12 @@ export interface PostData {
     content: string;
     createdAt: Date;
     bookId?: number;
-    image?: string;
+    imagePath?: string;
 }
 
 export interface CreatePostData {
     title: string;
     content: string;
     bookId?: number;
-    image?: string;
+    imageBase64?: string;
 }

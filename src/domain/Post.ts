@@ -7,16 +7,16 @@ export class Post {
     private readonly _content: string;
     private readonly _createdAt: Date;
     private readonly _bookId?: number;
-    private readonly _image?: string;
+    private readonly _imagePath?: string;
 
-    constructor(id: number, userId: number, title: string, content: string, createdAt: Date, bookId?: number, image?: string) {
+    constructor(id: number, userId: number, title: string, content: string, createdAt: Date, bookId?: number, imagePath?: string) {
         this._id = id;
         this._userId = userId;
         this._title = title;
         this._content = content;
         this._createdAt = createdAt;
         this._bookId = bookId;
-        this._image = image;
+        this._imagePath = imagePath;
     }
 
     get id(): number {
@@ -39,8 +39,8 @@ export class Post {
         return this._content;
     }
 
-    get image(): string | undefined {
-        return this._image;
+    get imagePath(): string | undefined {
+        return this._imagePath;
     }
 
     get createdAt(): Date {
@@ -48,10 +48,10 @@ export class Post {
     }
 
     static fromJson(postData: PostData): Post {
-        return new Post(postData.postId, postData.userId, postData.title, postData.content, postData.createdAt, postData.bookId, postData.image);
+        return new Post(postData.postId, postData.userId, postData.title, postData.content, postData.createdAt, postData.bookId, postData.imagePath);
     }
 
-    static create(userId: number, postData: CreatePostData): Post {
-        return new Post(0, userId, postData.title, postData.content, new Date(), postData.bookId, postData.image);
+    static create(userId: number, postData: CreatePostData, imagePath?: string): Post {
+        return new Post(0, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);
     }
 }

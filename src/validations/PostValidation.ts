@@ -10,6 +10,6 @@ export const CreatePostSchema = z.object({
         .min(1, ErrorMessage.POST_TITLE_INVALID)
         .max(50, ErrorMessage.POST_TITLE_INVALID),
     content: z.string(ErrorMessage.POST_CONTENT_REQUIRED),
-    image: z.string()
+    imageBase64: z.string()
         .optional()
 });

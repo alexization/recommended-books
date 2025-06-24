@@ -11,6 +11,7 @@ import {jwtAuthMiddleware} from "./middlewares/JwtAuthMiddleware.js";
 import {DatabaseConnection} from "./config/DatabaseConfig.js";
 import {swaggerUI} from "./config/Swagger";
 import {cronService} from "./services/CronService";
+import postRouter from "./routes/PostRoutes";
 
 dotenv.config();
 
@@ -51,6 +52,8 @@ export function createApp(): Koa {
     app.use(bookRouter.allowedMethods());
     app.use(authRouter.routes());
     app.use(authRouter.allowedMethods());
+    app.use(postRouter.routes());
+    app.use(postRouter.allowedMethods);
 
     return app;
 }

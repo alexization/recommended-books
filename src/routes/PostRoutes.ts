@@ -6,3 +6,5 @@ const postRouter = new Router({
 });
 
 postRouter.post('/', postController.createPost);
+
+export default postRouter;
