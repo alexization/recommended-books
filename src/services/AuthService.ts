@@ -8,8 +8,9 @@ import {User} from "../domain/User.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 
 export class AuthService implements AuthServiceInterface {
+    private readonly userRepository: UserRepositoryInterface
 
-    constructor(private readonly userRepository: UserRepositoryInterface) {
+    constructor() {
         this.userRepository = userRepository;
     }
 
@@ -45,4 +46,4 @@ export class AuthService implements AuthServiceInterface {
     }
 }
 
-export const authService = new AuthService(userRepository);
+export const authService = new AuthService();

@@ -5,7 +5,9 @@ import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto.js";
 import {User} from "../domain/User.js";
 
 export class UserService implements UserServiceInterface {
-    constructor(private readonly userRepository: UserRepositoryInterface) {
+    private readonly userRepository: UserRepositoryInterface
+
+    constructor() {
         this.userRepository = userRepository;
     }
 
@@ -30,4 +32,4 @@ export class UserService implements UserServiceInterface {
     }
 }
 
-export const userService = new UserService(userRepository);
+export const userService = new UserService();

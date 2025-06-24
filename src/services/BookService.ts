@@ -36,9 +36,7 @@ export class BookService implements BookServiceInterface {
     async getRecentBooks(pageNo: number): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo);
-
             const response = await axios.get(url, {timeout: 10000})
-
             const bookJson = response.data.items as OpenApiBookJson[];
 
             return this.mapToOpenApiBookData(bookJson);
@@ -52,9 +50,7 @@ export class BookService implements BookServiceInterface {
     async getBooksByTitle(pageNo: number, title: string): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo) + `&bk_nm=${title}`;
-
             const response = await axios.get(url, {timeout: 10000});
-
             const bookJson = response.data.items as OpenApiBookJson[];
 
             return this.mapToOpenApiBookData(bookJson);
@@ -67,9 +63,7 @@ export class BookService implements BookServiceInterface {
     async getBooksByAuthor(pageNo: number, author: string): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo) + `&aut_nm=${author}`;
-
             const response = await axios.get(url, {timeout: 10000});
-
             const bookJson = response.data.items as OpenApiBookJson[];
 
             return this.mapToOpenApiBookData(bookJson);
@@ -82,13 +76,10 @@ export class BookService implements BookServiceInterface {
     async getReservationAvailableBooks(pageNo: number, user: User): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo);
-
             const response = await axios.get(url, {timeout: 10000});
-
             const bookJson = response.data.items as OpenApiBookJson[];
 
             const openApiBookData = this.mapToOpenApiBookData(bookJson);
-
             return openApiBookData.filter(book => book.loanStatus || user.isAvailableReservation(book.returnDate));
 
         } catch (error) {
