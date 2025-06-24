@@ -25,7 +25,7 @@ export class PostRepository implements PostRepositoryInterface {
             await this.db.executeQuery(query, [newPost.id, newPost.userId, newPost.title, newPost.content, newPost.createdAt, newPost.bookId, newPost.imagePath]);
 
         } catch (error) {
-            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 }
