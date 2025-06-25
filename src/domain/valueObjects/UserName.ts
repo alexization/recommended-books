@@ -1,15 +1,15 @@
-export class Email {
+export class UserName {
     private readonly value: string;
 
-    constructor(email: string) {
-        this.value = email.toLowerCase().trim();
+    constructor(name: string) {
+        this.value = name.toLowerCase().trim();
     }
 
     getValue(): string {
         return this.value;
     }
 
-    equals(other: Email): boolean {
+    equals(other: UserName): boolean {
         return this.value === other.value;
     }
 }
