@@ -1,18 +1,19 @@
 import {CreateUserData, UserData} from "./dto/UserDto.js";
 import {Grade, GradeUtils} from "./enums/Grade.js";
-import bcrypt from 'bcryptjs';
+import {Email} from "./valueObjects/Email";
+import {Password} from "./valueObjects/Password";
 
 export class User {
     private readonly _id: number;
-    private readonly _email: string;
-    private readonly _password: string;
+    private readonly _email: Email;
+    private readonly _password: Password;
     private readonly _name: string;
     private readonly _birth: number;
     private readonly _grade: Grade;
     private readonly _updatedAt: Date;
     private readonly _createdAt: Date;
 
-    constructor(id: number, email: string, password: string, name: string, birth: number, grade: Grade, updatedAt: Date, createdAt: Date) {
+    constructor(id: number, email: Email, password: Password, name: string, birth: number, grade: Grade, updatedAt: Date, createdAt: Date) {
         this._id = id;
         this._email = email;
         this._password = password;
@@ -27,11 +28,11 @@ export class User {
         return this._id
     }
 
-    get email(): string {
+    get email(): Email {
         return this._email
     }
 
-    get password(): string {
+    get password(): Password {
         return this._password
     }
 
@@ -56,17 +57,19 @@ export class User {
     }
 
     static fromJson(userData: UserData): User {
-        return new User(userData.user_id, userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at);
+        return new User(userData.user_id, new Email(userData.email), new Password(userData.password, true), userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at);
     }
 
     static async create(id: number, createUserData: CreateUserData): Promise<User> {
-        const hashedPassword = await bcrypt.hash(createUserData.password, 10);
+        const email = new Email(createUserData.email);
+        const password = new Password(createUserData.password);
+        const hashedPassword = await password.hash();
 
-        return new User(id, createUserData.email, hashedPassword, createUserData.name, createUserData.birth, Grade.BRONZE, new Date(), new Date());
+        return new User(id, email, hashedPassword, createUserData.name, createUserData.birth, Grade.BRONZE, new Date(), new Date());
     }
 
-    async validatePassword(password: string): Promise<boolean> {
-        return await bcrypt.compare(password, this.password);
+    async validatePassword(plainPassword: string): Promise<boolean> {
+        return await this._password.matches(plainPassword);
     }
 
     isAvailableReservation(date: Date): boolean {

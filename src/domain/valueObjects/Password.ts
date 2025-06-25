@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 export class Password {
     private readonly value: string;
 
-    constructor(password: string, isHashed: boolean) {
+    constructor(password: string, isHashed: boolean = false) {
         if (!isHashed) {
             this.validatePassword(password);
         }
