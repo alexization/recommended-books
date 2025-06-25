@@ -96,13 +96,11 @@ export class UserRepository implements UserRepositoryInterface {
 
     async isEmailExists(email: string): Promise<boolean> {
         try {
-            const query = `SELECT COUNT(*) as count
-                           FROM users
-                           WHERE email = ?`;
+            const query = `SELECT EXISTS(SELECT 1 FROM users WHERE email = ?) as isEmailExists`;
 
-            const rows = await this.db.executeQuery<{ count: bigint }[]>(query, [email]);
+            const rows = await this.db.executeQuery<{ isEmailExists: number }[]>(query, [email]);
 
-            return rows[0].count !== 0n;
+            return rows[0].isEmailExists === 1;
 
         } catch (error) {
             console.error("이메일 중복 확인 중 오류", error);
