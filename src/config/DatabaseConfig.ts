@@ -19,6 +19,8 @@ export const databaseConfig: DatabaseConfig = {
     database: process.env.DB_NAME!
 };
 
+type QueryParam = string | number | boolean | Date | null | undefined;
+
 export class DatabaseConnection {
     private static instance: DatabaseConnection;
     private pool: mariadb.Pool;
@@ -40,7 +42,7 @@ export class DatabaseConnection {
         return DatabaseConnection.instance;
     }
 
-    public async executeQuery<T>(query: string, params?: any[]): Promise<T> {
+    public async executeQuery<T>(query: string, params?: QueryParam[]): Promise<T> {
         let connection: PoolConnection | undefined;
 
         try {
