@@ -1,5 +1,5 @@
 import {CreateUserData, UserData} from "./dto/UserDto.js";
-import {Grade, GradeUtils} from "./enums/Grade.js";
+import {Grade, GradePolicy} from "./enums/Grade.js";
 import {Email} from "./valueObjects/Email";
 import {Password} from "./valueObjects/Password";
 
@@ -72,19 +72,23 @@ export class User {
         return await this._password.matches(plainPassword);
     }
 
-    isAvailableReservation(date: Date): boolean {
+    canReserveBookForDate(targetDate: Date): boolean {
+        const gradePolicy = new GradePolicy();
+        const preOrderDays = gradePolicy.getPreOrderDays(this._grade);
+
         const now = new Date();
-        const preOrderDays = GradeUtils.convertPreOrderDays(this._grade);
+        const adjustDate = new Date(targetDate);
 
-        date.setDate(date.getDate() - preOrderDays);
+        adjustDate.setDate(adjustDate.getDate() - preOrderDays);
 
-        return now >= date;
+        return now >= adjustDate;
     }
 
-    expectedReturnDate(startDate: Date): Date {
-        const loanPeriod = GradeUtils.loanPeriod(this._grade);
+    calculateExpectedReturnDate(loanStartDate: Date): Date {
+        const gradePolicy = new GradePolicy();
+        const loanPeriod = gradePolicy.getLoanPeriod(this._grade);
 
-        const returnDate = startDate;
+        const returnDate = new Date(loanStartDate);
         returnDate.setDate(returnDate.getDate() + loanPeriod);
 
         return returnDate;

@@ -1,30 +1,38 @@
+import {AppError} from "../../exception/AppError";
+import {ErrorMessage} from "../../exception/ErrorMessage";
+
 export enum Grade {
     BRONZE = 'BRONZE', SILVER = 'SILVER', GOLD = 'GOLD'
 }
 
-export class GradeUtils {
+export class GradePolicy {
 
-    static convertPreOrderDays(grade: Grade): number {
-        let preOrderDays: number = 3;
+    private readonly policies: Map<Grade, GradeInfo> = new Map([
+        [Grade.BRONZE, {preOrderDays: 3, loanPeriod: 14}],
+        [Grade.SILVER, {preOrderDays: 5, loanPeriod: 21}],
+        [Grade.GOLD, {preOrderDays: 7, loanPeriod: 28}],
+    ])
 
-        if (grade === Grade.GOLD) {
-            preOrderDays = 7;
-        } else if (grade === Grade.SILVER) {
-            preOrderDays = 5;
+    getPreOrderDays(grade: Grade): number {
+        const policy = this.policies.get(grade);
+        if (!policy) {
+            throw new AppError(ErrorMessage.GRADE_UNDEFINED);
         }
 
-        return preOrderDays;
+        return policy.preOrderDays;
     }
 
-    static loanPeriod(grade: Grade): number {
-        let loanPeriod: number = 14;
-
-        if (grade === Grade.GOLD) {
-            loanPeriod = 28;
-        } else if (grade === Grade.SILVER) {
-            loanPeriod = 21;
+    getLoanPeriod(grade: Grade): number {
+        const policy = this.policies.get(grade);
+        if (!policy) {
+            throw new AppError(ErrorMessage.GRADE_UNDEFINED);
         }
 
-        return loanPeriod;
+        return policy.loanPeriod;
     }
+}
+
+export interface GradeInfo {
+    preOrderDays: number;
+    loanPeriod: number;
 }
