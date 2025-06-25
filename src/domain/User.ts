@@ -1,21 +1,18 @@
 import {CreateUserData, UserData} from "./dto/UserDto.js";
 import {Grade, GradePolicy} from "./enums/Grade.js";
-import {Email} from "./valueObjects/Email";
 import {Password} from "./valueObjects/Password";
-import {UserName} from "./valueObjects/UserName";
-import {Birth} from "./valueObjects/Birth";
 
 export class User {
     private readonly _id: number;
-    private readonly _email: Email;
+    private readonly _email: string;
     private readonly _password: Password;
-    private readonly _name: UserName;
-    private readonly _birth: Birth;
+    private readonly _name: string;
+    private readonly _birth: number;
     private readonly _grade: Grade;
     private readonly _updatedAt: Date;
     private readonly _createdAt: Date;
 
-    constructor(id: number, email: Email, password: Password, name: UserName, birth: Birth, grade: Grade, updatedAt: Date, createdAt: Date) {
+    constructor(id: number, email: string, password: Password, name: string, birth: number, grade: Grade, updatedAt: Date, createdAt: Date) {
         this._id = id;
         this._email = email;
         this._password = password;
@@ -30,7 +27,7 @@ export class User {
         return this._id
     }
 
-    get email(): Email {
+    get email(): string {
         return this._email
     }
 
@@ -38,11 +35,11 @@ export class User {
         return this._password
     }
 
-    get name(): UserName {
+    get name(): string {
         return this._name
     }
 
-    get birth(): Birth {
+    get birth(): number {
         return this._birth
     }
 
@@ -59,17 +56,14 @@ export class User {
     }
 
     static fromJson(userData: UserData): User {
-        return new User(userData.user_id, new Email(userData.email), new Password(userData.password), new UserName(userData.name), new Birth(userData.birth), userData.grade, userData.updated_at, userData.created_at);
+        return new User(userData.user_id, userData.email, new Password(userData.password), userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at);
     }
 
     static async create(id: number, createUserData: CreateUserData): Promise<User> {
-        const email = new Email(createUserData.email);
         const password = new Password(createUserData.password);
         const hashedPassword = await password.hash();
-        const name = new UserName(createUserData.name);
-        const birth = new Birth(createUserData.birth);
 
-        return new User(id, email, hashedPassword, name, birth, Grade.BRONZE, new Date(), new Date());
+        return new User(id, createUserData.email, hashedPassword, createUserData.name, createUserData.birth, Grade.BRONZE, new Date(), new Date());
     }
 
     async validatePassword(plainPassword: string): Promise<boolean> {
