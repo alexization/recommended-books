@@ -28,6 +28,17 @@ export class PostRepository implements PostRepositoryInterface {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
+
+    async deletePost(id: number): Promise<void> {
+
+    }
+
+    async findPostById(id: number): Promise<void> {
+    }
+
+    async updatePost(post: Post): Promise<void> {
+    }
+
 }
 
 export const postRepository = new PostRepository();
