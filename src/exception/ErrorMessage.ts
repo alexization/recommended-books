@@ -55,6 +55,10 @@ export const ErrorMessage = {
     POST_OWNER_INVALID: {message: "게시물은 작성자만이 수정/삭제할 수 있습니다.", code: 6005},
     POST_ID_REQUIRED: {message: "게시물 ID는 필수 입력 사항입니다.", code: 6007},
 
+    /* 팔로우 관련 에러 7xxx */
+    FOLLOW_EXISTED: {message: "이미 존재하는 팔로우 관계입니다.", code: 7001},
+    FOLLOW_NOT_FOUND: {message: "팔로우하지 않은 사용자입니다.", code: 7002},
+
 } as const;
 
 export type ErrorMessageType = typeof ErrorMessage[keyof typeof ErrorMessage];

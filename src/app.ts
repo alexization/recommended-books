@@ -12,6 +12,7 @@ import {DatabaseConnection} from "./config/DatabaseConfig.js";
 import {swaggerUI} from "./config/Swagger";
 import {cronService} from "./services/CronService";
 import postRouter from "./routes/PostRoutes";
+import followRouter from "./routes/FollowRoutes";
 
 dotenv.config();
 
@@ -54,6 +55,8 @@ export function createApp(): Koa {
     app.use(authRouter.allowedMethods());
     app.use(postRouter.routes());
     app.use(postRouter.allowedMethods);
+    app.use(followRouter.routes());
+    app.use(userRouter.allowedMethods);
 
     return app;
 }
