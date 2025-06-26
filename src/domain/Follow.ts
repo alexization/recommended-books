@@ -25,10 +25,6 @@ export class Follow {
         return this._followerId;
     }
 
-    get createdAt(): Date {
-        return this._createdAt;
-    }
-
     static create(followId: number, followingId: number, followerId: number): Follow {
         return new Follow(followId, followingId, followerId, new Date());
     }
