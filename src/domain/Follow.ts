@@ -32,4 +32,13 @@ export class Follow {
     static fromJson(followData: FollowData): Follow {
         return new Follow(followData.followId, followData.followingId, followData.followerId, followData.createdAt);
     }
+
+    toPersistence() {
+        return {
+            follow_id: this._id,
+            following_id: this._followingId,
+            follower_id: this._followerId,
+            createdAt: this._createdAt,
+        }
+    }
 }
