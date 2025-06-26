@@ -58,6 +58,7 @@ export const ErrorMessage = {
     /* 팔로우 관련 에러 7xxx */
     FOLLOW_EXISTED: {message: "이미 존재하는 팔로우 관계입니다.", code: 7001},
     FOLLOW_NOT_FOUND: {message: "팔로우하지 않은 사용자입니다.", code: 7002},
+    FOLLOW_INVALID: {message: "자기 자신을 팔로우할 수 없습니다.", code: 7003},
 
 } as const;
 

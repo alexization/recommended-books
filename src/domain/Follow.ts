@@ -1,4 +1,6 @@
 import {FollowData} from "./dto/FollowDto.js";
+import {AppError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class Follow {
     private readonly _id: number;
@@ -11,6 +13,8 @@ export class Follow {
         this._followingId = followingId;
         this._followerId = followerId;
         this._createdAt = createdAt;
+
+        this.validateFollow();
     }
 
     get id(): number {
@@ -23,6 +27,12 @@ export class Follow {
 
     get followerId(): number {
         return this._followerId;
+    }
+
+    private validateFollow(): void {
+        if (this._followerId === this._followingId) {
+            throw new AppError(ErrorMessage.FOLLOW_EXISTED);
+        }
     }
 
     static create(followId: number, followingId: number, followerId: number): Follow {
