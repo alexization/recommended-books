@@ -31,8 +31,8 @@ export class Post {
         return this._bookId;
     }
 
-    static create(userId: number, postData: CreatePostData, imagePath?: string): Post {
-        return new Post(0, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);
+    static create(postId: number, userId: number, postData: CreatePostData, imagePath?: string): Post {
+        return new Post(postId, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);
     }
 
     static fromJson(postData: PostData): Post {

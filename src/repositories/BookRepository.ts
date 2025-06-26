@@ -14,7 +14,7 @@ export class BookRepository implements BookRepositoryInterface {
 
     async createBook(createBookData: CreateBookData): Promise<void> {
         try {
-            const newBook = Book.create(createBookData);
+            const newBook = Book.create(0, createBookData);
             const bookData = newBook.toPersistence();
 
             const query = `INSERT INTO books (title, author, publisher, publication_year, created_at)

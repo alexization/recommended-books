@@ -9,5 +9,5 @@ export interface PostServiceInterface {
 
     deletePost(postId: number): Promise<void>;
 
-    findPostById(potId: number): Promise<Post>;
+    findPostById(postId: number): Promise<Post>;
 }

@@ -23,6 +23,10 @@ export class Bookmark {
         return this._createdAt;
     }
 
+    static create(userId: number, bookId: number): Bookmark {
+        return new Bookmark(userId, bookId, new Date());
+    }
+
     static fromJson(bookmarkData: BookmarkData): Bookmark {
         return new Bookmark(bookmarkData.userId, bookmarkData.bookId, bookmarkData.createdAt);
     }

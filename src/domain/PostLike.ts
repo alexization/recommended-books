@@ -23,6 +23,10 @@ export class PostLike {
         return this._createdAt;
     }
 
+    static create(userId: number, postId: number): PostLike {
+        return new PostLike(userId, postId, new Date());
+    }
+
     static fromJson(postLikeData: PostLikeData): PostLike {
         return new PostLike(postLikeData.userId, postLikeData.postId, postLikeData.createdAt);
     }

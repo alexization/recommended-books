@@ -1,4 +1,4 @@
-import {CommentData} from "./dto/CommentDto.js";
+import {CommentData, CreateCommentData} from "./dto/CommentDto.js";
 
 export class Comment {
     private readonly _id: number;
@@ -39,6 +39,10 @@ export class Comment {
 
     get updatedAt(): Date {
         return this._updatedAt;
+    }
+
+    static create(commentId: number, commentData: CreateCommentData): Comment {
+        return new Comment(commentId, commentData.postId, commentData.userId, commentData.content, new Date(), new Date());
     }
 
     static fromJson(commentData: CommentData): Comment {

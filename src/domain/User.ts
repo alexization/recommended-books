@@ -36,13 +36,13 @@ export class User {
         return this._grade
     }
 
-    static async create(id: number, createUserData: CreateUserData): Promise<User> {
+    static async create(userId: number, createUserData: CreateUserData): Promise<User> {
         const password = new Password(createUserData.password);
         const hashedPassword = await password.hash();
 
         const birth = new Birth(createUserData.birth);
 
-        return new User(id, createUserData.email, hashedPassword, createUserData.name, birth, Grade.BRONZE, new Date(), new Date());
+        return new User(userId, createUserData.email, hashedPassword, createUserData.name, birth, Grade.BRONZE, new Date(), new Date());
     }
 
     async changePassword(newPassword: string): Promise<void> {

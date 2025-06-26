@@ -21,8 +21,8 @@ export class Book {
         return this._id
     }
 
-    static create(bookData: CreateBookData): Book {
-        return new Book(0, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, new Date());
+    static create(bookId: number, bookData: CreateBookData): Book {
+        return new Book(bookId, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, new Date());
     }
 
     static fromJson(bookData: BookData) {
