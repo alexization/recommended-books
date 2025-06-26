@@ -25,7 +25,6 @@ export class UserController {
 
     findUserById = async (ctx: Context): Promise<void> => {
         const id = ParamsIdSchema.parse(ctx.params.id);
-
         const user = await this.userService.findUserById(id);
 
         ResponseHandler.success(ctx, '사용자 정보를 성공적으로 가져왔습니다.', user);
@@ -33,7 +32,6 @@ export class UserController {
 
     findUserByEmail = async (ctx: Context): Promise<void> => {
         const email = FindUserByEmailSchema.parse(ctx.query.email);
-
         const user = await this.userService.findUserByEmail(email);
 
         ResponseHandler.success(ctx, '사용자 정보를 성공적으로 가져왔습니다.', user);
@@ -41,7 +39,6 @@ export class UserController {
 
     updateUser = async (ctx: Context): Promise<void> => {
         const id = ParamsIdSchema.parse(ctx.params.id);
-
         const updateUserData = UpdateUserSchema.parse(ctx.request.body);
 
         await this.userService.updateUser(id, updateUserData);

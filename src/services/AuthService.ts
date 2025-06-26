@@ -40,6 +40,7 @@ export class AuthService implements AuthServiceInterface {
         const payload = JwtUtils.verifyRefreshToken(refreshToken);
 
         const user = await this.userRepository.findUserById(payload.userId);
+
         const tokenPair = JwtUtils.generateJwtToken(user.id, user.email);
 
         return {user, tokenPair};

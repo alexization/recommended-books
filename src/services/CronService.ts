@@ -21,7 +21,6 @@ export class CronService {
 
     private async assignmentUserGrade(): Promise<void> {
         const baseDate = this.buildBaseDate();
-
         const countOfPostsPerUsers = await userRepository.getCountOfPostsPerUserByMonth(baseDate);
 
         const goldUsers: number[] = [];

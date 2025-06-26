@@ -13,7 +13,6 @@ export class PostController {
     }
 
     createPost = async (ctx: Context): Promise<void> => {
-
         const postData = CreatePostSchema.parse(ctx.request.body);
 
         await this.postService.createPost(ctx.state.user, postData);

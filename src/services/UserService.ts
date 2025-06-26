@@ -14,7 +14,6 @@ export class UserService implements UserServiceInterface {
     }
 
     async createUser(createUserData: CreateUserData): Promise<void> {
-
         if (await this.userRepository.isEmailExists(createUserData.email)) {
             throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
         }
@@ -44,7 +43,6 @@ export class UserService implements UserServiceInterface {
 
     async updateUser(id: number, updateUserData: UpdateUserData): Promise<void> {
         const user = await this.findUserById(id);
-
         user.updateProfile(updateUserData.name, updateUserData.birth);
 
         await this.userRepository.updateUser(user);
@@ -58,7 +56,6 @@ export class UserService implements UserServiceInterface {
 
     async changePassword(id: number, newPassword: string): Promise<void> {
         const user = await this.findUserById(id);
-
         await user.changePassword(newPassword);
 
         await this.userRepository.updateUser(user);
