@@ -8,4 +8,8 @@ export class Birth {
     calculateAge(): number {
         return new Date().getFullYear() - this.value;
     }
+
+    getValue(): number {
+        return this.value;
+    }
 }

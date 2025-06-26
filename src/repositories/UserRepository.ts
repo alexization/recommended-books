@@ -1,7 +1,7 @@
 import {AppError, ValidationError} from "../exception/AppError";
 import {User} from "../domain/User.js";
 import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
-import {CountOfPostsPerUser, CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto.js";
+import {CountOfPostsPerUser, CreateUserData, UserData} from "../domain/dto/UserDto.js";
 import {ErrorMessage} from "../exception/ErrorMessage";
 import {DatabaseConnection} from "../config/DatabaseConfig.js";
 import {Grade} from "../domain/enums/Grade";
@@ -65,15 +65,19 @@ export class UserRepository implements UserRepositoryInterface {
         }
     }
 
-    async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
+    async updateUser(user: User): Promise<void> {
         try {
+            const userData = user.toPersistence();
+
             const query = `UPDATE users
                            SET name       = ?,
                                birth      = ?,
+                               password   = ?,
+                               grade      = ?,
                                updated_at = ?
                            WHERE id = ?`;
 
-            await this.db.executeQuery(query, [updateUserData.name, updateUserData.birth, new Date(), userId]);
+            await this.db.executeQuery(query, [userData.name, userData.birth, userData.password, userData.grade, userData.updated_at]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);

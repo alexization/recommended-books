@@ -7,10 +7,10 @@ export class User {
     private readonly _id: number;
     private readonly _email: string;
     private readonly _password: Password;
-    private readonly _name: string;
-    private readonly _birth: Birth;
+    private _name: string;
+    private _birth: Birth;
     private readonly _grade: Grade;
-    private readonly _updatedAt: Date;
+    private _updatedAt: Date;
     private readonly _createdAt: Date;
 
     constructor(id: number, email: string, password: Password, name: string, birth: Birth, grade: Grade, updatedAt: Date, createdAt: Date) {
@@ -60,6 +60,19 @@ export class User {
         return new User(userData.user_id, userData.email, new Password(userData.password), userData.name, new Birth(userData.birth), userData.grade, userData.updated_at, userData.created_at);
     }
 
+    toPersistence() {
+        return {
+            user_id: this._id,
+            email: this._email,
+            password: this._password.getValue(),
+            name: this._name,
+            birth: this._birth.getValue(),
+            grade: this._grade,
+            updated_at: this._updatedAt,
+            created_at: this._createdAt
+        }
+    }
+
     static async create(id: number, createUserData: CreateUserData): Promise<User> {
         const password = new Password(createUserData.password);
         const hashedPassword = await password.hash();
@@ -67,6 +80,12 @@ export class User {
         const birth = new Birth(createUserData.birth);
 
         return new User(id, createUserData.email, hashedPassword, createUserData.name, birth, Grade.BRONZE, new Date(), new Date());
+    }
+
+    updateProfile(name: string, birth: number): void {
+        this._name = name;
+        this._birth = new Birth(birth);
+        this._updatedAt = new Date();
     }
 
     async validatePassword(plainPassword: string): Promise<boolean> {

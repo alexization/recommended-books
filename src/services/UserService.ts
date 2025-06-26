@@ -24,7 +24,11 @@ export class UserService implements UserServiceInterface {
     }
 
     async updateUser(id: number, updateUserData: UpdateUserData): Promise<void> {
-        return await this.userRepository.updateUser(id, updateUserData);
+        const user = await this.findUserById(id);
+
+        user.updateProfile(updateUserData.name, updateUserData.birth);
+
+        return await this.userRepository.updateUser(user);
     }
 
     async deleteUser(id: number): Promise<void> {
