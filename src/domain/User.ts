@@ -36,23 +36,6 @@ export class User {
         return this._grade
     }
 
-    static fromJson(userData: UserData): User {
-        return new User(userData.user_id, userData.email, new Password(userData.password), userData.name, new Birth(userData.birth), userData.grade, userData.updated_at, userData.created_at);
-    }
-
-    toPersistence() {
-        return {
-            user_id: this._id,
-            email: this._email,
-            password: this._password.getValue(),
-            name: this._name,
-            birth: this._birth.getValue(),
-            grade: this._grade,
-            updated_at: this._updatedAt,
-            created_at: this._createdAt
-        }
-    }
-
     static async create(id: number, createUserData: CreateUserData): Promise<User> {
         const password = new Password(createUserData.password);
         const hashedPassword = await password.hash();
@@ -102,5 +85,22 @@ export class User {
 
     getAge(): number {
         return this._birth.calculateAge();
+    }
+
+    static fromJson(userData: UserData): User {
+        return new User(userData.user_id, userData.email, new Password(userData.password), userData.name, new Birth(userData.birth), userData.grade, userData.updated_at, userData.created_at);
+    }
+
+    toPersistence() {
+        return {
+            user_id: this._id,
+            email: this._email,
+            password: this._password.getValue(),
+            name: this._name,
+            birth: this._birth.getValue(),
+            grade: this._grade,
+            updated_at: this._updatedAt,
+            created_at: this._createdAt
+        }
     }
 }
