@@ -31,23 +31,6 @@ export class Post {
         return this._bookId;
     }
 
-    get title(): string {
-        return this._title;
-    }
-
-    get content(): string {
-        return this._content;
-    }
-
-    get imagePath(): string | undefined {
-        return this._imagePath;
-    }
-
-    get createdAt(): Date {
-        return this._createdAt;
-    }
-
-
     static create(userId: number, postData: CreatePostData, imagePath?: string): Post {
         return new Post(0, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);
     }
@@ -62,9 +45,9 @@ export class Post {
             user_id: this._userId,
             title: this._title,
             content: this._content,
-            createdAt: this._createdAt,
-            bookId: this._bookId,
-            imagePath: this._imagePath,
+            created_at: this._createdAt,
+            book_id: this._bookId,
+            image_path: this._imagePath,
         }
     }
 }
