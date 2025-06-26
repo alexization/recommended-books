@@ -34,6 +34,14 @@ export class UserService implements UserServiceInterface {
     async deleteUser(id: number): Promise<void> {
         return await this.userRepository.deleteUser(id);
     }
+
+    async changePassword(id: number, newPassword: string): Promise<void> {
+        const user = await this.findUserById(id);
+
+        await user.changePassword(newPassword);
+
+        return await this.userRepository.updateUser(user);
+    }
 }
 
 export const userService = new UserService();

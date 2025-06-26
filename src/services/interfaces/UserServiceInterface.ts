@@ -11,4 +11,6 @@ export interface UserServiceInterface {
     updateUser(id: number, updateUserData: UpdateUserData): Promise<void>;
 
     deleteUser(id: number): Promise<void>;
+
+    changePassword(id: number, newPassword: string): Promise<void>;
 }

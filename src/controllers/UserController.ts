@@ -2,7 +2,13 @@ import {Context} from "koa";
 import {userService} from "../services/UserService.js";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {UserServiceInterface} from "../services/interfaces/UserServiceInterface";
-import {CreateUserSchema, FindUserByEmailSchema, ParamsIdSchema, UpdateUserSchema} from "../validations/UserValidation";
+import {
+    CreateUserSchema,
+    FindUserByEmailSchema,
+    ParamsIdSchema,
+    UpdateUserSchema,
+    UserPasswordSchema
+} from "../validations/UserValidation";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -49,6 +55,15 @@ export class UserController {
         await this.userService.deleteUser(id);
 
         ResponseHandler.success(ctx, '사용자를 성공적으로 삭제했습니다.');
+    }
+
+    changePassword = async(ctx:Context): Promise<void> => {
+        const id = ParamsIdSchema.parse(ctx.params.id);
+        const newPassword = UserPasswordSchema.parse(ctx.request.body);
+
+        await this.userService.changePassword(id, newPassword);
+
+        ResponseHandler.success(ctx, '비밀번호를 성공적으로 변경했습니다.');
     }
 }
 

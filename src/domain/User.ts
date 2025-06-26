@@ -6,7 +6,7 @@ import {Birth} from "./valueObjects/Birth";
 export class User {
     private readonly _id: number;
     private readonly _email: string;
-    private readonly _password: Password;
+    private _password: Password;
     private _name: string;
     private _birth: Birth;
     private readonly _grade: Grade;
@@ -80,6 +80,12 @@ export class User {
         const birth = new Birth(createUserData.birth);
 
         return new User(id, createUserData.email, hashedPassword, createUserData.name, birth, Grade.BRONZE, new Date(), new Date());
+    }
+
+    async changePassword(newPassword: string): Promise<void> {
+        const password = new Password(newPassword);
+        this._password = await password.hash();
+        this._updatedAt = new Date();
     }
 
     updateProfile(name: string, birth: number): void {
