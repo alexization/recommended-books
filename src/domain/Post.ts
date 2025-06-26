@@ -1,13 +1,15 @@
-import {CreatePostData, PostData} from "./dto/PostDto.js";
+import {CreatePostData, PostData, UpdatePostData} from "./dto/PostDto.js";
+import {AppError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class Post {
     private readonly _id: number;
     private readonly _userId: number;
-    private readonly _title: string;
-    private readonly _content: string;
+    private _title: string;
+    private _content: string;
     private readonly _createdAt: Date;
     private readonly _bookId?: number;
-    private readonly _imagePath?: string;
+    private _imagePath?: string;
 
     constructor(id: number, userId: number, title: string, content: string, createdAt: Date, bookId?: number, imagePath?: string) {
         this._id = id;
@@ -30,6 +32,25 @@ export class Post {
     get bookId(): number | undefined {
         return this._bookId;
     }
+
+    update(userId: number, postData: UpdatePostData, imagePath?: string): void {
+        this.validateOwner(userId);
+
+        this._title = postData.title;
+        this._content = postData.content;
+        this._imagePath = imagePath;
+    }
+
+    validateOwner(userId: number): void {
+        if (!this.canModifiedBy(userId)) {
+            throw new AppError(ErrorMessage.POST_OWNER_INVALID);
+        }
+    }
+
+    canModifiedBy(userId: number): boolean {
+        return this._userId === userId;
+    }
+
 
     static create(postId: number, userId: number, postData: CreatePostData, imagePath?: string): Post {
         return new Post(postId, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);

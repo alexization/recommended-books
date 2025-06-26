@@ -38,7 +38,6 @@ export interface CreatePostData {
 }
 
 export interface UpdatePostData {
-    userId: number;
     postId: number;
     title: string;
     content: string;

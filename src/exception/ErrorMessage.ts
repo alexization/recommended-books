@@ -51,6 +51,9 @@ export const ErrorMessage = {
     POST_TITLE_REQUIRED: {message: "게시물 제목은 필수 입력 사항입니다.", code: 6001},
     POST_TITLE_INVALID: {message: "게시물 제목은 최대 50자 이내 입니다.", code: 6002},
     POST_CONTENT_REQUIRED: {message: "게시물 내용은 필수 입력 사항입니다.", code: 6003},
+    POST_NOT_FOUND: {message: "해당 게시물이 없습니다.", code: 6004},
+    POST_OWNER_INVALID: {message: "게시물은 작성자만이 수정/삭제할 수 있습니다.", code: 6005},
+    POST_ID_REQUIRED: {message: "게시물 ID는 필수 입력 사항입니다.", code: 6007},
 
 } as const;
 
