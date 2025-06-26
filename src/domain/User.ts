@@ -32,28 +32,8 @@ export class User {
         return this._email
     }
 
-    get password(): Password {
-        return this._password
-    }
-
-    get name(): string {
-        return this._name
-    }
-
-    get birth(): Birth {
-        return this._birth
-    }
-
     get grade(): Grade {
         return this._grade
-    }
-
-    get updatedAt(): Date {
-        return this._updatedAt
-    }
-
-    get createdAt(): Date {
-        return this._createdAt
     }
 
     static fromJson(userData: UserData): User {
