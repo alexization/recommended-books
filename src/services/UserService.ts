@@ -3,7 +3,7 @@ import {UserRepositoryInterface} from "../repositories/interfaces/UserRepository
 import {UserServiceInterface} from "./interfaces/UserServiceInterface";
 import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto.js";
 import {User} from "../domain/User.js";
-import {ValidationError} from "../exception/AppError";
+import {AppError, ValidationError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class UserService implements UserServiceInterface {
@@ -23,11 +23,23 @@ export class UserService implements UserServiceInterface {
     }
 
     async findUserById(id: number): Promise<User> {
-        return await this.userRepository.findUserById(id);
+        const user = await this.userRepository.findUserById(id);
+
+        if (!user) {
+            throw new AppError(ErrorMessage.USER_NOT_FOUND);
+        }
+
+        return user;
     }
 
     async findUserByEmail(email: string): Promise<User> {
-        return await this.userRepository.findUserByEmail(email);
+        const user = await this.userRepository.findUserByEmail(email);
+
+        if (!user) {
+            throw new AppError(ErrorMessage.USER_NOT_FOUND);
+        }
+
+        return user;
     }
 
     async updateUser(id: number, updateUserData: UpdateUserData): Promise<void> {
@@ -39,7 +51,9 @@ export class UserService implements UserServiceInterface {
     }
 
     async deleteUser(id: number): Promise<void> {
-        return await this.userRepository.deleteUser(id);
+        await this.findUserById(id);
+
+        await this.userRepository.deleteUser(id);
     }
 
     async changePassword(id: number, newPassword: string): Promise<void> {

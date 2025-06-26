@@ -29,7 +29,6 @@ export class UserRepository implements UserRepositoryInterface {
     }
 
     async findUserById(id: number): Promise<User> {
-
         try {
             const query = `SELECT *
                            FROM users
