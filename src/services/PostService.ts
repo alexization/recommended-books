@@ -4,6 +4,7 @@ import {PostRepositoryInterface} from "../repositories/interfaces/PostRepository
 import {postRepository} from "../repositories/PostRepository";
 import {User} from "../domain/User";
 import {ImageUtils} from "../utils/ImageUtils";
+import {Post} from "../domain/Post";
 
 export class PostService implements PostServiceInterface {
     private readonly postRepository: PostRepositoryInterface;
@@ -16,17 +17,13 @@ export class PostService implements PostServiceInterface {
         let imagePath: string | undefined;
 
         if (postData.imageBase64) {
-            try {
-                const {buffer, extension} = ImageUtils.decodeBase64Image(postData.imageBase64);
-
-                imagePath = await ImageUtils.saveImageFile(buffer, `${new Date().toISOString()}${extension}`);
-
-            } catch (error) {
-                throw error;
-            }
+            const {buffer, extension} = ImageUtils.decodeBase64Image(postData.imageBase64);
+            imagePath = await ImageUtils.saveImageFile(buffer, `${new Date().toISOString()}${extension}`);
         }
 
-        await this.postRepository.createPost(user, postData, imagePath);
+        const post = Post.create(user.id, postData, imagePath);
+
+        await this.postRepository.createPost(post);
     }
 }
 
