@@ -18,9 +18,9 @@ export class UserController {
     createUser = async (ctx: Context): Promise<void> => {
         const createUserData = CreateUserSchema.parse(ctx.request.body);
 
-        const newUser = await this.userService.createUser(createUserData);
+        await this.userService.createUser(createUserData);
 
-        ResponseHandler.success(ctx, '사용자가 정상적으로 등록되었습니다.', newUser);
+        ResponseHandler.success(ctx, '사용자가 정상적으로 등록되었습니다.');
     }
 
     findUserById = async (ctx: Context): Promise<void> => {
@@ -57,7 +57,7 @@ export class UserController {
         ResponseHandler.success(ctx, '사용자를 성공적으로 삭제했습니다.');
     }
 
-    changePassword = async(ctx:Context): Promise<void> => {
+    changePassword = async (ctx: Context): Promise<void> => {
         const id = ParamsIdSchema.parse(ctx.params.id);
         const newPassword = UserPasswordSchema.parse(ctx.request.body);
 

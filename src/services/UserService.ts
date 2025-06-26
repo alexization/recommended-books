@@ -3,6 +3,8 @@ import {UserRepositoryInterface} from "../repositories/interfaces/UserRepository
 import {UserServiceInterface} from "./interfaces/UserServiceInterface";
 import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto.js";
 import {User} from "../domain/User.js";
+import {ValidationError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class UserService implements UserServiceInterface {
     private readonly userRepository: UserRepositoryInterface
@@ -11,8 +13,13 @@ export class UserService implements UserServiceInterface {
         this.userRepository = userRepository;
     }
 
-    async createUser(createUserData: CreateUserData): Promise<boolean> {
-        return await this.userRepository.createUser(createUserData);
+    async createUser(createUserData: CreateUserData): Promise<void> {
+
+        if (await this.userRepository.isEmailExists(createUserData.email)) {
+            throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
+        }
+
+        await this.userRepository.createUser(createUserData);
     }
 
     async findUserById(id: number): Promise<User> {
@@ -28,7 +35,7 @@ export class UserService implements UserServiceInterface {
 
         user.updateProfile(updateUserData.name, updateUserData.birth);
 
-        return await this.userRepository.updateUser(user);
+        await this.userRepository.updateUser(user);
     }
 
     async deleteUser(id: number): Promise<void> {
@@ -40,7 +47,7 @@ export class UserService implements UserServiceInterface {
 
         await user.changePassword(newPassword);
 
-        return await this.userRepository.updateUser(user);
+        await this.userRepository.updateUser(user);
     }
 }
 

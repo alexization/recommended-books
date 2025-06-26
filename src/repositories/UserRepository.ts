@@ -1,4 +1,4 @@
-import {AppError, ValidationError} from "../exception/AppError";
+import {AppError} from "../exception/AppError";
 import {User} from "../domain/User.js";
 import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
 import {CountOfPostsPerUser, CreateUserData, UserData} from "../domain/dto/UserDto.js";
@@ -13,21 +13,15 @@ export class UserRepository implements UserRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createUser(createUserData: CreateUserData): Promise<boolean> {
-
-        if (await this.isEmailExists(createUserData.email)) {
-            throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
-        }
-
-        const newUser = await User.create(0, createUserData);
-
+    async createUser(createUserData: CreateUserData): Promise<void> {
         try {
+            const newUser = await User.create(0, createUserData);
+            const userData = newUser.toPersistence();
+
             const query = `INSERT INTO users (email, password, name, birth, grade, updated_at, created_at)
                            VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-            await this.db.executeQuery(query, [newUser.email, newUser.password, newUser.name, newUser.birth, newUser.grade, newUser.updatedAt, newUser.createdAt]);
-
-            return true;
+            await this.db.executeQuery(query, [userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
