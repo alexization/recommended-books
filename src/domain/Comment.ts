@@ -1,12 +1,14 @@
-import {CommentData, CreateCommentData} from "./dto/CommentDto.js";
+import {CommentData, CreateCommentData, UpdateCommentData} from "./dto/CommentDto.js";
+import {AppError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class Comment {
     private readonly _id: number;
     private readonly _postId: number;
     private readonly _userId: number;
-    private readonly _content: string;
+    private _content: string;
     private readonly _createdAt: Date;
-    private readonly _updatedAt: Date;
+    private _updatedAt: Date;
 
     constructor(id: number, postId: number, _userId: number, _content: string, createdAt: Date, updatedAt: Date) {
         this._id = id;
@@ -29,24 +31,25 @@ export class Comment {
         return this._userId;
     }
 
-    get content(): string {
-        return this._content;
+    update(userId: number, data: UpdateCommentData): void {
+        this.validateOwner(userId);
+
+        this._content = data.content;
+        this._updatedAt = new Date();
     }
 
-    get createdAt(): Date {
-        return this._createdAt;
+    validateOwner(userId: number): void {
+        if (this._userId !== userId) {
+            throw new AppError(ErrorMessage.COMMENT_OWNER_INVALID);
+        }
     }
 
-    get updatedAt(): Date {
-        return this._updatedAt;
-    }
-
-    static create(commentId: number, commentData: CreateCommentData): Comment {
-        return new Comment(commentId, commentData.postId, commentData.userId, commentData.content, new Date(), new Date());
+    static create(commentId: number, userId: number, commentData: CreateCommentData): Comment {
+        return new Comment(commentId, commentData.postId, userId, commentData.content, new Date(), new Date());
     }
 
     static fromJson(commentData: CommentData): Comment {
-        return new Comment(commentData.commentId, commentData.postId, commentData.userId, commentData.content, commentData.createdAt, commentData.updatedAt);
+        return new Comment(commentData.comment_id, commentData.post_id, commentData.user_id, commentData.content, commentData.created_at, commentData.updated_at);
     }
 
     toPersistence() {

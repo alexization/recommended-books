@@ -48,7 +48,7 @@ bookRouter.post('/', bookController.createBook);
  *          200:
  *              description: 성공
  * */
-bookRouter.get('/by-title-author', bookController.findBookByTitleAndAuthor);
+bookRouter.get('/by-title-author', bookController.getBookByTitleAndAuthor);
 
 /**
  * @swagger
@@ -68,7 +68,7 @@ bookRouter.get('/by-title-author', bookController.findBookByTitleAndAuthor);
  *          200:
  *              description: 성공
  * */
-bookRouter.get('/recent', bookController.getRecentBooks);
+bookRouter.get('/recent', bookController.findRecentBooks);
 
 /**
  * @swagger
@@ -93,7 +93,7 @@ bookRouter.get('/recent', bookController.getRecentBooks);
  *          200:
  *              description: 성공
  * */
-bookRouter.get('/by-title', bookController.getBooksByTitle);
+bookRouter.get('/by-title', bookController.findBooksByTitle);
 
 /**
  * @swagger
@@ -118,7 +118,7 @@ bookRouter.get('/by-title', bookController.getBooksByTitle);
  *          200:
  *              description: 성공
  * */
-bookRouter.get('/by-author', bookController.getBooksByAuthor);
+bookRouter.get('/by-author', bookController.findBooksByAuthor);
 
 /**
  * @swagger
@@ -180,7 +180,7 @@ bookRouter.get('/available/reservation', bookController.getReservationAvailableB
  *          200:
  *              description: 성공
  * */
-bookRouter.get('/:id', bookController.findBookById);
+bookRouter.get('/:id', bookController.getBookById);
 
 
 export default bookRouter;

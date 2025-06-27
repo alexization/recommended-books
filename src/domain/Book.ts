@@ -26,7 +26,7 @@ export class Book {
     }
 
     static fromJson(bookData: BookData) {
-        return new Book(bookData.bookId, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, bookData.createdAt);
+        return new Book(bookData.book_id, bookData.title, bookData.author, bookData.publisher, bookData.publication_year, bookData.created_at);
     }
 
     toPersistence() {

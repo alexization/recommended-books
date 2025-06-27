@@ -1,10 +1,10 @@
 export interface BookData {
-    bookId: number,
+    book_id: number,
     title: string,
     author: string,
     publisher: string,
-    publicationYear: number,
-    createdAt: Date,
+    publication_year: number,
+    created_at: Date,
 }
 
 /**

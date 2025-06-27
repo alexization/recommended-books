@@ -1,6 +1,6 @@
 export interface FollowData {
-    followId: number;
-    followingId: number;
-    followerId: number;
-    createdAt: Date;
+    follow_id: number;
+    following_id: number;
+    follower_id: number;
+    created_at: Date;
 }

@@ -31,6 +31,10 @@ export const ErrorMessage = {
     BOOK_PUBLISHER_REQUIRED: {message: "출판사명은 필수 입력 사항입니다.", code: 3007},
     BOOK_PUBLICATION_YEAR_REQUIRED: {message: "출판연도는 필수 입력 사항입니다.", code: 3008},
     BOOK_PUBLICATION_YEAR_INVALID: {message: "올바르지 않은 출판연도 범위입니다.", code: 3009},
+    BOOK_NOT_FOUND: {message: "해당 도서가 없습니다.", code: 3010},
+
+    /* 북마크 관련 에러 31xx */
+    BOOKMARK_NOT_FOUND: {message: "해당 북마크 정보가 없습니다.", code: 3101},
 
     /* 인증 및 인가 관련 에러 4xxx */
     PASSWORD_INVALID: {message: "비밀번호가 올바르지 않습니다.", code: 4001},
@@ -51,6 +55,22 @@ export const ErrorMessage = {
     POST_TITLE_REQUIRED: {message: "게시물 제목은 필수 입력 사항입니다.", code: 6001},
     POST_TITLE_INVALID: {message: "게시물 제목은 최대 50자 이내 입니다.", code: 6002},
     POST_CONTENT_REQUIRED: {message: "게시물 내용은 필수 입력 사항입니다.", code: 6003},
+    POST_NOT_FOUND: {message: "해당 게시물이 없습니다.", code: 6004},
+    POST_OWNER_INVALID: {message: "게시물은 작성자만이 수정/삭제할 수 있습니다.", code: 6005},
+    POST_ID_REQUIRED: {message: "게시물 ID는 필수 입력 사항입니다.", code: 6007},
+
+    /* 팔로우 관련 에러 7xxx */
+    FOLLOW_EXISTED: {message: "이미 존재하는 팔로우 관계입니다.", code: 7001},
+    FOLLOW_NOT_FOUND: {message: "팔로우하지 않은 사용자입니다.", code: 7002},
+    FOLLOW_INVALID: {message: "자기 자신을 팔로우할 수 없습니다.", code: 7003},
+
+    /* 댓글 관련 에러 8xxx */
+    COMMENT_OWNER_INVALID: {message: "댓글은 작성자만이 수정/삭제할 수 있습니다.", code: 8001},
+    COMMENT_NOT_FOUND: {message: "해당 댓글을 찾을 수 없습니다.", code: 8002},
+
+    /* 좋아요 관련 에러 9xxx */
+    POST_LIKE_NOT_FOUND: {message: "해당 좋아요가 없습니다.", code: 9001},
+    POST_LIKE_EXISTS: {message: "좋아요가 이미 존재합니다.", code: 9002},
 
 } as const;
 

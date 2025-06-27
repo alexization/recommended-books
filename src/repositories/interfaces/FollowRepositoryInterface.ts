@@ -3,9 +3,9 @@ import {Follow} from "../../domain/Follow";
 export interface FollowRepositoryInterface {
     createFollow(follow: Follow): Promise<void>;
 
-    deleteFollow(followingId: number, followerId: number): Promise<void>;
+    deleteFollow(followId: number): Promise<void>;
 
-    findFollow(followingId: number, followerId: number): Promise<Follow | undefined>;
+    findFollow(followingId: number, followerId: number): Promise<Follow>;
 
     findFollowingsByUserId(userId: number, page: number, limit: number): Promise<Follow[]>;
 

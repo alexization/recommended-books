@@ -5,5 +5,7 @@ export interface BookmarkServiceInterface {
 
     removeBookmark(userId: number, bookId: number): Promise<void>;
 
-    getBookmarksByUserId(userId: number, page: number): Promise<Bookmark[]>;
+    getBookmark(userId: number, bookId: number): Promise<Bookmark>;
+
+    findBookmarksByUserId(userId: number, page: number): Promise<Bookmark[]>;
 }

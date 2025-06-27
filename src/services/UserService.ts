@@ -18,10 +18,12 @@ export class UserService implements UserServiceInterface {
             throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
         }
 
-        await this.userRepository.createUser(createUserData);
+        const user = await User.create(0, createUserData);
+
+        await this.userRepository.createUser(user);
     }
 
-    async findUserById(id: number): Promise<User> {
+    async getUserById(id: number): Promise<User> {
         const user = await this.userRepository.findUserById(id);
 
         if (!user) {
@@ -31,7 +33,7 @@ export class UserService implements UserServiceInterface {
         return user;
     }
 
-    async findUserByEmail(email: string): Promise<User> {
+    async getUserByEmail(email: string): Promise<User> {
         const user = await this.userRepository.findUserByEmail(email);
 
         if (!user) {
@@ -42,20 +44,20 @@ export class UserService implements UserServiceInterface {
     }
 
     async updateUser(id: number, updateUserData: UpdateUserData): Promise<void> {
-        const user = await this.findUserById(id);
+        const user = await this.getUserById(id);
         user.updateProfile(updateUserData.name, updateUserData.birth);
 
         await this.userRepository.updateUser(user);
     }
 
     async deleteUser(id: number): Promise<void> {
-        await this.findUserById(id);
+        await this.getUserById(id);
 
         await this.userRepository.deleteUser(id);
     }
 
     async changePassword(id: number, newPassword: string): Promise<void> {
-        const user = await this.findUserById(id);
+        const user = await this.getUserById(id);
         await user.changePassword(newPassword);
 
         await this.userRepository.updateUser(user);

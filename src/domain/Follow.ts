@@ -1,4 +1,6 @@
 import {FollowData} from "./dto/FollowDto.js";
+import {AppError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class Follow {
     private readonly _id: number;
@@ -11,6 +13,8 @@ export class Follow {
         this._followingId = followingId;
         this._followerId = followerId;
         this._createdAt = createdAt;
+
+        this.validateFollow();
     }
 
     get id(): number {
@@ -25,8 +29,10 @@ export class Follow {
         return this._followerId;
     }
 
-    get createdAt(): Date {
-        return this._createdAt;
+    private validateFollow(): void {
+        if (this._followerId === this._followingId) {
+            throw new AppError(ErrorMessage.FOLLOW_EXISTED);
+        }
     }
 
     static create(followId: number, followingId: number, followerId: number): Follow {
@@ -34,7 +40,7 @@ export class Follow {
     }
 
     static fromJson(followData: FollowData): Follow {
-        return new Follow(followData.followId, followData.followingId, followData.followerId, followData.createdAt);
+        return new Follow(followData.follow_id, followData.following_id, followData.follower_id, followData.created_at);
     }
 
     toPersistence() {
@@ -42,7 +48,7 @@ export class Follow {
             follow_id: this._id,
             following_id: this._followingId,
             follower_id: this._followerId,
-            createdAt: this._createdAt,
+            created_at: this._createdAt,
         }
     }
 }

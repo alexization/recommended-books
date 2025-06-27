@@ -1,9 +1,9 @@
 import {User} from "../../domain/User";
-import {CountOfPostsPerUser, CreateUserData, UpdateUserData} from "../../domain/dto/UserDto";
+import {CountOfPostsPerUser} from "../../domain/dto/UserDto";
 import {Grade} from "../../domain/enums/Grade";
 
 export interface UserRepositoryInterface {
-    createUser(createUserData: CreateUserData): Promise<void>;
+    createUser(user: User): Promise<void>;
 
     findUserById(id: number): Promise<User>;
 

@@ -1,11 +1,11 @@
 export interface PostData {
-    postId: number;
-    userId: number;
+    post_id: number;
+    user_id: number;
     title: string;
     content: string;
-    createdAt: Date;
-    bookId?: number;
-    imagePath?: string;
+    created_at: Date;
+    book_id?: number;
+    image_path?: string;
 }
 
 /**
@@ -38,7 +38,6 @@ export interface CreatePostData {
 }
 
 export interface UpdatePostData {
-    userId: number;
     postId: number;
     title: string;
     content: string;

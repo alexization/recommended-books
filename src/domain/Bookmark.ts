@@ -28,7 +28,7 @@ export class Bookmark {
     }
 
     static fromJson(bookmarkData: BookmarkData): Bookmark {
-        return new Bookmark(bookmarkData.userId, bookmarkData.bookId, bookmarkData.createdAt);
+        return new Bookmark(bookmarkData.user_id, bookmarkData.book_id, bookmarkData.created_at);
     }
 
     toPersistence() {

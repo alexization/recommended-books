@@ -23,4 +23,10 @@ const postRouter = new Router({
  * */
 postRouter.post('/', postController.createPost);
 
+postRouter.put('/', postController.updatePost);
+
+postRouter.delete('/:id', postController.deletePost);
+
+postRouter.get('/:id', postController.getPost);
+
 export default postRouter;

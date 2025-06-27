@@ -23,45 +23,45 @@ export class BookController {
         ResponseHandler.success(ctx, '도서 정보를 성공적으로 등록했습니다.');
     }
 
-    findBookByTitleAndAuthor = async (ctx: Context): Promise<void> => {
+    getBookByTitleAndAuthor = async (ctx: Context): Promise<void> => {
         const title = BookTitleSchema.parse(ctx.query.title);
         const author = BookAuthorSchema.parse(ctx.query.author);
 
-        const bookData = await this.bookService.findBookByTitleAndAuthor(title, author);
+        const bookData = await this.bookService.getBookByTitleAndAuthor(title, author);
 
         ResponseHandler.success(ctx, '도서 정보를 성공적으로 가져왔습니다.', bookData);
     };
 
-    findBookById = async (ctx: Context): Promise<void> => {
+    getBookById = async (ctx: Context): Promise<void> => {
         const id = BookIdSchema.parse(ctx.params.id);
 
-        const bookData = await this.bookService.findBookById(id);
+        const bookData = await this.bookService.getBookById(id);
 
         ResponseHandler.success(ctx, '도서 정보를 성공적으로 가져왔습니다.', bookData);
     }
 
-    getRecentBooks = async (ctx: Context): Promise<void> => {
+    findRecentBooks = async (ctx: Context): Promise<void> => {
         const pageNo = PageNumberSchema.parse(ctx.query.pageNo);
 
-        const bookData = await this.bookService.getRecentBooks(pageNo);
+        const bookData = await this.bookService.findRecentBooks(pageNo);
 
         ResponseHandler.success(ctx, `${pageNo}번 페이지 도서를 성공적으로 가져왔습니다.`, bookData);
     }
 
-    getBooksByTitle = async (ctx: Context): Promise<void> => {
+    findBooksByTitle = async (ctx: Context): Promise<void> => {
         const pageNo = PageNumberSchema.parse(ctx.query.pageNo);
         const title = BookTitleSchema.parse(ctx.query.title);
 
-        const bookData = await this.bookService.getBooksByTitle(pageNo, title);
+        const bookData = await this.bookService.findBooksByTitle(pageNo, title);
 
         ResponseHandler.success(ctx, '검색 완료', bookData);
     };
 
-    getBooksByAuthor = async (ctx: Context): Promise<void> => {
+    findBooksByAuthor = async (ctx: Context): Promise<void> => {
         const pageNo = PageNumberSchema.parse(ctx.query.pageNo);
         const author = BookAuthorSchema.parse(ctx.query.author);
 
-        const bookData = await this.bookService.getBooksByAuthor(pageNo, author);
+        const bookData = await this.bookService.findBooksByAuthor(pageNo, author);
 
         ResponseHandler.success(ctx, '검색 완료', bookData);
     };
