@@ -6,7 +6,6 @@ import {User} from "../domain/User";
 import {ImageUtils} from "../utils/ImageUtils";
 
 export class PostService implements PostServiceInterface {
-
     private readonly postRepository: PostRepositoryInterface;
 
     constructor() {

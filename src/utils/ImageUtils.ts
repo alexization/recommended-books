@@ -1,5 +1,5 @@
-import {ValidationError} from "./AppError";
-import {ErrorMessage} from "./ErrorMessage";
+import {ValidationError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 import fs from "fs/promises";
 import path from "node:path";
 

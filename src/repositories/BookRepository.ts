@@ -2,8 +2,8 @@ import {BookRepositoryInterface} from "./interfaces/BookRepositoryInterface";
 import {Book} from "../domain/Book";
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {BookData, CreateBookData} from "../domain/dto/BookDto";
-import {AppError} from "../utils/AppError";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {AppError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class BookRepository implements BookRepositoryInterface {
     private db: DatabaseConnection;
@@ -22,7 +22,7 @@ export class BookRepository implements BookRepositoryInterface {
             await this.db.executeQuery(query, [newBook.title, newBook.author, newBook.publisher, newBook.publicationYear, newBook.createdAt]);
 
         } catch (error) {
-            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -38,7 +38,7 @@ export class BookRepository implements BookRepositoryInterface {
             return Book.fromJson(bookData[0]);
 
         } catch (error) {
-            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -53,7 +53,7 @@ export class BookRepository implements BookRepositoryInterface {
             return Book.fromJson(bookData[0]);
 
         } catch (error) {
-            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 }

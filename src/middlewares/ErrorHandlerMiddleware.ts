@@ -1,7 +1,7 @@
 import {Context, Next} from "koa";
-import {AppError, BadRequestError, NotFoundError, ValidationError} from "../utils/AppError.js";
+import {AppError, BadRequestError, NotFoundError, ValidationError} from "../exception/AppError";
 import {ResponseHandler} from "../utils/ResponseHandler.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {ErrorMessage} from "../exception/ErrorMessage";
 import {ZodError} from "zod";
 
 export const errorHandlerMiddleware = async (ctx: Context, next: Next): Promise<void> => {

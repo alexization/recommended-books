@@ -2,8 +2,8 @@ import {PostRepositoryInterface} from "./interfaces/PostRepositoryInterface";
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {CreatePostData} from "../domain/dto/PostDto";
 import {Post} from "../domain/Post";
-import {AppError} from "../utils/AppError";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {AppError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 import {User} from "../domain/User";
 
 export class PostRepository implements PostRepositoryInterface {
@@ -25,7 +25,7 @@ export class PostRepository implements PostRepositoryInterface {
             await this.db.executeQuery(query, [newPost.id, newPost.userId, newPost.title, newPost.content, newPost.createdAt, newPost.bookId, newPost.imagePath]);
 
         } catch (error) {
-            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 }

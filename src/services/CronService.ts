@@ -14,7 +14,7 @@ export class CronService {
     }
 
     private initializeMonthlyTask(): void {
-        this.monthlyTask = cron.schedule('10 50 13 * * *', async () => {
+        this.monthlyTask = cron.schedule('0 0 1 * *', async () => {
             await this.assignmentUserGrade();
         });
     }

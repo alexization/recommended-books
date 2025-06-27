@@ -1,20 +1,29 @@
 import {Context, Next} from "koa";
-import {ResponseHandler} from "../utils/ResponseHandler.js";
 import {JwtUtils} from "../utils/JwtUtils.js";
 import {authService} from "../services/AuthService.js";
 import {CookieUtils} from "../utils/CookieUtils.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {ErrorMessage} from "../exception/ErrorMessage";
+import {AppError} from "../exception/AppError";
 
-const PUBLIC_PATTERNS: string[] = [
-    'POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id',
-    'GET:/docs', 'GET:/favicon.png'
-];
+const PUBLIC_PATTERNS: string[] = ['POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id', 'GET:/docs', 'GET:/favicon.png'];
 
 function isPublicRequest(method: string, path: string): boolean {
     const requestPattern = `${method}:${path}`;
 
     return PUBLIC_PATTERNS.some(pattern => {
-        return pattern === requestPattern;
+        if (pattern === requestPattern) {
+            return true;
+        }
+
+        if (pattern.includes(':')) {
+            const regexPattern = pattern
+                .replace(/\//g, '\\/')
+                .replace(/:[^\/]+/g, '[^\\/]+') + '$';
+
+            const regex = new RegExp(regexPattern);
+            return regex.test(requestPattern);
+        }
+        return false;
     });
 }
 
@@ -34,12 +43,12 @@ export const jwtAuthMiddleware = async (ctx: Context, next: Next): Promise<void>
 
         await next();
 
-    } catch (error: any) {
-        if (error === ErrorMessage.ACCESS_TOKEN_EXPIRED) {
+    } catch (error) {
+        if (error instanceof AppError && error.message === ErrorMessage.ACCESS_TOKEN_EXPIRED.message) {
             const refreshToken = CookieUtils.getRefreshToken(ctx);
 
             if (!refreshToken) {
-                return ResponseHandler.error(ctx, '다시 로그인해주세요.', 401);
+                throw new AppError(ErrorMessage.REFRESH_TOKEN_EXPIRED);
             }
 
             try {
@@ -56,10 +65,10 @@ export const jwtAuthMiddleware = async (ctx: Context, next: Next): Promise<void>
             } catch (error) {
                 CookieUtils.clearRefreshToken(ctx);
 
-                return ResponseHandler.error(ctx, '다시 로그인해주세요.', 401);
+                throw new AppError(ErrorMessage.REFRESH_TOKEN_EXPIRED);
             }
         } else {
-            return ResponseHandler.error(ctx, '유효하지 않는 토큰입니다.', 401);
+            throw error;
         }
     }
 };

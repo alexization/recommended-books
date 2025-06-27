@@ -1,8 +1,8 @@
-import {AppError, NotFoundError, ValidationError} from "../utils/AppError.js";
+import {AppError, ValidationError} from "../exception/AppError";
 import {User} from "../domain/User.js";
 import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
 import {CountOfPostsPerUser, CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto.js";
-import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {ErrorMessage} from "../exception/ErrorMessage";
 import {DatabaseConnection} from "../config/DatabaseConfig.js";
 import {Grade} from "../domain/enums/Grade";
 
@@ -30,8 +30,7 @@ export class UserRepository implements UserRepositoryInterface {
             return true;
 
         } catch (error) {
-            console.error("사용자 생성 중 오류", error);
-            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -47,8 +46,7 @@ export class UserRepository implements UserRepositoryInterface {
             return User.fromJson(userData[0]);
 
         } catch (error) {
-            console.error("사용자 조회 중 오류", error);
-            throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -63,8 +61,7 @@ export class UserRepository implements UserRepositoryInterface {
             return User.fromJson(userData[0]);
 
         } catch (error) {
-            console.error("사용자 조회 중 오류", error);
-            throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -79,7 +76,7 @@ export class UserRepository implements UserRepositoryInterface {
             await this.db.executeQuery(query, [updateUserData.name, updateUserData.birth, new Date(), userId]);
 
         } catch (error) {
-            console.error("사용자 정보 수정 중 오류", error);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -92,7 +89,7 @@ export class UserRepository implements UserRepositoryInterface {
             await this.db.executeQuery(query, [id]);
 
         } catch (error) {
-            console.error("사용자 정보 삭제 중 오류", error);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -105,8 +102,7 @@ export class UserRepository implements UserRepositoryInterface {
             return rows[0].isEmailExists === 1;
 
         } catch (error) {
-            console.error("이메일 중복 확인 중 오류", error);
-            return false;
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -121,7 +117,7 @@ export class UserRepository implements UserRepositoryInterface {
             return await this.db.executeQuery<CountOfPostsPerUser[]>(query, [baseDate]);
 
         } catch (error) {
-            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -129,7 +125,7 @@ export class UserRepository implements UserRepositoryInterface {
     async updateUserGrade(userIds: number[], grade: Grade): Promise<void> {
         try {
             const placeholders = userIds.map(() => '?').join(',');
-            console.log(placeholders);
+
             const query = `UPDATE users
                            SET grade      = ?,
                                updated_at = ?
@@ -138,7 +134,7 @@ export class UserRepository implements UserRepositoryInterface {
             await this.db.executeQuery(query, [grade, new Date(), ...userIds]);
 
         } catch (error) {
-            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 }
