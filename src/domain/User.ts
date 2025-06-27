@@ -1,5 +1,5 @@
 import {CreateUserData, UserData} from "./dto/UserDto.js";
-import {Grade} from "./enums/Grade.js";
+import {Grade, GradeUtils} from "./enums/Grade.js";
 import bcrypt from 'bcryptjs';
 
 export class User {
@@ -56,7 +56,7 @@ export class User {
     }
 
     static fromJson(userData: UserData): User {
-        return new User(userData.userId, userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updatedAt, userData.createdAt);
+        return new User(userData.user_id, userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at);
     }
 
     static async create(id: number, createUserData: CreateUserData): Promise<User> {
@@ -67,5 +67,23 @@ export class User {
 
     async validatePassword(password: string): Promise<boolean> {
         return await bcrypt.compare(password, this.password);
+    }
+
+    isAvailableReservation(date: Date): boolean {
+        const now = new Date();
+        const preOrderDays = GradeUtils.convertPreOrderDays(this._grade);
+
+        date.setDate(date.getDate() - preOrderDays);
+
+        return now >= date;
+    }
+
+    expectedReturnDate(startDate: Date): Date {
+        const loanPeriod = GradeUtils.loanPeriod(this._grade);
+
+        const returnDate = startDate;
+        returnDate.setDate(returnDate.getDate() + loanPeriod);
+
+        return returnDate;
     }
 }

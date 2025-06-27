@@ -52,26 +52,6 @@ bookRouter.get('/by-title-author', bookController.findBookByTitleAndAuthor);
 
 /**
  * @swagger
- * /books/{id}:
- *  get:
- *      summary: 도서 조회 (도서 ID)
- *      tags: [Books]
- *      security:
- *          - BearerAuth: []
- *      parameters:
- *          - in: path
- *            name: id
- *            required: true
- *            schema:
- *              type: integer
- *      responses:
- *          200:
- *              description: 성공
- * */
-bookRouter.get('/:id', bookController.findBookById);
-
-/**
- * @swagger
  * /books/recent:
  *  get:
  *      summary: 도서 조회 (최신순)
@@ -139,5 +119,48 @@ bookRouter.get('/by-title', bookController.getBooksByTitle);
  *              description: 성공
  * */
 bookRouter.get('/by-author', bookController.getBooksByAuthor);
+
+bookRouter.get('/return-date', bookController.getReturnDate);
+
+/**
+ * @swagger
+ * /books/available/reservation:
+ *  get:
+ *      summary: 예약 가능 도서 조회
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: query
+ *            name: pageNo
+ *            required: true
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
+bookRouter.get('/available/reservation', bookController.getReservationAvailableBooks);
+
+/**
+ * @swagger
+ * /books/{id}:
+ *  get:
+ *      summary: 도서 조회 (도서 ID)
+ *      tags: [Books]
+ *      security:
+ *          - BearerAuth: []
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            required: true
+ *            schema:
+ *              type: integer
+ *      responses:
+ *          200:
+ *              description: 성공
+ * */
+bookRouter.get('/:id', bookController.findBookById);
+
 
 export default bookRouter;

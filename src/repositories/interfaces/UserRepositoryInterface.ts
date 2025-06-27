@@ -1,5 +1,6 @@
 import {User} from "../../domain/User";
-import {CreateUserData, UpdateUserData} from "../../domain/dto/UserDto";
+import {CountOfPostsPerUser, CreateUserData, UpdateUserData} from "../../domain/dto/UserDto";
+import {Grade} from "../../domain/enums/Grade";
 
 export interface UserRepositoryInterface {
     createUser(createUserData: CreateUserData): Promise<boolean>;
@@ -11,4 +12,8 @@ export interface UserRepositoryInterface {
     updateUser(id: number, updateUserData: UpdateUserData): Promise<void>;
 
     deleteUser(id: number): Promise<void>;
+
+    getCountOfPostsPerUserByMonth(baseDate: string): Promise<CountOfPostsPerUser[]>;
+
+    updateUserGrade(userIds: number[], grade: Grade): Promise<void>;
 }

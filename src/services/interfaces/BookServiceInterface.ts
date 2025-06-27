@@ -1,5 +1,6 @@
-import {BookData, CreateBookData} from "../../domain/dto/BookDto";
+import {CreateBookData, OpenApiBookData} from "../../domain/dto/BookDto";
 import {Book} from "../../domain/Book";
+import {User} from "../../domain/User";
 
 export interface BookServiceInterface {
     createBook(bookData: CreateBookData): Promise<void>;
@@ -8,9 +9,13 @@ export interface BookServiceInterface {
 
     findBookById(id: number): Promise<Book>;
 
-    getRecentBooks(pageNo: number): Promise<BookData[]>;
+    getRecentBooks(pageNo: number): Promise<OpenApiBookData[]>;
 
-    getBooksByTitle(pageNo: number, title: string): Promise<BookData[]>;
+    getBooksByTitle(pageNo: number, title: string): Promise<OpenApiBookData[]>;
 
-    getBooksByAuthor(pageNo: number, author: string): Promise<BookData[]>;
+    getBooksByAuthor(pageNo: number, author: string): Promise<OpenApiBookData[]>;
+
+    getReservationAvailableBooks(pageNo: number, user: User): Promise<OpenApiBookData[]>;
+
+    getReturnDate(startDate: Date, user: User): Date;
 }

@@ -1,9 +1,10 @@
 import {AppError, NotFoundError, ValidationError} from "../utils/AppError.js";
 import {User} from "../domain/User.js";
 import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
-import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto.js";
+import {CountOfPostsPerUser, CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 import {DatabaseConnection} from "../config/DatabaseConfig.js";
+import {Grade} from "../domain/enums/Grade";
 
 export class UserRepository implements UserRepositoryInterface {
     private db: DatabaseConnection;
@@ -21,7 +22,8 @@ export class UserRepository implements UserRepositoryInterface {
         const newUser = await User.create(0, createUserData);
 
         try {
-            const query = `INSERT users (email, password, name, birth, grade, updated_at, created_at) VALUES(?,?,?,?,?,?,?)`;
+            const query = `INSERT INTO users (email, password, name, birth, grade, updated_at, created_at)
+                           VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
             await this.db.executeQuery(query, [newUser.email, newUser.password, newUser.name, newUser.birth, newUser.grade, newUser.updatedAt, newUser.createdAt]);
 
@@ -38,7 +40,7 @@ export class UserRepository implements UserRepositoryInterface {
         try {
             const query = `SELECT *
                            FROM users
-                           WHERE id = ?`;
+                           WHERE user_id = ?`;
 
             const userData = await this.db.executeQuery<UserData[]>(query, [id]);
 
@@ -105,6 +107,38 @@ export class UserRepository implements UserRepositoryInterface {
         } catch (error) {
             console.error("이메일 중복 확인 중 오류", error);
             return false;
+        }
+    }
+
+    async getCountOfPostsPerUserByMonth(baseDate: string): Promise<CountOfPostsPerUser[]> {
+        try {
+            const query = `SELECT users.user_id, (COUNT(post_id) + 0) as number_of_posts
+                           FROM users
+                                    LEFT JOIN posts ON users.user_id = posts.user_id AND
+                                                       DATE_FORMAT(posts.created_at, '%Y-%m') = ?
+                           GROUP BY users.user_id`;
+
+            return await this.db.executeQuery<CountOfPostsPerUser[]>(query, [baseDate]);
+
+        } catch (error) {
+            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
+        }
+    }
+
+
+    async updateUserGrade(userIds: number[], grade: Grade): Promise<void> {
+        try {
+            const placeholders = userIds.map(() => '?').join(',');
+            console.log(placeholders);
+            const query = `UPDATE users
+                           SET grade      = ?,
+                               updated_at = ?
+                           WHERE user_id IN (${placeholders})`;
+
+            await this.db.executeQuery(query, [grade, new Date(), ...userIds]);
+
+        } catch (error) {
+            throw new AppError(ErrorMessage.UNEXPECTED_ERROR);
         }
     }
 }

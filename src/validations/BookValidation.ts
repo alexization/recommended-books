@@ -30,3 +30,5 @@ export const CreateBookSchema = z.object({
         .min(1500, ErrorMessage.BOOK_PUBLICATION_YEAR_INVALID)
         .max(new Date().getFullYear() + 1, ErrorMessage.BOOK_PUBLICATION_YEAR_INVALID),
 });
+
+export const StartDateSchema = z.coerce.date()

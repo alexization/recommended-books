@@ -1,14 +1,14 @@
 import {Grade} from "../enums/Grade.js";
 
 export interface UserData {
-    userId: number;
+    user_id: number;
     email: string;
     password: string;
     name: string;
     birth: number;
     grade: Grade;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }
 
 /**
@@ -87,4 +87,9 @@ export interface UpdateUserData {
 export interface LoginUserData {
     email: string;
     password: string;
+}
+
+export interface CountOfPostsPerUser {
+    user_id: number;
+    number_of_posts: bigint;
 }

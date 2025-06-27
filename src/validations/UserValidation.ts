@@ -10,7 +10,8 @@ export const CreateUserSchema = z.object({
         .max(12, ErrorMessage.PASSWORD_INVALID_LENGTH), name: z
         .string(ErrorMessage.NAME_REQUIRED)
         .min(1, ErrorMessage.NAME_INVALID_LENGTH)
-        .max(10, ErrorMessage.NAME_INVALID_LENGTH), birth: z
+        .max(10, ErrorMessage.NAME_INVALID_LENGTH),
+    birth: z
         .number(ErrorMessage.BIRTH_YEAR_REQUIRED)
         .min(1900, ErrorMessage.BIRTH_YEAR_INVALID_RANGE)
         .max(new Date().getFullYear(), ErrorMessage.BIRTH_YEAR_INVALID_RANGE)

@@ -38,3 +38,19 @@ export interface CreateBookData {
     publisher: string,
     publicationYear: number
 }
+
+export interface OpenApiBookJson {
+    bk_nm: string;
+    aut_nm: string;
+    pblshr: string;
+    loan_yn: string;
+    rtn_ed: string;
+}
+
+export interface OpenApiBookData {
+    title: string;
+    author: string;
+    publisher: string;
+    loanStatus: boolean;
+    returnDate: Date;
+}

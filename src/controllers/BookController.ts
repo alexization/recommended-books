@@ -7,7 +7,7 @@ import {
     BookIdSchema,
     BookTitleSchema,
     CreateBookSchema,
-    PageNumberSchema
+    PageNumberSchema, StartDateSchema
 } from "../validations/BookValidation";
 
 export class BookController {
@@ -64,6 +64,22 @@ export class BookController {
         const bookData = await this.bookService.getBooksByAuthor(pageNo, author);
 
         ResponseHandler.success(ctx, '검색 완료', bookData);
+    };
+
+    getReservationAvailableBooks = async (ctx: Context): Promise<void> => {
+        const pageNo = PageNumberSchema.parse(ctx.query.pageNo);
+
+        const bookData = await this.bookService.getReservationAvailableBooks(pageNo, ctx.state.user);
+
+        ResponseHandler.success(ctx, '예약 가능한 도서 목록을 성공적으로 반환했습니다.', bookData);
+    };
+
+    getReturnDate = (ctx: Context): void => {
+        const startDate = StartDateSchema.parse(ctx.query.startDate);
+
+        const returnDate = this.bookService.getReturnDate(startDate, ctx.state.user);
+
+        ResponseHandler.success(ctx, '반납 예정 날짜를 반환했습니다.', returnDate);
     };
 }
 

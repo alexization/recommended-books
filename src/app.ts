@@ -10,6 +10,7 @@ import authRouter from "./routes/AuthRoutes.js";
 import {jwtAuthMiddleware} from "./middlewares/JwtAuthMiddleware.js";
 import {DatabaseConnection} from "./config/DatabaseConfig.js";
 import {swaggerUI} from "./config/Swagger";
+import {cronService} from "./services/CronService";
 
 dotenv.config();
 
@@ -56,10 +57,12 @@ export function createApp(): Koa {
 
 export async function startServer(port: number = 3000): Promise<Koa> {
     try {
-
         DatabaseConnection.getInstance();
 
         const app = createApp();
+
+        cronService.start();
+        console.log('Schedule Start');
 
         app.listen(port, () => {
             console.log((`Server started at ${port}`));
