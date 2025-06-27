@@ -1,49 +1,47 @@
 import {BookData} from "./dto/BookDto";
 
 export class Book {
-    private readonly bk_nm: string;
-    private readonly aut_nm: string;
-    private readonly pblshr: string;
-    private readonly pblcn_yr: string;
-    private readonly callno: string;
-    private readonly lib: string;
-    private readonly refrm: string;
-    private readonly loan_yn: string;
-    private readonly rtn_ed: string;
-    private readonly bk_rsvt: string;
-    private readonly mutl_loan: string;
+    private readonly _id: number;
+    private readonly _title: string;
+    private readonly _author: string;
+    private readonly _publisher: string;
+    private readonly _publicationYear: number;
+    private readonly _createdAt: Date;
 
-    constructor(bookData: BookData) {
-        this.bk_nm = bookData.bk_nm;    // 도서명
-        this.aut_nm = bookData.aut_nm;  // 저자명
-        this.pblshr = bookData.pblshr;  // 출판사
-        this.pblcn_yr = bookData.pblcn_yr;  // 발행연도
-        this.callno = bookData.callno;  // 청구기호
-        this.lib = bookData.lib;    // 소장 도서관
-        this.refrm = bookData.refrm;    // 소장 자료실
-        this.loan_yn = bookData.loan_yn;    // 대출여부
-        this.rtn_ed = bookData.rtn_ed;  // 반납 예정일
-        this.bk_rsvt = bookData.bk_rsvt;    // 도석예약 여부
-        this.mutl_loan = bookData.mutl_loan;    // 상호대차 여부
+    constructor(id: number, title: string, author: string, publisher: string, publicationYear: number, createdAt: Date) {
+        this._id = id;
+        this._title = title;
+        this._author = author;
+        this._publisher = publisher;
+        this._publicationYear = publicationYear;
+        this._createdAt = createdAt;
     }
 
-    static fromJSON(bookData: BookData): Book {
-        return new Book(bookData);
+    get id(): number {
+        return this._id
     }
 
-    toJSON(): BookData {
-        return {
-            bk_nm: this.bk_nm,
-            aut_nm: this.aut_nm,
-            pblshr: this.pblshr,
-            pblcn_yr: this.pblcn_yr,
-            callno: this.callno,
-            lib: this.lib,
-            refrm: this.refrm,
-            loan_yn: this.loan_yn,
-            rtn_ed: this.rtn_ed,
-            bk_rsvt: this.bk_rsvt,
-            mutl_loan: this.mutl_loan
-        };
+    get title(): string {
+        return this._title
+    }
+
+    get author(): string {
+        return this._author
+    }
+
+    get publisher(): string {
+        return this._publisher
+    }
+
+    get publicationYear(): number {
+        return this._publicationYear
+    }
+
+    get createdAt(): Date {
+        return this._createdAt
+    }
+
+    static fromJson(bookData: BookData) {
+        return new Book(bookData.bookId, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, bookData.createdAt);
     }
 }
