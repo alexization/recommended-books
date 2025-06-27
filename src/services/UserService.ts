@@ -18,7 +18,7 @@ export class UserService implements UserServiceInterface {
             throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
         }
 
-        const user = await User.create(0, createUserData);
+        const user = await User.create(createUserData);
 
         await this.userRepository.createUser(user);
     }

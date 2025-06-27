@@ -24,25 +24,13 @@ export class User {
         this._createdAt = createdAt;
     }
 
-    get id(): number {
-        return this._id
-    }
-
-    get email(): string {
-        return this._email
-    }
-
-    get grade(): Grade {
-        return this._grade
-    }
-
-    static async create(userId: number, createUserData: CreateUserData): Promise<User> {
+    static async create(createUserData: CreateUserData): Promise<User> {
         const password = new Password(createUserData.password);
         const hashedPassword = await password.hash();
 
         const birth = new Birth(createUserData.birth);
 
-        return new User(userId, createUserData.email, hashedPassword, createUserData.name, birth, Grade.BRONZE, new Date(), new Date());
+        return new User(0, createUserData.email, hashedPassword, createUserData.name, birth, Grade.BRONZE, new Date(), new Date());
     }
 
     async changePassword(newPassword: string): Promise<void> {
@@ -61,19 +49,19 @@ export class User {
         return await this._password.matches(plainPassword);
     }
 
-    canReserveBookForDate(targetDate: Date): boolean {
+    canReserveBookOn(reservationDate: Date): boolean {
         const gradePolicy = new GradePolicy();
         const preOrderDays = gradePolicy.getPreOrderDays(this._grade);
 
         const now = new Date();
-        const adjustDate = new Date(targetDate);
+        const adjustDate = new Date(reservationDate);
 
         adjustDate.setDate(adjustDate.getDate() - preOrderDays);
 
         return now >= adjustDate;
     }
 
-    calculateExpectedReturnDate(loanStartDate: Date): Date {
+    calculateReturnDate(loanStartDate: Date): Date {
         const gradePolicy = new GradePolicy();
         const loanPeriod = gradePolicy.getLoanPeriod(this._grade);
 
@@ -81,10 +69,6 @@ export class User {
         returnDate.setDate(returnDate.getDate() + loanPeriod);
 
         return returnDate;
-    }
-
-    getAge(): number {
-        return this._birth.calculateAge();
     }
 
     static fromJson(userData: UserData): User {
@@ -102,5 +86,17 @@ export class User {
             updated_at: this._updatedAt,
             created_at: this._createdAt
         }
+    }
+
+    get id(): number {
+        return this._id
+    }
+
+    get email(): string {
+        return this._email
+    }
+
+    get grade(): Grade {
+        return this._grade
     }
 }

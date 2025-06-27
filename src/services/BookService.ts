@@ -93,7 +93,7 @@ export class BookService implements BookServiceInterface {
             const bookJson = response.data.items as OpenApiBookJson[];
 
             const openApiBookData = this.mapToOpenApiBookData(bookJson);
-            return openApiBookData.filter(book => book.loanStatus || user.canReserveBookForDate(book.returnDate));
+            return openApiBookData.filter(book => book.loanStatus || user.canReserveBookOn(book.returnDate));
 
         } catch (error) {
             throw new AppError(ErrorMessage.API_CALL_ERROR);
@@ -101,7 +101,7 @@ export class BookService implements BookServiceInterface {
     }
 
     getReturnDate(startDate: Date, user: User): Date {
-        return user.calculateExpectedReturnDate(startDate);
+        return user.calculateReturnDate(startDate);
     }
 
     private buildBaseSearchUrl(pageNo: number): string {
