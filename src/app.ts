@@ -9,6 +9,7 @@ import userRouter from "./routes/UserRoutes";
 import bookRouter from "./routes/BookRoutes";
 import authRouter from "./routes/AuthRoutes";
 import {jwtAuthMiddleware} from "./middlewares/JwtAuthMiddleware";
+import {DatabaseConnection} from "./config/DatabaseConfig";
 
 dotenv.config();
 
@@ -51,7 +52,8 @@ export function createApp(): Koa {
 
 export async function startServer(port: number = 3000): Promise<Koa> {
     try {
-        await userService.initialize();
+
+        DatabaseConnection.getInstance();
 
         const app = createApp();
 

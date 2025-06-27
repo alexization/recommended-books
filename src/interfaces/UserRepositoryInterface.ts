@@ -2,9 +2,7 @@ import {User} from "../domain/User";
 import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto";
 
 export interface UserRepositoryInterface {
-    initialize(): Promise<void>;
-
-    createUser(createUserData: CreateUserData): Promise<User>;
+    createUser(createUserData: CreateUserData): Promise<boolean>;
 
     findUserById(id: number): Promise<User>;
 

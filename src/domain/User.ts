@@ -1,23 +1,51 @@
 import bcrypt from 'bcryptjs';
-import {CreateUserData, UpdateUserData, UserData} from "./dto/UserDto";
+import {CreateUserData, UserData} from "./dto/UserDto";
 
 export class User {
-    public readonly id: number;
-    public readonly email: string;
-    public password: string;
-    public name: string;
-    public birth: number;
-    public updatedAt: string;
-    public readonly createdAt: string;
+    private readonly id: number;
+    private readonly email: string;
+    private readonly password: string;
+    private name: string;
+    private birth: number;
+    private updatedAt: Date;
+    private readonly createdAt: Date;
 
-    constructor(id: number, email: string, password: string, name: string, birth: number, updatedAt?: string, createdAt?: string) {
+    constructor(id: number, email: string, password: string, name: string, birth: number, updatedAt?: Date, createdAt?: Date) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.birth = birth;
-        this.updatedAt = updatedAt ?? new Date().toISOString();
-        this.createdAt = createdAt ?? new Date().toISOString();
+        this.updatedAt = updatedAt ?? new Date();
+        this.createdAt = createdAt ?? new Date();
+    }
+
+    get getId(): number {
+        return this.id
+    }
+
+    get getEmail(): string {
+        return this.email
+    }
+
+    get getPassword(): string {
+        return this.password
+    }
+
+    get getName(): string {
+        return this.name
+    }
+
+    get getBirth(): number {
+        return this.birth
+    }
+
+    get getUpdatedAt(): Date {
+        return this.updatedAt
+    }
+
+    get getCreatedAt(): Date {
+        return this.createdAt
     }
 
     static fromJson(userData: UserData): User {
@@ -32,11 +60,5 @@ export class User {
 
     async validatePassword(password: string): Promise<boolean> {
         return await bcrypt.compare(password, this.password);
-    }
-
-    update(updateUserData: UpdateUserData): void {
-        this.name = updateUserData.name;
-        this.birth = updateUserData.birth;
-        this.updatedAt = new Date().toISOString();
     }
 }

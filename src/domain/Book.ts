@@ -1,17 +1,17 @@
 import {BookData} from "./dto/BookDto";
 
 export class Book {
-    public bk_nm: string;
-    public aut_nm: string;
-    public pblshr: string;
-    public pblcn_yr: string;
-    public callno: string;
-    public lib: string;
-    public refrm: string;
-    public loan_yn: string;
-    public rtn_ed: string;
-    public bk_rsvt: string;
-    public mutl_loan: string;
+    private readonly bk_nm: string;
+    private readonly aut_nm: string;
+    private readonly pblshr: string;
+    private readonly pblcn_yr: string;
+    private readonly callno: string;
+    private readonly lib: string;
+    private readonly refrm: string;
+    private readonly loan_yn: string;
+    private readonly rtn_ed: string;
+    private readonly bk_rsvt: string;
+    private readonly mutl_loan: string;
 
     constructor(bookData: BookData) {
         this.bk_nm = bookData.bk_nm;    // 도서명

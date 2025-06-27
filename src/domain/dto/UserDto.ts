@@ -4,8 +4,8 @@ export interface UserData {
     password: string;
     name: string;
     birth: number;
-    createdAt: string;
-    updatedAt: string;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 export interface CreateUserData {
