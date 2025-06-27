@@ -1,15 +1,15 @@
 export class Birth {
-    private readonly value: number;
+    private readonly _value: number;
 
     constructor(birth: number) {
-        this.value = birth;
+        this._value = birth;
     }
 
     calculateAge(): number {
-        return new Date().getFullYear() - this.value;
+        return new Date().getFullYear() - this._value;
     }
 
     getValue(): number {
-        return this.value;
+        return this._value;
     }
 }
