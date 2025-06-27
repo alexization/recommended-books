@@ -1,6 +1,6 @@
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {PostLikeRepositoryInterface} from "./interfaces/PostLikeRepositoryInterface";
-import {PostLike} from "../domain/PostLike";
+import {PostLike} from "../domain/entities/PostLike";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 import {PostLikeData} from "../domain/dto/PostLikeDto";

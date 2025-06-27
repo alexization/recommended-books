@@ -1,5 +1,5 @@
 import {PostLikeServiceInterface} from "./interfaces/PostLikeServiceInterface";
-import {PostLike} from "../domain/PostLike";
+import {PostLike} from "../domain/entities/PostLike";
 import {PostLikeRepositoryInterface} from "../repositories/interfaces/PostLikeRepositoryInterface";
 import {postLikeRepository} from "../repositories/PostLikeRepository";
 import {AppError} from "../exception/AppError";

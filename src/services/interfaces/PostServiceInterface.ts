@@ -1,6 +1,6 @@
 import {CreatePostData, UpdatePostData} from "../../domain/dto/PostDto";
-import {User} from "../../domain/User";
-import {Post} from "../../domain/Post";
+import {User} from "../../domain/aggregates/User";
+import {Post} from "../../domain/aggregates/Post";
 
 export interface PostServiceInterface {
     createPost(user: User, postData: CreatePostData): Promise<void>;

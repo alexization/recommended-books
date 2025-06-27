@@ -1,5 +1,5 @@
 import {FollowServiceInterface} from "./interfaces/FollowServiceInterface";
-import {Follow} from "../domain/Follow";
+import {Follow} from "../domain/entities/Follow";
 import {FollowRepositoryInterface} from "../repositories/interfaces/FollowRepositoryInterface";
 import {followRepository} from "../repositories/FollowRepository";
 import {AppError} from "../exception/AppError";

@@ -1,6 +1,6 @@
-import {CommentData, CreateCommentData, UpdateCommentData} from "./dto/CommentDto.js";
-import {AppError} from "../exception/AppError";
-import {ErrorMessage} from "../exception/ErrorMessage";
+import {CommentData, CreateCommentData, UpdateCommentData} from "../dto/CommentDto";
+import {AppError} from "../../exception/AppError";
+import {ErrorMessage} from "../../exception/ErrorMessage";
 
 export class Comment {
     private readonly _id: number;

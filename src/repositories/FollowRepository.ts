@@ -1,5 +1,5 @@
 import {FollowRepositoryInterface} from "./interfaces/FollowRepositoryInterface";
-import {Follow} from "../domain/Follow";
+import {Follow} from "../domain/entities/Follow";
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";

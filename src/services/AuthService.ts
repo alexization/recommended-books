@@ -4,7 +4,7 @@ import {JwtUtils, TokenPair} from "../utils/JwtUtils.js";
 import {userRepository} from "../repositories/UserRepository.js";
 import {NotFoundError, ValidationError} from "../exception/AppError";
 import {UserRepositoryInterface} from "../repositories/interfaces/UserRepositoryInterface";
-import {User} from "../domain/User.js";
+import {User} from "../domain/aggregates/User";
 import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class AuthService implements AuthServiceInterface {

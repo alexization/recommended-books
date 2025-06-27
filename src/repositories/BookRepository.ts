@@ -1,5 +1,5 @@
 import {BookRepositoryInterface} from "./interfaces/BookRepositoryInterface";
-import {Book} from "../domain/Book";
+import {Book} from "../domain/entities/Book";
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {BookData} from "../domain/dto/BookDto";
 import {AppError} from "../exception/AppError";

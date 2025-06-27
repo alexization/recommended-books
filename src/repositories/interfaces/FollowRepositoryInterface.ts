@@ -1,4 +1,4 @@
-import {Follow} from "../../domain/Follow";
+import {Follow} from "../../domain/entities/Follow";
 
 export interface FollowRepositoryInterface {
     createFollow(follow: Follow): Promise<void>;

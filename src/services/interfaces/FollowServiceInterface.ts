@@ -1,4 +1,4 @@
-import {Follow} from "../../domain/Follow";
+import {Follow} from "../../domain/entities/Follow";
 
 export interface FollowServiceInterface {
     follow(followingId: number, followerId: number): Promise<void>;

@@ -1,5 +1,5 @@
 import {BookmarkRepositoryInterface} from "./interfaces/BookmarkRepositoryInterface";
-import {Bookmark} from "../domain/Bookmark";
+import {Bookmark} from "../domain/entities/Bookmark";
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";

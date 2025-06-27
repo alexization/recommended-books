@@ -4,10 +4,10 @@ import {AppError} from "../exception/AppError";
 import {BookServiceInterface} from "./interfaces/BookServiceInterface";
 import {CreateBookData, OpenApiBookData, OpenApiBookJson} from "../domain/dto/BookDto.js";
 import {ErrorMessage} from "../exception/ErrorMessage";
-import {Book} from "../domain/Book";
+import {Book} from "../domain/entities/Book";
 import {BookRepositoryInterface} from "../repositories/interfaces/BookRepositoryInterface";
 import {bookRepository} from "../repositories/BookRepository";
-import {User} from "../domain/User";
+import {User} from "../domain/aggregates/User";
 
 dotenv.config();
 

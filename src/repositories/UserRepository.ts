@@ -1,5 +1,5 @@
 import {AppError} from "../exception/AppError";
-import {User} from "../domain/User.js";
+import {User} from "../domain/aggregates/User";
 import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
 import {CountOfPostsPerUser, UserData} from "../domain/dto/UserDto.js";
 import {ErrorMessage} from "../exception/ErrorMessage";

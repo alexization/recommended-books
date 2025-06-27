@@ -1,4 +1,4 @@
-import {Post} from "../../domain/Post";
+import {Post} from "../../domain/aggregates/Post";
 
 export interface PostRepositoryInterface {
     createPost(post: Post): Promise<void>;

@@ -1,4 +1,4 @@
-import {User} from "../../domain/User";
+import {User} from "../../domain/aggregates/User";
 import {CountOfPostsPerUser} from "../../domain/dto/UserDto";
 import {Grade} from "../../domain/enums/Grade";
 

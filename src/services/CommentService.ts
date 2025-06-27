@@ -2,7 +2,7 @@ import {CommentServiceInterface} from "./interfaces/CommentServiceInterface";
 import {CreateCommentData, UpdateCommentData} from "../domain/dto/CommentDto";
 import {CommentRepositoryInterface} from "../repositories/interfaces/CommentRepositoryInterface";
 import {commentRepository} from "../repositories/CommentRepository";
-import {Comment} from "../domain/Comment";
+import {Comment} from "../domain/entities/Comment";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 

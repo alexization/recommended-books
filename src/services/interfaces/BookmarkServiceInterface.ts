@@ -1,4 +1,4 @@
-import {Bookmark} from "../../domain/Bookmark";
+import {Bookmark} from "../../domain/entities/Bookmark";
 
 export interface BookmarkServiceInterface {
     addBookmark(userId: number, bookId: number): Promise<void>;

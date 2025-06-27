@@ -1,6 +1,6 @@
-import {CreatePostData, PostData, UpdatePostData} from "./dto/PostDto.js";
-import {AppError} from "../exception/AppError";
-import {ErrorMessage} from "../exception/ErrorMessage";
+import {CreatePostData, PostData, UpdatePostData} from "../dto/PostDto";
+import {AppError} from "../../exception/AppError";
+import {ErrorMessage} from "../../exception/ErrorMessage";
 
 export class Post {
     private readonly _id: number;

@@ -1,6 +1,6 @@
 import {PostRepositoryInterface} from "./interfaces/PostRepositoryInterface";
 import {DatabaseConnection} from "../config/DatabaseConfig";
-import {Post} from "../domain/Post";
+import {Post} from "../domain/aggregates/Post";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 import {PostData} from "../domain/dto/PostDto";

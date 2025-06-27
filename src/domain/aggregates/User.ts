@@ -1,7 +1,7 @@
-import {CreateUserData, UserData} from "./dto/UserDto.js";
-import {Grade, GradePolicy} from "./enums/Grade.js";
-import {Password} from "./valueObjects/Password";
-import {Birth} from "./valueObjects/Birth";
+import {CreateUserData, UserData} from "../dto/UserDto";
+import {Grade, GradePolicy} from "../enums/Grade";
+import {Password} from "../valueObjects/Password";
+import {Birth} from "../valueObjects/Birth";
 
 export class User {
     private readonly _id: number;

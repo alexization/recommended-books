@@ -1,5 +1,5 @@
 import {CreateCommentData, UpdateCommentData} from "../../domain/dto/CommentDto";
-import {Comment} from "../../domain/Comment";
+import {Comment} from "../../domain/entities/Comment";
 
 export interface CommentServiceInterface {
     createComment(userId: number, createCommentData: CreateCommentData): Promise<void>;

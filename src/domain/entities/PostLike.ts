@@ -1,4 +1,4 @@
-import {PostLikeData} from "./dto/PostLikeDto.js";
+import {PostLikeData} from "../dto/PostLikeDto";
 
 export class PostLike {
     private readonly _userId: number;

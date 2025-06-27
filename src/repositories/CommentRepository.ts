@@ -1,6 +1,6 @@
 import {CommentRepositoryInterface} from "./interfaces/CommentRepositoryInterface";
 import {DatabaseConnection} from "../config/DatabaseConfig";
-import {Comment} from "../domain/Comment";
+import {Comment} from "../domain/entities/Comment";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 import {CommentData} from "../domain/dto/CommentDto";

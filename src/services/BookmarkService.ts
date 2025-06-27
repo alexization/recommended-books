@@ -1,7 +1,7 @@
 import {BookmarkServiceInterface} from "./interfaces/BookmarkServiceInterface";
 import {BookmarkRepositoryInterface} from "../repositories/interfaces/BookmarkRepositoryInterface";
 import {bookmarkRepository} from "../repositories/BookmarkRepository";
-import {Bookmark} from "../domain/Bookmark";
+import {Bookmark} from "../domain/entities/Bookmark";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 

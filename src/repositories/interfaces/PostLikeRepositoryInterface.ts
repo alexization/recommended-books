@@ -1,4 +1,4 @@
-import {PostLike} from "../../domain/PostLike";
+import {PostLike} from "../../domain/entities/PostLike";
 
 export interface PostLikeRepositoryInterface {
     createLike(postLike: PostLike): Promise<void>;

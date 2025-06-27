@@ -2,9 +2,9 @@ import {PostServiceInterface} from "./interfaces/PostServiceInterface";
 import {CreatePostData, UpdatePostData} from "../domain/dto/PostDto";
 import {PostRepositoryInterface} from "../repositories/interfaces/PostRepositoryInterface";
 import {postRepository} from "../repositories/PostRepository";
-import {User} from "../domain/User";
+import {User} from "../domain/aggregates/User";
 import {ImageUtils} from "../utils/ImageUtils";
-import {Post} from "../domain/Post";
+import {Post} from "../domain/aggregates/Post";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 
