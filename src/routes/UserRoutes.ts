@@ -109,4 +109,6 @@ userRouter.put('/:id', userController.updateUser);
  * */
 userRouter.delete('/:id', userController.deleteUser);
 
+userRouter.put('/change/password', userController.changePassword);
+
 export default userRouter;

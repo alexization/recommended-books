@@ -1,7 +1,7 @@
-import {AppError, ValidationError} from "../exception/AppError";
+import {AppError} from "../exception/AppError";
 import {User} from "../domain/User.js";
 import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
-import {CountOfPostsPerUser, CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto.js";
+import {CountOfPostsPerUser, CreateUserData, UserData} from "../domain/dto/UserDto.js";
 import {ErrorMessage} from "../exception/ErrorMessage";
 import {DatabaseConnection} from "../config/DatabaseConfig.js";
 import {Grade} from "../domain/enums/Grade";
@@ -13,21 +13,15 @@ export class UserRepository implements UserRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createUser(createUserData: CreateUserData): Promise<boolean> {
-
-        if (await this.isEmailExists(createUserData.email)) {
-            throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
-        }
-
-        const newUser = await User.create(0, createUserData);
-
+    async createUser(createUserData: CreateUserData): Promise<void> {
         try {
+            const newUser = await User.create(0, createUserData);
+            const userData = newUser.toPersistence();
+
             const query = `INSERT INTO users (email, password, name, birth, grade, updated_at, created_at)
                            VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-            await this.db.executeQuery(query, [newUser.email, newUser.password, newUser.name, newUser.birth, newUser.grade, newUser.updatedAt, newUser.createdAt]);
-
-            return true;
+            await this.db.executeQuery(query, [userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
@@ -35,7 +29,6 @@ export class UserRepository implements UserRepositoryInterface {
     }
 
     async findUserById(id: number): Promise<User> {
-
         try {
             const query = `SELECT *
                            FROM users
@@ -65,15 +58,19 @@ export class UserRepository implements UserRepositoryInterface {
         }
     }
 
-    async updateUser(userId: number, updateUserData: UpdateUserData): Promise<void> {
+    async updateUser(user: User): Promise<void> {
         try {
+            const userData = user.toPersistence();
+
             const query = `UPDATE users
                            SET name       = ?,
                                birth      = ?,
+                               password   = ?,
+                               grade      = ?,
                                updated_at = ?
                            WHERE id = ?`;
 
-            await this.db.executeQuery(query, [updateUserData.name, updateUserData.birth, new Date(), userId]);
+            await this.db.executeQuery(query, [userData.name, userData.birth, userData.password, userData.grade, userData.updated_at]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);

@@ -12,14 +12,15 @@ export class BookRepository implements BookRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createBook(bookData: CreateBookData): Promise<void> {
+    async createBook(createBookData: CreateBookData): Promise<void> {
         try {
-            const newBook = Book.create(bookData);
+            const newBook = Book.create(0, createBookData);
+            const bookData = newBook.toPersistence();
 
             const query = `INSERT INTO books (title, author, publisher, publication_year, created_at)
                            VALUES (?, ?, ?, ?, ?)`;
 
-            await this.db.executeQuery(query, [newBook.title, newBook.author, newBook.publisher, newBook.publicationYear, newBook.createdAt]);
+            await this.db.executeQuery(query, [bookData.title, bookData.author, bookData.publisher, bookData.publication_year, bookData.created_at]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);

@@ -7,6 +7,7 @@ export const ErrorMessage = {
     USER_NOT_FOUND: {message: "사용자의 정보가 없습니다.", code: 1001},
     USER_ALREADY_EXISTS: {message: "이미 가입한 이메일입니다.", code: 1002},
     USER_DELETE_TARGET_NOT_EXISTS: {message: "삭제하려는 유저가 없습니다.", code: 1003},
+    GRADE_UNDEFINED: {message: "정의되지 않은 등급입니다.", code: 1005},
 
     /* 유효성 검사 에러 2xxx */
     EMAIL_REQUIRED: {message: "이메일은 필수 입력 사항입니다.", code: 2001},

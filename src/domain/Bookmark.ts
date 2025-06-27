@@ -23,7 +23,17 @@ export class Bookmark {
         return this._createdAt;
     }
 
+    static create(userId: number, bookId: number): Bookmark {
+        return new Bookmark(userId, bookId, new Date());
+    }
+
     static fromJson(bookmarkData: BookmarkData): Bookmark {
         return new Bookmark(bookmarkData.userId, bookmarkData.bookId, bookmarkData.createdAt);
+    }
+
+    toPersistence() {
+        return {
+            user_id: this._userId, book_id: this._bookId, created_at: this._createdAt
+        }
     }
 }

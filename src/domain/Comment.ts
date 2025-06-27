@@ -1,4 +1,4 @@
-import {CommentData} from "./dto/CommentDto.js";
+import {CommentData, CreateCommentData} from "./dto/CommentDto.js";
 
 export class Comment {
     private readonly _id: number;
@@ -41,7 +41,22 @@ export class Comment {
         return this._updatedAt;
     }
 
+    static create(commentId: number, commentData: CreateCommentData): Comment {
+        return new Comment(commentId, commentData.postId, commentData.userId, commentData.content, new Date(), new Date());
+    }
+
     static fromJson(commentData: CommentData): Comment {
         return new Comment(commentData.commentId, commentData.postId, commentData.userId, commentData.content, commentData.createdAt, commentData.updatedAt);
+    }
+
+    toPersistence() {
+        return {
+            comment_id: this._id,
+            post_id: this._postId,
+            user_id: this._userId,
+            content: this._content,
+            created_at: this._createdAt,
+            updated_at: this._updatedAt,
+        }
     }
 }

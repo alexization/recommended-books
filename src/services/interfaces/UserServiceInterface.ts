@@ -2,7 +2,7 @@ import {CreateUserData, UpdateUserData} from "../../domain/dto/UserDto";
 import {User} from "../../domain/User";
 
 export interface UserServiceInterface {
-    createUser(userData: CreateUserData): Promise<boolean>;
+    createUser(userData: CreateUserData): Promise<void>;
 
     findUserById(id: number): Promise<User>;
 
@@ -11,4 +11,6 @@ export interface UserServiceInterface {
     updateUser(id: number, updateUserData: UpdateUserData): Promise<void>;
 
     deleteUser(id: number): Promise<void>;
+
+    changePassword(id: number, newPassword: string): Promise<void>;
 }

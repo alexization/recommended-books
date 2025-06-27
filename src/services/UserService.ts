@@ -3,6 +3,8 @@ import {UserRepositoryInterface} from "../repositories/interfaces/UserRepository
 import {UserServiceInterface} from "./interfaces/UserServiceInterface";
 import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto.js";
 import {User} from "../domain/User.js";
+import {AppError, ValidationError} from "../exception/AppError";
+import {ErrorMessage} from "../exception/ErrorMessage";
 
 export class UserService implements UserServiceInterface {
     private readonly userRepository: UserRepositoryInterface
@@ -11,24 +13,52 @@ export class UserService implements UserServiceInterface {
         this.userRepository = userRepository;
     }
 
-    async createUser(createUserData: CreateUserData): Promise<boolean> {
-        return await this.userRepository.createUser(createUserData);
+    async createUser(createUserData: CreateUserData): Promise<void> {
+        if (await this.userRepository.isEmailExists(createUserData.email)) {
+            throw new ValidationError(ErrorMessage.USER_ALREADY_EXISTS);
+        }
+
+        await this.userRepository.createUser(createUserData);
     }
 
     async findUserById(id: number): Promise<User> {
-        return await this.userRepository.findUserById(id);
+        const user = await this.userRepository.findUserById(id);
+
+        if (!user) {
+            throw new AppError(ErrorMessage.USER_NOT_FOUND);
+        }
+
+        return user;
     }
 
     async findUserByEmail(email: string): Promise<User> {
-        return await this.userRepository.findUserByEmail(email);
+        const user = await this.userRepository.findUserByEmail(email);
+
+        if (!user) {
+            throw new AppError(ErrorMessage.USER_NOT_FOUND);
+        }
+
+        return user;
     }
 
     async updateUser(id: number, updateUserData: UpdateUserData): Promise<void> {
-        return await this.userRepository.updateUser(id, updateUserData);
+        const user = await this.findUserById(id);
+        user.updateProfile(updateUserData.name, updateUserData.birth);
+
+        await this.userRepository.updateUser(user);
     }
 
     async deleteUser(id: number): Promise<void> {
-        return await this.userRepository.deleteUser(id);
+        await this.findUserById(id);
+
+        await this.userRepository.deleteUser(id);
+    }
+
+    async changePassword(id: number, newPassword: string): Promise<void> {
+        const user = await this.findUserById(id);
+        await user.changePassword(newPassword);
+
+        await this.userRepository.updateUser(user);
     }
 }
 

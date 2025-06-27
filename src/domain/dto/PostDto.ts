@@ -36,3 +36,11 @@ export interface CreatePostData {
     bookId?: number;
     imageBase64?: string;
 }
+
+export interface UpdatePostData {
+    userId: number;
+    postId: number;
+    title: string;
+    content: string;
+    imageBase64?: string;
+}

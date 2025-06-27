@@ -1,9 +1,10 @@
 import {PostServiceInterface} from "./interfaces/PostServiceInterface";
-import {CreatePostData} from "../domain/dto/PostDto";
+import {CreatePostData, UpdatePostData} from "../domain/dto/PostDto";
 import {PostRepositoryInterface} from "../repositories/interfaces/PostRepositoryInterface";
 import {postRepository} from "../repositories/PostRepository";
 import {User} from "../domain/User";
 import {ImageUtils} from "../utils/ImageUtils";
+import {Post} from "../domain/Post";
 
 export class PostService implements PostServiceInterface {
     private readonly postRepository: PostRepositoryInterface;
@@ -16,17 +17,23 @@ export class PostService implements PostServiceInterface {
         let imagePath: string | undefined;
 
         if (postData.imageBase64) {
-            try {
-                const {buffer, extension} = ImageUtils.decodeBase64Image(postData.imageBase64);
-
-                imagePath = await ImageUtils.saveImageFile(buffer, `${new Date().toISOString()}${extension}`);
-
-            } catch (error) {
-                throw error;
-            }
+            const {buffer, extension} = ImageUtils.decodeBase64Image(postData.imageBase64);
+            imagePath = await ImageUtils.saveImageFile(buffer, `${new Date().toISOString()}${extension}`);
         }
 
-        await this.postRepository.createPost(user, postData, imagePath);
+        const post = Post.create(0, user.id, postData, imagePath);
+
+        await this.postRepository.createPost(post);
+    }
+
+    async deletePost(postId: number): Promise<void> {
+    }
+
+    async findPostById(postId: number): Promise<Post> {
+        return new Post(0, 0, "temp", "temp", new Date());
+    }
+
+    async updatePost(updatePostData: UpdatePostData): Promise<void> {
     }
 }
 

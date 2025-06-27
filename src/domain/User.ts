@@ -1,18 +1,19 @@
 import {CreateUserData, UserData} from "./dto/UserDto.js";
-import {Grade, GradeUtils} from "./enums/Grade.js";
-import bcrypt from 'bcryptjs';
+import {Grade, GradePolicy} from "./enums/Grade.js";
+import {Password} from "./valueObjects/Password";
+import {Birth} from "./valueObjects/Birth";
 
 export class User {
     private readonly _id: number;
     private readonly _email: string;
-    private readonly _password: string;
-    private readonly _name: string;
-    private readonly _birth: number;
+    private _password: Password;
+    private _name: string;
+    private _birth: Birth;
     private readonly _grade: Grade;
-    private readonly _updatedAt: Date;
+    private _updatedAt: Date;
     private readonly _createdAt: Date;
 
-    constructor(id: number, email: string, password: string, name: string, birth: number, grade: Grade, updatedAt: Date, createdAt: Date) {
+    constructor(id: number, email: string, password: Password, name: string, birth: Birth, grade: Grade, updatedAt: Date, createdAt: Date) {
         this._id = id;
         this._email = email;
         this._password = password;
@@ -31,59 +32,75 @@ export class User {
         return this._email
     }
 
-    get password(): string {
-        return this._password
-    }
-
-    get name(): string {
-        return this._name
-    }
-
-    get birth(): number {
-        return this._birth
-    }
-
     get grade(): Grade {
         return this._grade
     }
 
-    get updatedAt(): Date {
-        return this._updatedAt
+    static async create(userId: number, createUserData: CreateUserData): Promise<User> {
+        const password = new Password(createUserData.password);
+        const hashedPassword = await password.hash();
+
+        const birth = new Birth(createUserData.birth);
+
+        return new User(userId, createUserData.email, hashedPassword, createUserData.name, birth, Grade.BRONZE, new Date(), new Date());
     }
 
-    get createdAt(): Date {
-        return this._createdAt
+    async changePassword(newPassword: string): Promise<void> {
+        const password = new Password(newPassword);
+        this._password = await password.hash();
+        this._updatedAt = new Date();
     }
 
-    static fromJson(userData: UserData): User {
-        return new User(userData.user_id, userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at);
+    updateProfile(name: string, birth: number): void {
+        this._name = name;
+        this._birth = new Birth(birth);
+        this._updatedAt = new Date();
     }
 
-    static async create(id: number, createUserData: CreateUserData): Promise<User> {
-        const hashedPassword = await bcrypt.hash(createUserData.password, 10);
-
-        return new User(id, createUserData.email, hashedPassword, createUserData.name, createUserData.birth, Grade.BRONZE, new Date(), new Date());
+    async validatePassword(plainPassword: string): Promise<boolean> {
+        return await this._password.matches(plainPassword);
     }
 
-    async validatePassword(password: string): Promise<boolean> {
-        return await bcrypt.compare(password, this.password);
-    }
+    canReserveBookForDate(targetDate: Date): boolean {
+        const gradePolicy = new GradePolicy();
+        const preOrderDays = gradePolicy.getPreOrderDays(this._grade);
 
-    isAvailableReservation(date: Date): boolean {
         const now = new Date();
-        const preOrderDays = GradeUtils.convertPreOrderDays(this._grade);
+        const adjustDate = new Date(targetDate);
 
-        date.setDate(date.getDate() - preOrderDays);
+        adjustDate.setDate(adjustDate.getDate() - preOrderDays);
 
-        return now >= date;
+        return now >= adjustDate;
     }
 
-    expectedReturnDate(startDate: Date): Date {
-        const loanPeriod = GradeUtils.loanPeriod(this._grade);
+    calculateExpectedReturnDate(loanStartDate: Date): Date {
+        const gradePolicy = new GradePolicy();
+        const loanPeriod = gradePolicy.getLoanPeriod(this._grade);
 
-        const returnDate = startDate;
+        const returnDate = new Date(loanStartDate);
         returnDate.setDate(returnDate.getDate() + loanPeriod);
 
         return returnDate;
+    }
+
+    getAge(): number {
+        return this._birth.calculateAge();
+    }
+
+    static fromJson(userData: UserData): User {
+        return new User(userData.user_id, userData.email, new Password(userData.password), userData.name, new Birth(userData.birth), userData.grade, userData.updated_at, userData.created_at);
+    }
+
+    toPersistence() {
+        return {
+            user_id: this._id,
+            email: this._email,
+            password: this._password.getValue(),
+            name: this._name,
+            birth: this._birth.getValue(),
+            grade: this._grade,
+            updated_at: this._updatedAt,
+            created_at: this._createdAt
+        }
     }
 }

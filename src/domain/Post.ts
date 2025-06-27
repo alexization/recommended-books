@@ -31,27 +31,23 @@ export class Post {
         return this._bookId;
     }
 
-    get title(): string {
-        return this._title;
-    }
-
-    get content(): string {
-        return this._content;
-    }
-
-    get imagePath(): string | undefined {
-        return this._imagePath;
-    }
-
-    get createdAt(): Date {
-        return this._createdAt;
+    static create(postId: number, userId: number, postData: CreatePostData, imagePath?: string): Post {
+        return new Post(postId, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);
     }
 
     static fromJson(postData: PostData): Post {
         return new Post(postData.postId, postData.userId, postData.title, postData.content, postData.createdAt, postData.bookId, postData.imagePath);
     }
 
-    static create(userId: number, postData: CreatePostData, imagePath?: string): Post {
-        return new Post(0, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);
+    toPersistence() {
+        return {
+            post_id: this._id,
+            user_id: this._userId,
+            title: this._title,
+            content: this._content,
+            created_at: this._createdAt,
+            book_id: this._bookId,
+            image_path: this._imagePath,
+        }
     }
 }

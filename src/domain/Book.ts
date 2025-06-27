@@ -21,31 +21,22 @@ export class Book {
         return this._id
     }
 
-    get title(): string {
-        return this._title
-    }
-
-    get author(): string {
-        return this._author
-    }
-
-    get publisher(): string {
-        return this._publisher
-    }
-
-    get publicationYear(): number {
-        return this._publicationYear
-    }
-
-    get createdAt(): Date {
-        return this._createdAt
+    static create(bookId: number, bookData: CreateBookData): Book {
+        return new Book(bookId, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, new Date());
     }
 
     static fromJson(bookData: BookData) {
         return new Book(bookData.bookId, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, bookData.createdAt);
     }
 
-    static create(bookData: CreateBookData): Book {
-        return new Book(0, bookData.title, bookData.author, bookData.publisher, bookData.publicationYear, new Date());
+    toPersistence() {
+        return {
+            book_id: this._id,
+            title: this._title,
+            author: this._author,
+            publisher: this._publisher,
+            publication_year: this._publicationYear,
+            created_at: this._createdAt,
+        }
     }
 }
