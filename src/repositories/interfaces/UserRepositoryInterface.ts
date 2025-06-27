@@ -1,5 +1,5 @@
-import {User} from "../domain/User.js";
-import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto.js";
+import {User} from "../../domain/User";
+import {CreateUserData, UpdateUserData} from "../../domain/dto/UserDto";
 
 export interface UserRepositoryInterface {
     createUser(createUserData: CreateUserData): Promise<boolean>;
