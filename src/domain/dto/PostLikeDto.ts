@@ -1,5 +1,5 @@
 export interface PostLikeData {
-    userId: number;
-    postId: number;
-    createdAt: Date;
+    user_id: number;
+    post_id: number;
+    created_at: Date;
 }

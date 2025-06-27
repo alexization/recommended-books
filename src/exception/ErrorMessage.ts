@@ -65,6 +65,10 @@ export const ErrorMessage = {
     COMMENT_OWNER_INVALID: {message: "댓글은 작성자만이 수정/삭제할 수 있습니다.", code: 8001},
     COMMENT_NOT_FOUND: {message: "해당 댓글을 찾을 수 없습니다.", code: 8002},
 
+    /* 좋아요 관련 에러 9xxx */
+    POST_LIKE_NOT_FOUND: {message: "해당 좋아요가 없습니다.", code: 9001},
+    POST_LIKE_EXISTS: {message: "좋아요가 이미 존재합니다.", code: 9002},
+
 } as const;
 
 export type ErrorMessageType = typeof ErrorMessage[keyof typeof ErrorMessage];

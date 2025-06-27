@@ -14,6 +14,7 @@ import {cronService} from "./services/CronService";
 import postRouter from "./routes/PostRoutes";
 import followRouter from "./routes/FollowRoutes";
 import commentRoutes from "./routes/CommentRoutes";
+import postLikeRoutes from "./routes/PostLikeRoutes";
 
 dotenv.config();
 
@@ -60,6 +61,8 @@ export function createApp(): Koa {
     app.use(userRouter.allowedMethods);
     app.use(commentRoutes.routes());
     app.use(commentRoutes.allowedMethods);
+    app.use(postLikeRoutes.routes());
+    app.use(postLikeRoutes.allowedMethods);
 
     return app;
 }
