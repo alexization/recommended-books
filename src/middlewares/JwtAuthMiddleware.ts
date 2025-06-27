@@ -5,7 +5,10 @@ import {authService} from "../services/AuthService.js";
 import {CookieUtils} from "../utils/CookieUtils.js";
 import {ErrorMessage} from "../utils/ErrorMessage.js";
 
-const PUBLIC_PATTERNS: string[] = ['POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id',];
+const PUBLIC_PATTERNS: string[] = [
+    'POST:/auth/login', 'POST:/users', 'GET:/users', 'GET:/users/:id',
+    'GET:/docs', 'GET:/favicon.png'
+];
 
 function isPublicRequest(method: string, path: string): boolean {
     const requestPattern = `${method}:${path}`;

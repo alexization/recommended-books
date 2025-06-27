@@ -9,6 +9,7 @@ import bookRouter from "./routes/BookRoutes.js";
 import authRouter from "./routes/AuthRoutes.js";
 import {jwtAuthMiddleware} from "./middlewares/JwtAuthMiddleware.js";
 import {DatabaseConnection} from "./config/DatabaseConfig.js";
+import {swaggerUI} from "./config/Swagger";
 
 dotenv.config();
 
@@ -19,7 +20,9 @@ export function createApp(): Koa {
     app.use(errorHandlerMiddleware);
 
     /* 보안 헤더 설정 */
-    app.use(helmet());
+    app.use(helmet({
+        contentSecurityPolicy: false
+    }));
 
     /* CORS 설정 */
     app.use(cors({
@@ -37,6 +40,8 @@ export function createApp(): Koa {
 
     /* JWT 인증 미들웨어 */
     app.use(jwtAuthMiddleware);
+
+    app.use(swaggerUI);
 
     /* 라우터 등록 */
     app.use(userRouter.routes());

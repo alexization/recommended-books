@@ -11,6 +11,32 @@ export interface UserData {
     updatedAt: Date;
 }
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      CreateUserData:
+ *          type: object
+ *          required:
+ *              - email
+ *              - password
+ *              - name
+ *              - birth
+ *          properties:
+ *              email:
+ *                  type: string
+ *                  format: email
+ *                  example: "test@example.com"
+ *              password:
+ *                  type: string
+ *                  example: "test1234"
+ *              name:
+ *                  type: string
+ *                  example: "testUser"
+ *              birth:
+ *                  type: number
+ *                  example: 2000
+ * */
 export interface CreateUserData {
     email: string;
     password: string;
@@ -18,11 +44,46 @@ export interface CreateUserData {
     birth: number;
 }
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      UpdateUserData:
+ *          type: object
+ *          required:
+ *              - name
+ *              - birth
+ *          properties:
+ *              name:
+ *                  type: string
+ *                  example: "testUser"
+ *              birth:
+ *                  type: number
+ *                  example: 2000
+ * */
 export interface UpdateUserData {
     name: string;
     birth: number;
 }
 
+/**
+ * @swagger
+ * components:
+ *  schemas:
+ *      LoginUserData:
+ *          type: object
+ *          required:
+ *              - email
+ *              - password
+ *          properties:
+ *              email:
+ *                  type: string
+ *                  format: email
+ *                  example: "test@example.com"
+ *              password:
+ *                  type: string
+ *                  example: "test1234"
+ * */
 export interface LoginUserData {
     email: string;
     password: string;
