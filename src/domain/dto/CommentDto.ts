@@ -1,20 +1,18 @@
 export interface CommentData {
-    commentId: number;
-    postId: number;
-    userId: number;
+    comment_id: number;
+    post_id: number;
+    user_id: number;
     content: string;
-    createdAt: Date;
-    updatedAt: Date;
+    created_at: Date;
+    updated_at: Date;
 }
 
 export interface CreateCommentData {
     postId: number;
-    userId: number;
     content: string;
 }
 
 export interface UpdateCommentData {
-    postId: number;
-    userId: number;
+    commentId: number;
     content: string;
 }

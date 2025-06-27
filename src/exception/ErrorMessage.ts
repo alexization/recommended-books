@@ -60,6 +60,10 @@ export const ErrorMessage = {
     FOLLOW_NOT_FOUND: {message: "팔로우하지 않은 사용자입니다.", code: 7002},
     FOLLOW_INVALID: {message: "자기 자신을 팔로우할 수 없습니다.", code: 7003},
 
+    /* 댓글 관련 에러 8xxx */
+    COMMENT_OWNER_INVALID: {message: "댓글은 작성자만이 수정/삭제할 수 있습니다.", code: 8001},
+    COMMENT_NOT_FOUND: {message: "해당 댓글을 찾을 수 없습니다.", code: 8002},
+
 } as const;
 
 export type ErrorMessageType = typeof ErrorMessage[keyof typeof ErrorMessage];
