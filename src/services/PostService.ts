@@ -23,19 +23,9 @@ export class PostService implements PostServiceInterface {
             imagePath = await ImageUtils.saveImageFile(buffer, `${new Date().toISOString()}${extension}`);
         }
 
-        const post = Post.create(0, user.id, postData, imagePath);
+        const post = Post.create(user.id, postData, imagePath);
 
-        await this.postRepository.createPost(post);
-    }
-
-    async getPostById(postId: number): Promise<Post> {
-        const post = await this.postRepository.findPostById(postId);
-
-        if (!post) {
-            throw new AppError(ErrorMessage.POST_NOT_FOUND);
-        }
-
-        return post;
+        await this.postRepository.save(post);
     }
 
     async updatePost(userId: number, postData: UpdatePostData): Promise<void> {
@@ -49,19 +39,27 @@ export class PostService implements PostServiceInterface {
 
         post.update(userId, postData, imagePath);
 
-        await this.postRepository.updatePost(post);
+        await this.postRepository.save(post);
     }
 
-    async deletePost(userId: number, postId: number): Promise<void> {
-        const post = await this.getPostById(postId);
+    async getPostById(postId: number): Promise<Post> {
+        const post = await this.postRepository.findById(postId);
 
         if (!post) {
             throw new AppError(ErrorMessage.POST_NOT_FOUND);
         }
 
-        post.validateOwner(userId);
+        return post;
+    }
 
-        await this.postRepository.deletePost(postId);
+    async deletePost(userId: number, postId: number): Promise<void> {
+        const post = await this.getPostById(postId);
+
+        if (!post.canBeDeletedBy(userId)) {
+            throw new AppError(ErrorMessage.POST_OWNER_INVALID);
+        }
+
+        await this.postRepository.delete(postId);
     }
 }
 

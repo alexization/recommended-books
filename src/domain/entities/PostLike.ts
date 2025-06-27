@@ -11,14 +11,6 @@ export class PostLike {
         this._createdAt = createdAt;
     }
 
-    get userId(): number {
-        return this._userId;
-    }
-
-    get postId(): number {
-        return this._postId;
-    }
-
     static create(userId: number, postId: number): PostLike {
         return new PostLike(userId, postId, new Date());
     }
@@ -31,5 +23,13 @@ export class PostLike {
         return {
             user_id: this._userId, post_id: this._postId, created_at: this._createdAt
         }
+    }
+
+    get userId(): number {
+        return this._userId;
+    }
+
+    get postId(): number {
+        return this._postId;
     }
 }

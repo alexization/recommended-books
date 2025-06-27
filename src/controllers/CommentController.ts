@@ -12,9 +12,9 @@ export class CommentController {
     }
 
     createComment = async (ctx: Context): Promise<void> => {
-        const createCommentData = CreateCommentSchema.parse(ctx.request.body);
+        const {postId, content} = CreateCommentSchema.parse(ctx.request.body);
 
-        await this.commentService.createComment(ctx.state.user.id, createCommentData);
+        await this.commentService.createComment(postId, ctx.state.user.id, content);
 
         ResponseHandler.success(ctx, "성공적으로 댓글을 등록했습니다.");
     };

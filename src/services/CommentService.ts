@@ -1,5 +1,5 @@
 import {CommentServiceInterface} from "./interfaces/CommentServiceInterface";
-import {CreateCommentData, UpdateCommentData} from "../domain/dto/CommentDto";
+import {UpdateCommentData} from "../domain/dto/CommentDto";
 import {CommentRepositoryInterface} from "../repositories/interfaces/CommentRepositoryInterface";
 import {commentRepository} from "../repositories/CommentRepository";
 import {Comment} from "../domain/entities/Comment";
@@ -15,22 +15,25 @@ export class CommentService implements CommentServiceInterface {
         this.commentRepository = commentRepository;
     }
 
-    async createComment(userId: number, createCommentData: CreateCommentData): Promise<void> {
-        const comment = Comment.create(0, userId, createCommentData);
+    async createComment(postId: number, userId: number, content: string): Promise<void> {
+        const comment = Comment.create(postId, userId, content);
 
         await this.commentRepository.createComment(comment);
     }
 
     async updateComment(userId: number, updateCommentData: UpdateCommentData): Promise<void> {
         const comment = await this.getCommentById(updateCommentData.commentId);
-        comment.update(userId, updateCommentData);
+        comment.update(userId, updateCommentData.content);
 
         await this.commentRepository.updateComment(comment);
     }
 
     async deleteComment(commentId: number, userId: number): Promise<void> {
         const comment = await this.getCommentById(commentId);
-        comment.validateOwner(userId);
+
+        if (!comment.isOwnedBy(userId)) {
+            throw new AppError(ErrorMessage.COMMENT_OWNER_INVALID);
+        }
 
         await this.commentRepository.deleteCommentById(commentId);
     }

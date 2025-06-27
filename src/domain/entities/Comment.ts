@@ -1,4 +1,4 @@
-import {CommentData, CreateCommentData, UpdateCommentData} from "../dto/CommentDto";
+import {CommentData} from "../dto/CommentDto";
 import {AppError} from "../../exception/AppError";
 import {ErrorMessage} from "../../exception/ErrorMessage";
 
@@ -19,33 +19,23 @@ export class Comment {
         this._updatedAt = updatedAt;
     }
 
-    get id(): number {
-        return this._id;
-    }
+    update(userId: number, content: string): void {
+        if (!this.isOwnedBy(userId)) {
+            throw new AppError(ErrorMessage.COMMENT_OWNER_INVALID);
+        }
 
-    get postId(): number {
-        return this._postId;
-    }
-
-    get userId(): number {
-        return this._userId;
-    }
-
-    update(userId: number, data: UpdateCommentData): void {
-        this.validateOwner(userId);
-
-        this._content = data.content;
+        this._content = content;
         this._updatedAt = new Date();
     }
 
-    validateOwner(userId: number): void {
-        if (this._userId !== userId) {
-            throw new AppError(ErrorMessage.COMMENT_OWNER_INVALID);
-        }
+    isOwnedBy(userId: number): boolean {
+        return this._userId !== userId;
     }
 
-    static create(commentId: number, userId: number, commentData: CreateCommentData): Comment {
-        return new Comment(commentId, commentData.postId, userId, commentData.content, new Date(), new Date());
+    static create(postId: number, userId: number, content: string): Comment {
+        const now = new Date();
+
+        return new Comment(0, postId, userId, content, now, now);
     }
 
     static fromJson(commentData: CommentData): Comment {
@@ -61,5 +51,17 @@ export class Comment {
             created_at: this._createdAt,
             updated_at: this._updatedAt,
         }
+    }
+
+    get id(): number {
+        return this._id;
+    }
+
+    get postId(): number {
+        return this._postId;
+    }
+
+    get userId(): number {
+        return this._userId;
     }
 }
