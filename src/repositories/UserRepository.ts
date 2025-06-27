@@ -1,7 +1,7 @@
 import {AppError} from "../exception/AppError";
 import {User} from "../domain/User.js";
 import {UserRepositoryInterface} from "./interfaces/UserRepositoryInterface";
-import {CountOfPostsPerUser, CreateUserData, UserData} from "../domain/dto/UserDto.js";
+import {CountOfPostsPerUser, UserData} from "../domain/dto/UserDto.js";
 import {ErrorMessage} from "../exception/ErrorMessage";
 import {DatabaseConnection} from "../config/DatabaseConfig.js";
 import {Grade} from "../domain/enums/Grade";
@@ -13,15 +13,14 @@ export class UserRepository implements UserRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createUser(createUserData: CreateUserData): Promise<void> {
+    async createUser(user: User): Promise<void> {
         try {
-            const newUser = await User.create(0, createUserData);
-            const userData = newUser.toPersistence();
+            const data = user.toPersistence();
 
             const query = `INSERT INTO users (email, password, name, birth, grade, updated_at, created_at)
                            VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-            await this.db.executeQuery(query, [userData.email, userData.password, userData.name, userData.birth, userData.grade, userData.updated_at, userData.created_at]);
+            await this.db.executeQuery(query, [data.email, data.password, data.name, data.birth, data.grade, data.updated_at, data.created_at]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
@@ -60,7 +59,7 @@ export class UserRepository implements UserRepositoryInterface {
 
     async updateUser(user: User): Promise<void> {
         try {
-            const userData = user.toPersistence();
+            const data = user.toPersistence();
 
             const query = `UPDATE users
                            SET name       = ?,
@@ -70,7 +69,7 @@ export class UserRepository implements UserRepositoryInterface {
                                updated_at = ?
                            WHERE id = ?`;
 
-            await this.db.executeQuery(query, [userData.name, userData.birth, userData.password, userData.grade, userData.updated_at]);
+            await this.db.executeQuery(query, [data.name, data.birth, data.password, data.grade, data.updated_at]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);

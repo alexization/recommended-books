@@ -39,7 +39,7 @@ export class PostController {
     getPost = async (ctx: Context): Promise<void> => {
         const postId = ParamsPostIdSchema.parse(ctx.params.postId);
 
-        const post = await this.postService.findPostById(postId);
+        const post = await this.postService.getPostById(postId);
 
         ResponseHandler.success(ctx, '게시물을 성공적으로 가져았습니다.', post);
     }

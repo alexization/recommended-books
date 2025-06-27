@@ -4,9 +4,9 @@ import {User} from "../../domain/User";
 export interface UserServiceInterface {
     createUser(userData: CreateUserData): Promise<void>;
 
-    findUserById(id: number): Promise<User>;
+    getUserById(id: number): Promise<User>;
 
-    findUserByEmail(email: string): Promise<User>;
+    getUserByEmail(email: string): Promise<User>;
 
     updateUser(id: number, updateUserData: UpdateUserData): Promise<void>;
 

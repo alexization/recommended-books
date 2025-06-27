@@ -15,12 +15,12 @@ export class PostRepository implements PostRepositoryInterface {
 
     async createPost(post: Post): Promise<void> {
         try {
-            const postData = post.toPersistence();
+            const data = post.toPersistence();
 
             const query = `INSERT INTO posts (user_id, title, content, created_at, book_id, image_path)
                            VALUES (?, ?, ?, ?, ?, ?)`
 
-            await this.db.executeQuery(query, [postData.user_id, postData.title, postData.content, postData.created_at, postData.book_id, postData.image_path]);
+            await this.db.executeQuery(query, [data.user_id, data.title, data.content, data.created_at, data.book_id, data.image_path]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
@@ -44,7 +44,7 @@ export class PostRepository implements PostRepositoryInterface {
 
     async updatePost(post: Post): Promise<void> {
         try {
-            const postData = post.toPersistence();
+            const data = post.toPersistence();
 
             const query = `UPDATE posts
                            SET title      = ?,
@@ -52,7 +52,7 @@ export class PostRepository implements PostRepositoryInterface {
                                image_path = ?
                            WHERE post_id = ?`;
 
-            await this.db.executeQuery(query, [postData.title, postData.content, postData.image_path, postData.post_id]);
+            await this.db.executeQuery(query, [data.title, data.content, data.image_path, data.post_id]);
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
@@ -60,6 +60,16 @@ export class PostRepository implements PostRepositoryInterface {
     }
 
     async deletePost(id: number): Promise<void> {
+        try {
+            const query = `DELETE
+                           FROM posts
+                           WHERE post_id = ?`;
+
+            await this.db.executeQuery(query, [id]);
+
+        } catch (error) {
+            throw new AppError(ErrorMessage.DATABASE_ERROR);
+        }
     }
 
 }

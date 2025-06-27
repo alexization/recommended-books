@@ -28,7 +28,7 @@ export class PostService implements PostServiceInterface {
         await this.postRepository.createPost(post);
     }
 
-    async findPostById(postId: number): Promise<Post> {
+    async getPostById(postId: number): Promise<Post> {
         const post = await this.postRepository.findPostById(postId);
 
         if (!post) {
@@ -39,7 +39,7 @@ export class PostService implements PostServiceInterface {
     }
 
     async updatePost(userId: number, postData: UpdatePostData): Promise<void> {
-        const post = await this.findPostById(postData.postId);
+        const post = await this.getPostById(postData.postId);
 
         let imagePath: string | undefined;
         if (postData.imageBase64) {
@@ -53,7 +53,7 @@ export class PostService implements PostServiceInterface {
     }
 
     async deletePost(userId: number, postId: number): Promise<void> {
-        const post = await this.findPostById(postId);
+        const post = await this.getPostById(postId);
 
         if (!post) {
             throw new AppError(ErrorMessage.POST_NOT_FOUND);

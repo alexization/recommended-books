@@ -57,7 +57,7 @@ export class Post {
     }
 
     static fromJson(postData: PostData): Post {
-        return new Post(postData.postId, postData.userId, postData.title, postData.content, postData.createdAt, postData.bookId, postData.imagePath);
+        return new Post(postData.post_id, postData.user_id, postData.title, postData.content, postData.created_at, postData.book_id, postData.image_path);
     }
 
     toPersistence() {

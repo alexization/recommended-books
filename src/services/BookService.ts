@@ -22,18 +22,32 @@ export class BookService implements BookServiceInterface {
     }
 
     async createBook(bookData: CreateBookData): Promise<void> {
-        return await this.bookRepository.createBook(bookData);
+        const book = Book.create(0, bookData);
+
+        await this.bookRepository.createBook(book);
     }
 
-    async findBookByTitleAndAuthor(title: string, author: string): Promise<Book> {
-        return await this.bookRepository.findBookByTitleAndAuthor(title, author);
+    async getBookByTitleAndAuthor(title: string, author: string): Promise<Book> {
+        const book = await this.bookRepository.findBookByTitleAndAuthor(title, author);
+
+        if (!book) {
+            throw new AppError(ErrorMessage.BOOK_NOT_FOUND);
+        }
+
+        return book;
     }
 
-    async findBookById(id: number): Promise<Book> {
-        return await this.bookRepository.findBookById(id);
+    async getBookById(id: number): Promise<Book> {
+        const book = await this.bookRepository.findBookById(id);
+
+        if (!book) {
+            throw new AppError(ErrorMessage.BOOK_NOT_FOUND);
+        }
+
+        return book;
     }
 
-    async getRecentBooks(pageNo: number): Promise<OpenApiBookData[]> {
+    async findRecentBooks(pageNo: number): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo);
             const response = await axios.get(url, {timeout: 10000})
@@ -42,12 +56,11 @@ export class BookService implements BookServiceInterface {
             return this.mapToOpenApiBookData(bookJson);
 
         } catch (error) {
-            console.error(error);
             throw new AppError(ErrorMessage.API_CALL_ERROR);
         }
     }
 
-    async getBooksByTitle(pageNo: number, title: string): Promise<OpenApiBookData[]> {
+    async findBooksByTitle(pageNo: number, title: string): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo) + `&bk_nm=${title}`;
             const response = await axios.get(url, {timeout: 10000});
@@ -60,7 +73,7 @@ export class BookService implements BookServiceInterface {
         }
     }
 
-    async getBooksByAuthor(pageNo: number, author: string): Promise<OpenApiBookData[]> {
+    async findBooksByAuthor(pageNo: number, author: string): Promise<OpenApiBookData[]> {
         try {
             const url = this.buildBaseSearchUrl(pageNo) + `&aut_nm=${author}`;
             const response = await axios.get(url, {timeout: 10000});

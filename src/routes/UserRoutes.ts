@@ -41,7 +41,7 @@ userRouter.post('/', userController.createUser);
  *          200:
  *              description: 성공
  * */
-userRouter.get('/:id', userController.findUserById);
+userRouter.get('/:id', userController.getUserById);
 
 /**
  * @swagger
@@ -62,7 +62,7 @@ userRouter.get('/:id', userController.findUserById);
  *          200:
  *              description: 성공
  * */
-userRouter.get('/', userController.findUserByEmail);
+userRouter.get('/', userController.getUserByEmail);
 
 /**
  * @swagger

@@ -11,7 +11,9 @@ import {
 } from "../validations/UserValidation";
 
 export class UserController {
-    constructor(private readonly userService: UserServiceInterface) {
+    private readonly userService: UserServiceInterface;
+
+    constructor() {
         this.userService = userService;
     }
 
@@ -23,16 +25,16 @@ export class UserController {
         ResponseHandler.success(ctx, '사용자가 정상적으로 등록되었습니다.');
     }
 
-    findUserById = async (ctx: Context): Promise<void> => {
+    getUserById = async (ctx: Context): Promise<void> => {
         const id = ParamsIdSchema.parse(ctx.params.id);
-        const user = await this.userService.findUserById(id);
+        const user = await this.userService.getUserById(id);
 
         ResponseHandler.success(ctx, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
 
-    findUserByEmail = async (ctx: Context): Promise<void> => {
+    getUserByEmail = async (ctx: Context): Promise<void> => {
         const email = FindUserByEmailSchema.parse(ctx.query.email);
-        const user = await this.userService.findUserByEmail(email);
+        const user = await this.userService.getUserByEmail(email);
 
         ResponseHandler.success(ctx, '사용자 정보를 성공적으로 가져왔습니다.', user);
     }
@@ -64,4 +66,4 @@ export class UserController {
     }
 }
 
-export const userController = new UserController(userService);
+export const userController = new UserController();
