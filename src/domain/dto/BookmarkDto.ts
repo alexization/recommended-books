@@ -1,5 +1,5 @@
 export interface BookmarkData {
-    userId: number;
-    bookId: number;
-    createdAt: Date;
+    user_id: number;
+    book_id: number;
+    created_at: Date;
 }

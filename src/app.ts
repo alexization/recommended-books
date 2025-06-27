@@ -15,6 +15,7 @@ import postRouter from "./routes/PostRoutes";
 import followRouter from "./routes/FollowRoutes";
 import commentRoutes from "./routes/CommentRoutes";
 import postLikeRoutes from "./routes/PostLikeRoutes";
+import bookmarkRoutes from "./routes/BookmarkRoutes";
 
 dotenv.config();
 
@@ -51,18 +52,27 @@ export function createApp(): Koa {
     /* 라우터 등록 */
     app.use(userRouter.routes());
     app.use(userRouter.allowedMethods());
+
     app.use(bookRouter.routes());
     app.use(bookRouter.allowedMethods());
+
     app.use(authRouter.routes());
     app.use(authRouter.allowedMethods());
+
     app.use(postRouter.routes());
     app.use(postRouter.allowedMethods);
+
     app.use(followRouter.routes());
     app.use(userRouter.allowedMethods);
+
     app.use(commentRoutes.routes());
     app.use(commentRoutes.allowedMethods);
+
     app.use(postLikeRoutes.routes());
     app.use(postLikeRoutes.allowedMethods);
+
+    app.use(bookmarkRoutes.routes());
+    app.use(bookmarkRoutes.allowedMethods);
 
     return app;
 }

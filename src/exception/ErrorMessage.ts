@@ -33,6 +33,9 @@ export const ErrorMessage = {
     BOOK_PUBLICATION_YEAR_INVALID: {message: "올바르지 않은 출판연도 범위입니다.", code: 3009},
     BOOK_NOT_FOUND: {message: "해당 도서가 없습니다.", code: 3010},
 
+    /* 북마크 관련 에러 31xx */
+    BOOKMARK_NOT_FOUND: {message: "해당 북마크 정보가 없습니다.", code: 3101},
+
     /* 인증 및 인가 관련 에러 4xxx */
     PASSWORD_INVALID: {message: "비밀번호가 올바르지 않습니다.", code: 4001},
     ACCESS_TOKEN_EXPIRED: {message: "access 토큰이 만료되었습니다.", code: 4002},

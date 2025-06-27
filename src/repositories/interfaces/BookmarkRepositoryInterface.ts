@@ -5,5 +5,7 @@ export interface BookmarkRepositoryInterface {
 
     deleteBookmark(userId: number, bookId: number): Promise<void>;
 
-    findBookmark(userId: number, bookId: number): Promise<Bookmark | null>;
+    findBookmark(userId: number, bookId: number): Promise<Bookmark>;
+
+    findBookmarksByUserId(userId: number, page: number, limit: number): Promise<Bookmark[]>;
 }
