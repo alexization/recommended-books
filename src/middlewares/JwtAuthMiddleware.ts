@@ -38,8 +38,7 @@ export const jwtAuthMiddleware = async (ctx: Context, next: Next): Promise<void>
         const authHeader = ctx.headers.authorization;
         const token = JwtUtils.extractToken(authHeader);
 
-        const user = await authService.validateAccessToken(token);
-        ctx.state.user = user;
+        ctx.state.user = await authService.validateAccessToken(token);
 
         await next();
 

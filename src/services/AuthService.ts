@@ -2,7 +2,7 @@ import {AuthServiceInterface} from "./interfaces/AuthServiceInterface";
 import {LoginUserData} from "../domain/dto/UserDto.js";
 import {JwtUtils, TokenPair} from "../utils/JwtUtils.js";
 import {userRepository} from "../repositories/UserRepository.js";
-import {NotFoundError, ValidationError} from "../exception/AppError";
+import {AppError, NotFoundError, ValidationError} from "../exception/AppError";
 import {UserRepositoryInterface} from "../repositories/interfaces/UserRepositoryInterface";
 import {User} from "../domain/aggregates/User";
 import {ErrorMessage} from "../exception/ErrorMessage";
@@ -15,7 +15,7 @@ export class AuthService implements AuthServiceInterface {
     }
 
     async login(loginUserData: LoginUserData): Promise<TokenPair> {
-        const user = await this.userRepository.findUserByEmail(loginUserData.email);
+        const user = await this.userRepository.findByEmail(loginUserData.email);
 
         if (!user) {
             throw new NotFoundError(ErrorMessage.USER_NOT_FOUND);
@@ -33,13 +33,21 @@ export class AuthService implements AuthServiceInterface {
     async validateAccessToken(accessToken: string): Promise<User> {
         const payload = JwtUtils.verifyAccessToken(accessToken);
 
-        return await this.userRepository.findUserByEmail(payload.email);
+        const user = await this.userRepository.findByEmail(payload.email);
+        if (!user) {
+            throw new AppError(ErrorMessage.USER_NOT_FOUND);
+        }
+
+        return user;
     }
 
     async refreshToken(refreshToken: string): Promise<{ user: User, tokenPair: TokenPair }> {
         const payload = JwtUtils.verifyRefreshToken(refreshToken);
 
-        const user = await this.userRepository.findUserById(payload.userId);
+        const user = await this.userRepository.findById(payload.userId);
+        if (!user) {
+            throw new AppError(ErrorMessage.USER_NOT_FOUND);
+        }
 
         const tokenPair = JwtUtils.generateJwtToken(user.id, user.email);
 

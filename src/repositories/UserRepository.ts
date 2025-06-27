@@ -13,21 +13,33 @@ export class UserRepository implements UserRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createUser(user: User): Promise<void> {
+    async save(user: User): Promise<void> {
+        const data = user.toPersistence();
+
         try {
-            const data = user.toPersistence();
+            if (data.user_id === 0) {
+                const query = `INSERT INTO users (email, password, name, birth, grade, updated_at, created_at)
+                               VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-            const query = `INSERT INTO users (email, password, name, birth, grade, updated_at, created_at)
-                           VALUES (?, ?, ?, ?, ?, ?, ?)`;
+                await this.db.executeQuery(query, [data.email, data.password, data.name, data.birth, data.grade, data.updated_at, data.created_at]);
 
-            await this.db.executeQuery(query, [data.email, data.password, data.name, data.birth, data.grade, data.updated_at, data.created_at]);
+            } else {
+                const query = `UPDATE users
+                               SET name       = ?,
+                                   birth      = ?,
+                                   password   = ?,
+                                   grade      = ?,
+                                   updated_at = ?
+                               WHERE id = ?`;
 
+                await this.db.executeQuery(query, [data.name, data.birth, data.password, data.grade, data.updated_at]);
+            }
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
-    async findUserById(id: number): Promise<User> {
+    async findById(id: number): Promise<User | null> {
         try {
             const query = `SELECT *
                            FROM users
@@ -35,6 +47,8 @@ export class UserRepository implements UserRepositoryInterface {
 
             const userData = await this.db.executeQuery<UserData[]>(query, [id]);
 
+            if (userData.length === 0) return null;
+
             return User.fromJson(userData[0]);
 
         } catch (error) {
@@ -42,7 +56,7 @@ export class UserRepository implements UserRepositoryInterface {
         }
     }
 
-    async findUserByEmail(email: string): Promise<User> {
+    async findByEmail(email: string): Promise<User | null> {
         try {
             const query = `SELECT *
                            FROM users
@@ -50,6 +64,8 @@ export class UserRepository implements UserRepositoryInterface {
 
             const userData = await this.db.executeQuery<UserData[]>(query, [email]);
 
+            if (userData.length === 0) return null;
+
             return User.fromJson(userData[0]);
 
         } catch (error) {
@@ -57,26 +73,7 @@ export class UserRepository implements UserRepositoryInterface {
         }
     }
 
-    async updateUser(user: User): Promise<void> {
-        try {
-            const data = user.toPersistence();
-
-            const query = `UPDATE users
-                           SET name       = ?,
-                               birth      = ?,
-                               password   = ?,
-                               grade      = ?,
-                               updated_at = ?
-                           WHERE id = ?`;
-
-            await this.db.executeQuery(query, [data.name, data.birth, data.password, data.grade, data.updated_at]);
-
-        } catch (error) {
-            throw new AppError(ErrorMessage.DATABASE_ERROR);
-        }
-    }
-
-    async deleteUser(id: number): Promise<void> {
+    async delete(id: number): Promise<void> {
         try {
             const query = `DELETE
                            FROM users
@@ -89,22 +86,24 @@ export class UserRepository implements UserRepositoryInterface {
         }
     }
 
-    async isEmailExists(email: string): Promise<boolean> {
+    async existsByEmail(email: string): Promise<boolean> {
         try {
-            const query = `SELECT EXISTS(SELECT 1 FROM users WHERE email = ?) as isEmailExists`;
+            const query = `SELECT COUNT(*) as count
+                           FROM users
+                           WHERE email = ?`;
 
-            const rows = await this.db.executeQuery<{ isEmailExists: number }[]>(query, [email]);
+            const rows = await this.db.executeQuery<{ count: number }[]>(query, [email]);
 
-            return rows[0].isEmailExists === 1;
+            return rows[0].count !== 0;
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
-    async getCountOfPostsPerUserByMonth(baseDate: string): Promise<CountOfPostsPerUser[]> {
+    async findUsersWithPostCounts(baseDate: string): Promise<CountOfPostsPerUser[]> {
         try {
-            const query = `SELECT users.user_id, (COUNT(post_id) + 0) as number_of_posts
+            const query = `SELECT users.user_id, (COUNT(post_id)) as number_of_posts
                            FROM users
                                     LEFT JOIN posts ON users.user_id = posts.user_id AND
                                                        DATE_FORMAT(posts.created_at, '%Y-%m') = ?
@@ -118,7 +117,7 @@ export class UserRepository implements UserRepositoryInterface {
     }
 
 
-    async updateUserGrade(userIds: number[], grade: Grade): Promise<void> {
+    async updateUsersGrade(userIds: number[], grade: Grade): Promise<void> {
         try {
             const placeholders = userIds.map(() => '?').join(',');
 

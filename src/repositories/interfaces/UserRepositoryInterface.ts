@@ -3,19 +3,17 @@ import {CountOfPostsPerUser} from "../../domain/dto/UserDto";
 import {Grade} from "../../domain/enums/Grade";
 
 export interface UserRepositoryInterface {
-    createUser(user: User): Promise<void>;
+    save(user: User): Promise<void>;
 
-    findUserById(id: number): Promise<User>;
+    findById(id: number): Promise<User | null>;
 
-    findUserByEmail(email: string): Promise<User>;
+    findByEmail(email: string): Promise<User | null>;
 
-    updateUser(user: User): Promise<void>;
+    existsByEmail(email: string): Promise<boolean>;
 
-    deleteUser(id: number): Promise<void>;
+    delete(id: number): Promise<void>;
 
-    getCountOfPostsPerUserByMonth(baseDate: string): Promise<CountOfPostsPerUser[]>;
+    findUsersWithPostCounts(baseDate: string): Promise<CountOfPostsPerUser[]>;
 
-    isEmailExists(email: string): Promise<boolean>;
-
-    updateUserGrade(userIds: number[], grade: Grade): Promise<void>;
+    updateUsersGrade(userIds: number[], grade: Grade): Promise<void>;
 }
