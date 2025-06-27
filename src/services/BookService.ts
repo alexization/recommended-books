@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 import axios from "axios";
-import {AppError} from "../utils/AppError";
-import {BookServiceInterface} from "../interfaces/BookServiceInterface";
-import {BookData} from "../domain/dto/BookDto";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {AppError} from "../utils/AppError.js";
+import {BookServiceInterface} from "../interfaces/BookServiceInterface.js";
+import {BookData} from "../domain/dto/BookDto.js";
+import {ErrorMessage} from "../utils/ErrorMessage.js";
 
 dotenv.config();
 

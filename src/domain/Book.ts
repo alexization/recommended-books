@@ -1,4 +1,4 @@
-import {BookData} from "./dto/BookDto";
+import {BookData} from "./dto/BookDto.js";
 
 export class Book {
     private readonly _id: number;

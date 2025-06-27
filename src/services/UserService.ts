@@ -1,8 +1,8 @@
-import {userRepository} from "../repositories/UserRepository";
-import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
-import {UserServiceInterface} from "../interfaces/UserServiceInterface";
-import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto";
-import {User} from "../domain/User";
+import {userRepository} from "../repositories/UserRepository.js";
+import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface.js";
+import {UserServiceInterface} from "../interfaces/UserServiceInterface.js";
+import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto.js";
+import {User} from "../domain/User.js";
 
 export class UserService implements UserServiceInterface {
     constructor(private readonly userRepository: UserRepositoryInterface) {

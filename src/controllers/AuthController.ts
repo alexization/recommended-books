@@ -1,9 +1,9 @@
-import {AuthServiceInterface} from "../interfaces/AuthServiceInterface";
-import {authService} from "../services/AuthService";
 import {Context} from "koa";
-import {LoginUserData} from "../domain/dto/UserDto";
-import {ResponseHandler} from "../utils/ResponseHandler";
-import {CookieUtils} from "../utils/CookieUtils";
+import {AuthServiceInterface} from "../interfaces/AuthServiceInterface.js";
+import {authService} from "../services/AuthService.js";
+import {ResponseHandler} from "../utils/ResponseHandler.js";
+import {CookieUtils} from "../utils/CookieUtils.js";
+import {LoginUserSchema} from "../validations/LoginValidation";
 
 export class AuthController {
 
@@ -12,7 +12,7 @@ export class AuthController {
     }
 
     login = async (ctx: Context): Promise<void> => {
-        const loginUserData = ctx.request.body as LoginUserData;
+        const loginUserData = LoginUserSchema.parse(ctx.request.body);
 
         const tokens = await this.authService.login(loginUserData);
 

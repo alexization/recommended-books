@@ -1,9 +1,9 @@
-import {AppError, NotFoundError, ValidationError} from "../utils/AppError";
-import {User} from "../domain/User";
-import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface";
-import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto";
-import {ErrorMessage} from "../utils/ErrorMessage";
-import {DatabaseConnection} from "../config/DatabaseConfig";
+import {AppError, NotFoundError, ValidationError} from "../utils/AppError.js";
+import {User} from "../domain/User.js";
+import {UserRepositoryInterface} from "../interfaces/UserRepositoryInterface.js";
+import {CreateUserData, UpdateUserData, UserData} from "../domain/dto/UserDto.js";
+import {ErrorMessage} from "../utils/ErrorMessage.js";
+import {DatabaseConnection} from "../config/DatabaseConfig.js";
 
 export class UserRepository implements UserRepositoryInterface {
     private db: DatabaseConnection;

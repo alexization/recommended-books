@@ -1,4 +1,4 @@
-import {PostData} from "./dto/PostDto";
+import {PostData} from "./dto/PostDto.js";
 
 export class Post {
     private readonly _id: number;

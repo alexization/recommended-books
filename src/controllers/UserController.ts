@@ -1,10 +1,8 @@
 import {Context} from "koa";
-import {userService} from "../services/UserService";
-import {ValidationError} from "../utils/AppError";
-import {ResponseHandler} from "../utils/ResponseHandler";
-import {UserServiceInterface} from "../interfaces/UserServiceInterface";
-import {CreateUserData, UpdateUserData} from "../domain/dto/UserDto";
-import {ErrorMessage} from "../utils/ErrorMessage";
+import {userService} from "../services/UserService.js";
+import {ResponseHandler} from "../utils/ResponseHandler.js";
+import {UserServiceInterface} from "../interfaces/UserServiceInterface.js";
+import {CreateUserSchema, FindUserByEmailSchema, ParamsIdSchema, UpdateUserSchema} from "../validations/UserValidation";
 
 export class UserController {
     constructor(private readonly userService: UserServiceInterface) {
@@ -12,10 +10,7 @@ export class UserController {
     }
 
     createUser = async (ctx: Context): Promise<void> => {
-        const createUserData = ctx.request.body as CreateUserData;
-
-        this.validateEmail(createUserData.email);
-        this.validateName(createUserData.name);
+        const createUserData = CreateUserSchema.parse(ctx.request.body);
 
         const newUser = await this.userService.createUser(createUserData);
 
@@ -23,7 +18,7 @@ export class UserController {
     }
 
     findUserById = async (ctx: Context): Promise<void> => {
-        const id = parseInt(ctx.params.id);
+        const id = ParamsIdSchema.parse(ctx.params.id);
 
         const user = await this.userService.findUserById(id);
 
@@ -31,9 +26,7 @@ export class UserController {
     }
 
     findUserByEmail = async (ctx: Context): Promise<void> => {
-        const email = ctx.query.email as string;
-
-        this.validateEmail(email);
+        const email = FindUserByEmailSchema.parse(ctx.query.email);
 
         const user = await this.userService.findUserByEmail(email);
 
@@ -41,9 +34,9 @@ export class UserController {
     }
 
     updateUser = async (ctx: Context): Promise<void> => {
-        const id = parseInt(ctx.params.id);
+        const id = ParamsIdSchema.parse(ctx.params.id);
 
-        const updateUserData = ctx.request.body as UpdateUserData;
+        const updateUserData = UpdateUserSchema.parse(ctx.request.body);
 
         await this.userService.updateUser(id, updateUserData);
 
@@ -51,31 +44,11 @@ export class UserController {
     }
 
     deleteUser = async (ctx: Context): Promise<void> => {
-        const id = parseInt(ctx.params.id);
+        const id = ParamsIdSchema.parse(ctx.params.id);
 
         await this.userService.deleteUser(id);
 
         ResponseHandler.success(ctx, '사용자를 성공적으로 삭제했습니다.');
-    }
-
-    validateEmail(email?: string): void {
-        if (!email || email.trim() === '') {
-            throw new ValidationError(ErrorMessage.EMAIL_REQUIRED);
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            throw new ValidationError(ErrorMessage.EMAIL_INVALID_FORMAT);
-        }
-    }
-
-    validateName(name?: string): void {
-        if (!name || name.trim() === '') {
-            throw new ValidationError(ErrorMessage.NAME_REQUIRED);
-        }
-        if (name.length > 10) {
-            throw new ValidationError(ErrorMessage.NAME_TOO_LONG);
-        }
     }
 }
 
