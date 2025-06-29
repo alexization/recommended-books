@@ -12,7 +12,7 @@ export class BookmarkRepository implements BookmarkRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createBookmark(bookmark: Bookmark): Promise<void> {
+    async save(bookmark: Bookmark): Promise<void> {
         try {
             const data = bookmark.toPersistence();
 
@@ -26,7 +26,7 @@ export class BookmarkRepository implements BookmarkRepositoryInterface {
         }
     }
 
-    async deleteBookmark(userId: number, bookId: number): Promise<void> {
+    async delete(userId: number, bookId: number): Promise<void> {
         try {
             const query = `DELETE
                            FROM bookmarks
@@ -41,7 +41,7 @@ export class BookmarkRepository implements BookmarkRepositoryInterface {
         }
     }
 
-    async findBookmark(userId: number, bookId: number): Promise<Bookmark> {
+    async findByUserIdAndBookId(userId: number, bookId: number): Promise<Bookmark> {
         try {
             const query = `SELECT *
                            FROM bookmarks
@@ -57,7 +57,7 @@ export class BookmarkRepository implements BookmarkRepositoryInterface {
         }
     }
 
-    async findBookmarksByUserId(userId: number, page: number, limit: number): Promise<Bookmark[]> {
+    async findByUserId(userId: number, page: number, limit: number): Promise<Bookmark[]> {
         try {
             const offset = (page - 1) * page;
             const query = `SELECT *

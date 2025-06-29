@@ -21,7 +21,7 @@ export class FollowService implements FollowServiceInterface {
 
         const follow = Follow.create(0, followingId, followerId);
 
-        await this.followRepository.createFollow(follow);
+        await this.followRepository.save(follow);
     }
 
     async unfollow(followingId: number, followerId: number): Promise<void> {
@@ -31,7 +31,7 @@ export class FollowService implements FollowServiceInterface {
             throw new AppError(ErrorMessage.FOLLOW_EXISTED);
         }
 
-        await this.followRepository.deleteFollow(follow.id);
+        await this.followRepository.delete(follow.id);
     }
 
     async getFollowers(userId: number, page: number): Promise<Follow[]> {

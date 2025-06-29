@@ -1,5 +1,5 @@
 import {CommentServiceInterface} from "../services/interfaces/CommentServiceInterface";
-import {commentSerivce} from "../services/CommentService";
+import {commentService} from "../services/CommentService";
 import {Context} from "koa";
 import {ResponseHandler} from "../utils/ResponseHandler";
 import {CommentIdSchema, CreateCommentSchema, UpdateCommentSchema} from "../validations/CommentValidation";
@@ -8,7 +8,7 @@ export class CommentController {
     private readonly commentService: CommentServiceInterface;
 
     constructor() {
-        this.commentService = commentSerivce;
+        this.commentService = commentService;
     }
 
     createComment = async (ctx: Context): Promise<void> => {

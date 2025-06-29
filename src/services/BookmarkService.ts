@@ -16,11 +16,11 @@ export class BookmarkService implements BookmarkServiceInterface {
     async addBookmark(userId: number, bookId: number): Promise<void> {
         const bookmark = Bookmark.create(userId, bookId);
 
-        await this.bookmarkRepository.createBookmark(bookmark);
+        await this.bookmarkRepository.save(bookmark);
     }
 
     async getBookmark(userId: number, bookId: number): Promise<Bookmark> {
-        const bookmark = await this.bookmarkRepository.findBookmark(userId, bookId);
+        const bookmark = await this.bookmarkRepository.findByUserIdAndBookId(userId, bookId);
 
         if (!bookmark) {
             throw new AppError(ErrorMessage.BOOKMARK_NOT_FOUND);
@@ -30,13 +30,13 @@ export class BookmarkService implements BookmarkServiceInterface {
     }
 
     async findBookmarksByUserId(userId: number, page: number): Promise<Bookmark[]> {
-        return await this.bookmarkRepository.findBookmarksByUserId(userId, page, this.PAGE_SIZE);
+        return await this.bookmarkRepository.findByUserId(userId, page, this.PAGE_SIZE);
     }
 
     async removeBookmark(userId: number, bookId: number): Promise<void> {
         await this.getBookmark(userId, bookId);
 
-        await this.bookmarkRepository.deleteBookmark(userId, bookId);
+        await this.bookmarkRepository.delete(userId, bookId);
     }
 }
 

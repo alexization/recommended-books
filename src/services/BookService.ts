@@ -24,11 +24,11 @@ export class BookService implements BookServiceInterface {
     async createBook(bookData: CreateBookData): Promise<void> {
         const book = Book.create(0, bookData);
 
-        await this.bookRepository.createBook(book);
+        await this.bookRepository.save(book);
     }
 
     async getBookByTitleAndAuthor(title: string, author: string): Promise<Book> {
-        const book = await this.bookRepository.findBookByTitleAndAuthor(title, author);
+        const book = await this.bookRepository.findByTitleAndAuthor(title, author);
 
         if (!book) {
             throw new AppError(ErrorMessage.BOOK_NOT_FOUND);
@@ -38,7 +38,7 @@ export class BookService implements BookServiceInterface {
     }
 
     async getBookById(id: number): Promise<Book> {
-        const book = await this.bookRepository.findBookById(id);
+        const book = await this.bookRepository.findById(id);
 
         if (!book) {
             throw new AppError(ErrorMessage.BOOK_NOT_FOUND);

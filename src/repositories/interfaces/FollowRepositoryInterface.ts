@@ -1,9 +1,9 @@
 import {Follow} from "../../domain/entities/Follow";
 
 export interface FollowRepositoryInterface {
-    createFollow(follow: Follow): Promise<void>;
+    save(follow: Follow): Promise<void>;
 
-    deleteFollow(followId: number): Promise<void>;
+    delete(followId: number): Promise<void>;
 
     findFollow(followingId: number, followerId: number): Promise<Follow>;
 
