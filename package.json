@@ -45,13 +45,18 @@
     "typescript": "^5.8.3"
   },
   "jest": {
-    "preset": "ts-jest/presets/default-esm",
+    "preset": "ts-jest",
     "extensionsToTreatAsEsm": [
       ".ts"
     ],
     "testEnvironment": "node",
     "testMatch": [
-      "**/test/**/*.ts"
+      "**/__tests__/**/*.+(ts|tsx|js)",
+      "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/test/jest.setup.ts",
+      "<rootDir>/test/helpers/mockData.ts"
     ]
   }
 }
