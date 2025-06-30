@@ -1,6 +1,6 @@
-import {FollowData} from "./dto/FollowDto.js";
-import {AppError} from "../exception/AppError";
-import {ErrorMessage} from "../exception/ErrorMessage";
+import {FollowData} from "../dto/FollowDto";
+import {AppError} from "../../exception/AppError";
+import {ErrorMessage} from "../../exception/ErrorMessage";
 
 export class Follow {
     private readonly _id: number;

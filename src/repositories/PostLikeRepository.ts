@@ -1,6 +1,6 @@
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {PostLikeRepositoryInterface} from "./interfaces/PostLikeRepositoryInterface";
-import {PostLike} from "../domain/PostLike";
+import {PostLike} from "../domain/entities/PostLike";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 import {PostLikeData} from "../domain/dto/PostLikeDto";
@@ -12,7 +12,7 @@ export class PostLikeRepository implements PostLikeRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createLike(postLike: PostLike): Promise<void> {
+    async save(postLike: PostLike): Promise<void> {
         try {
             const data = postLike.toPersistence();
 
@@ -42,7 +42,7 @@ export class PostLikeRepository implements PostLikeRepositoryInterface {
         }
     }
 
-    async deleteLike(userId: number, postId: number): Promise<void> {
+    async delete(userId: number, postId: number): Promise<void> {
         try {
             const query = `DELETE
                            FROM post_likes

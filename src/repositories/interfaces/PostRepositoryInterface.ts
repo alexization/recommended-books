@@ -1,11 +1,9 @@
-import {Post} from "../../domain/Post";
+import {Post} from "../../domain/aggregates/Post";
 
 export interface PostRepositoryInterface {
-    createPost(post: Post): Promise<void>;
+    save(post: Post): Promise<void>;
 
-    findPostById(id: number): Promise<Post>;
+    delete(id: number): Promise<void>;
 
-    updatePost(post: Post): Promise<void>;
-
-    deletePost(id: number): Promise<void>;
+    findById(id: number): Promise<Post>;
 }

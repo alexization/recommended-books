@@ -1,11 +1,11 @@
-import {PostLike} from "../../domain/PostLike";
+import {PostLike} from "../../domain/entities/PostLike";
 
 export interface PostLikeRepositoryInterface {
-    createLike(postLike: PostLike): Promise<void>;
+    save(postLike: PostLike): Promise<void>;
 
     findLikeByUserIdAndPostId(userId: number, postId: number): Promise<PostLike>;
 
-    deleteLike(userId: number, postId: number): Promise<void>;
+    delete(userId: number, postId: number): Promise<void>;
 
     countLikesByPostId(postId: number): Promise<number>;
 

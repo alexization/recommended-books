@@ -1,5 +1,5 @@
 import {BookRepositoryInterface} from "./interfaces/BookRepositoryInterface";
-import {Book} from "../domain/Book";
+import {Book} from "../domain/entities/Book";
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {BookData} from "../domain/dto/BookDto";
 import {AppError} from "../exception/AppError";
@@ -12,7 +12,7 @@ export class BookRepository implements BookRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createBook(book: Book): Promise<void> {
+    async save(book: Book): Promise<void> {
         try {
             const data = book.toPersistence();
 
@@ -26,7 +26,7 @@ export class BookRepository implements BookRepositoryInterface {
         }
     }
 
-    async findBookByTitleAndAuthor(title: string, author: string): Promise<Book> {
+    async findByTitleAndAuthor(title: string, author: string): Promise<Book> {
         try {
             const query = `SELECT *
                            FROM books
@@ -42,7 +42,7 @@ export class BookRepository implements BookRepositoryInterface {
         }
     }
 
-    async findBookById(id: number): Promise<Book> {
+    async findById(id: number): Promise<Book> {
         try {
             const query = `SELECT *
                            FROM books

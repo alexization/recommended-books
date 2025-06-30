@@ -1,6 +1,6 @@
-import {CreatePostData, PostData, UpdatePostData} from "./dto/PostDto.js";
-import {AppError} from "../exception/AppError";
-import {ErrorMessage} from "../exception/ErrorMessage";
+import {CreatePostData, PostData, UpdatePostData} from "../dto/PostDto";
+import {AppError} from "../../exception/AppError";
+import {ErrorMessage} from "../../exception/ErrorMessage";
 
 export class Post {
     private readonly _id: number;
@@ -21,16 +21,8 @@ export class Post {
         this._imagePath = imagePath;
     }
 
-    get id(): number {
-        return this._id;
-    }
-
-    get userId(): number {
-        return this._userId;
-    }
-
-    get bookId(): number | undefined {
-        return this._bookId;
+    canBeDeletedBy(userId: number): boolean {
+        return this.isOwnedBy(userId);
     }
 
     update(userId: number, postData: UpdatePostData, imagePath?: string): void {
@@ -41,19 +33,18 @@ export class Post {
         this._imagePath = imagePath;
     }
 
-    validateOwner(userId: number): void {
-        if (!this.canModifiedBy(userId)) {
+    private validateOwner(userId: number): void {
+        if (!this.isOwnedBy(userId)) {
             throw new AppError(ErrorMessage.POST_OWNER_INVALID);
         }
     }
 
-    canModifiedBy(userId: number): boolean {
+    private isOwnedBy(userId: number): boolean {
         return this._userId === userId;
     }
 
-
-    static create(postId: number, userId: number, postData: CreatePostData, imagePath?: string): Post {
-        return new Post(postId, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);
+    static create(userId: number, postData: CreatePostData, imagePath?: string): Post {
+        return new Post(0, userId, postData.title, postData.content, new Date(), postData.bookId, imagePath);
     }
 
     static fromJson(postData: PostData): Post {
@@ -70,5 +61,17 @@ export class Post {
             book_id: this._bookId,
             image_path: this._imagePath,
         }
+    }
+
+    get id(): number {
+        return this._id;
+    }
+
+    get userId(): number {
+        return this._userId;
+    }
+
+    get bookId(): number | undefined {
+        return this._bookId;
     }
 }

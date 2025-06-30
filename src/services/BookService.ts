@@ -4,10 +4,10 @@ import {AppError} from "../exception/AppError";
 import {BookServiceInterface} from "./interfaces/BookServiceInterface";
 import {CreateBookData, OpenApiBookData, OpenApiBookJson} from "../domain/dto/BookDto.js";
 import {ErrorMessage} from "../exception/ErrorMessage";
-import {Book} from "../domain/Book";
+import {Book} from "../domain/entities/Book";
 import {BookRepositoryInterface} from "../repositories/interfaces/BookRepositoryInterface";
 import {bookRepository} from "../repositories/BookRepository";
-import {User} from "../domain/User";
+import {User} from "../domain/aggregates/User";
 
 dotenv.config();
 
@@ -24,11 +24,11 @@ export class BookService implements BookServiceInterface {
     async createBook(bookData: CreateBookData): Promise<void> {
         const book = Book.create(0, bookData);
 
-        await this.bookRepository.createBook(book);
+        await this.bookRepository.save(book);
     }
 
     async getBookByTitleAndAuthor(title: string, author: string): Promise<Book> {
-        const book = await this.bookRepository.findBookByTitleAndAuthor(title, author);
+        const book = await this.bookRepository.findByTitleAndAuthor(title, author);
 
         if (!book) {
             throw new AppError(ErrorMessage.BOOK_NOT_FOUND);
@@ -38,7 +38,7 @@ export class BookService implements BookServiceInterface {
     }
 
     async getBookById(id: number): Promise<Book> {
-        const book = await this.bookRepository.findBookById(id);
+        const book = await this.bookRepository.findById(id);
 
         if (!book) {
             throw new AppError(ErrorMessage.BOOK_NOT_FOUND);
@@ -93,7 +93,7 @@ export class BookService implements BookServiceInterface {
             const bookJson = response.data.items as OpenApiBookJson[];
 
             const openApiBookData = this.mapToOpenApiBookData(bookJson);
-            return openApiBookData.filter(book => book.loanStatus || user.canReserveBookForDate(book.returnDate));
+            return openApiBookData.filter(book => book.loanStatus || user.canReserveBookOn(book.returnDate));
 
         } catch (error) {
             throw new AppError(ErrorMessage.API_CALL_ERROR);
@@ -101,7 +101,7 @@ export class BookService implements BookServiceInterface {
     }
 
     getReturnDate(startDate: Date, user: User): Date {
-        return user.calculateExpectedReturnDate(startDate);
+        return user.calculateReturnDate(startDate);
     }
 
     private buildBaseSearchUrl(pageNo: number): string {

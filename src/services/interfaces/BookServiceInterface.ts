@@ -1,6 +1,6 @@
 import {CreateBookData, OpenApiBookData} from "../../domain/dto/BookDto";
-import {Book} from "../../domain/Book";
-import {User} from "../../domain/User";
+import {Book} from "../../domain/entities/Book";
+import {User} from "../../domain/aggregates/User";
 
 export interface BookServiceInterface {
     createBook(bookData: CreateBookData): Promise<void>;

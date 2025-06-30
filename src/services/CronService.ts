@@ -21,7 +21,7 @@ export class CronService {
 
     private async assignmentUserGrade(): Promise<void> {
         const baseDate = this.buildBaseDate();
-        const countOfPostsPerUsers = await userRepository.getCountOfPostsPerUserByMonth(baseDate);
+        const countOfPostsPerUsers = await userRepository.findUsersWithPostCounts(baseDate);
 
         const goldUsers: number[] = [];
         const silverUsers: number[] = [];
@@ -42,13 +42,13 @@ export class CronService {
         const updatePromises = [];
 
         if (goldUsers.length > 0) {
-            updatePromises.push(userRepository.updateUserGrade(goldUsers, Grade.GOLD));
+            updatePromises.push(userRepository.updateUsersGrade(goldUsers, Grade.GOLD));
         }
         if (silverUsers.length > 0) {
-            updatePromises.push(userRepository.updateUserGrade(silverUsers, Grade.SILVER));
+            updatePromises.push(userRepository.updateUsersGrade(silverUsers, Grade.SILVER));
         }
         if (bronzeUsers.length > 0) {
-            updatePromises.push(userRepository.updateUserGrade(bronzeUsers, Grade.BRONZE));
+            updatePromises.push(userRepository.updateUsersGrade(bronzeUsers, Grade.BRONZE));
         }
 
         await Promise.all(updatePromises);

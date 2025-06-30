@@ -1,4 +1,4 @@
-import {PostLikeData} from "./dto/PostLikeDto.js";
+import {PostLikeData} from "../dto/PostLikeDto";
 
 export class PostLike {
     private readonly _userId: number;
@@ -9,14 +9,6 @@ export class PostLike {
         this._userId = userId;
         this._postId = postId;
         this._createdAt = createdAt;
-    }
-
-    get userId(): number {
-        return this._userId;
-    }
-
-    get postId(): number {
-        return this._postId;
     }
 
     static create(userId: number, postId: number): PostLike {
@@ -31,5 +23,13 @@ export class PostLike {
         return {
             user_id: this._userId, post_id: this._postId, created_at: this._createdAt
         }
+    }
+
+    get userId(): number {
+        return this._userId;
+    }
+
+    get postId(): number {
+        return this._postId;
     }
 }

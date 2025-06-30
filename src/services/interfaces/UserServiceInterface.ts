@@ -1,5 +1,5 @@
 import {CreateUserData, UpdateUserData} from "../../domain/dto/UserDto";
-import {User} from "../../domain/User";
+import {User} from "../../domain/aggregates/User";
 
 export interface UserServiceInterface {
     createUser(userData: CreateUserData): Promise<void>;
