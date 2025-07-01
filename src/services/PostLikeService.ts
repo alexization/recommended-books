@@ -1,5 +1,5 @@
 import {PostLikeServiceInterface} from "./interfaces/PostLikeServiceInterface";
-import {PostLike} from "../domain/PostLike";
+import {PostLike} from "../domain/entities/PostLike";
 import {PostLikeRepositoryInterface} from "../repositories/interfaces/PostLikeRepositoryInterface";
 import {postLikeRepository} from "../repositories/PostLikeRepository";
 import {AppError} from "../exception/AppError";
@@ -19,7 +19,7 @@ export class PostLikeService implements PostLikeServiceInterface {
 
         const postLike = PostLike.create(userId, postId);
 
-        await this.postLikeRepository.createLike(postLike);
+        await this.postLikeRepository.save(postLike);
     }
 
     async unlikePost(userId: number, postId: number): Promise<void> {
@@ -27,7 +27,7 @@ export class PostLikeService implements PostLikeServiceInterface {
             throw new AppError(ErrorMessage.POST_LIKE_NOT_FOUND);
         }
 
-        await this.postLikeRepository.deleteLike(userId, postId);
+        await this.postLikeRepository.delete(userId, postId);
     }
 
     async getLikeCountByPostId(postId: number): Promise<number> {

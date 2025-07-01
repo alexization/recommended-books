@@ -1,5 +1,5 @@
 import {FollowRepositoryInterface} from "./interfaces/FollowRepositoryInterface";
-import {Follow} from "../domain/Follow";
+import {Follow} from "../domain/entities/Follow";
 import {DatabaseConnection} from "../config/DatabaseConfig";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
@@ -13,7 +13,7 @@ export class FollowRepository implements FollowRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createFollow(follow: Follow): Promise<void> {
+    async save(follow: Follow): Promise<void> {
         try {
             const followData = follow.toPersistence();
 
@@ -26,7 +26,7 @@ export class FollowRepository implements FollowRepositoryInterface {
         }
     }
 
-    async deleteFollow(followId: number): Promise<void> {
+    async delete(followId: number): Promise<void> {
         try {
             const query = `DELETE
                            FROM follows

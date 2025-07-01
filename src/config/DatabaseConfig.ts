@@ -31,7 +31,8 @@ export class DatabaseConnection {
             port: databaseConfig.port,
             user: databaseConfig.user,
             password: databaseConfig.password,
-            database: databaseConfig.database
+            database: databaseConfig.database,
+            bigIntAsNumber: true
         });
     }
 

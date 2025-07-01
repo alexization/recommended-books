@@ -1,6 +1,6 @@
 import {CommentRepositoryInterface} from "./interfaces/CommentRepositoryInterface";
 import {DatabaseConnection} from "../config/DatabaseConfig";
-import {Comment} from "../domain/Comment";
+import {Comment} from "../domain/entities/Comment";
 import {AppError} from "../exception/AppError";
 import {ErrorMessage} from "../exception/ErrorMessage";
 import {CommentData} from "../domain/dto/CommentDto";
@@ -13,37 +13,32 @@ export class CommentRepository implements CommentRepositoryInterface {
         this.db = DatabaseConnection.getInstance();
     }
 
-    async createComment(comment: Comment): Promise<void> {
+    async save(comment: Comment): Promise<void> {
+        const data = comment.toPersistence();
+
         try {
-            const data = comment.toPersistence();
+            if (data.comment_id === 0) {
 
-            const query = `INSERT INTO comments (post_id, user_id, content, created_at, updated_at)
-                           VALUES (?, ?, ?, ?, ?)`;
+                const query = `INSERT INTO comments (post_id, user_id, content, created_at, updated_at)
+                               VALUES (?, ?, ?, ?, ?)`;
 
-            await this.db.executeQuery(query, [data.post_id, data.user_id, data.content, data.created_at, data.updated_at]);
+                await this.db.executeQuery(query, [data.post_id, data.user_id, data.content, data.created_at, data.updated_at]);
+
+            } else {
+                const query = `UPDATE comments
+                               SET content    = ?,
+                                   updated_at = ?
+                               WHERE comment_id = ?`;
+
+                await this.db.executeQuery(query, [data.content, data.updated_at, data.comment_id]);
+            }
 
         } catch (error) {
             throw new AppError(ErrorMessage.DATABASE_ERROR);
         }
     }
 
-    async updateComment(comment: Comment): Promise<void> {
-        try {
-            const data = comment.toPersistence();
-
-            const query = `UPDATE comments
-                           SET content    = ?,
-                               updated_at = ?
-                           WHERE comment_id = ?`;
-
-            await this.db.executeQuery(query, [data.content, data.updated_at, data.comment_id]);
-
-        } catch (error) {
-            throw new AppError(ErrorMessage.DATABASE_ERROR);
-        }
-    }
-
-    async deleteCommentById(id: number): Promise<void> {
+    async deleteById(id: number): Promise<void> {
         try {
             const query = `DELETE
                            FROM comments
@@ -56,7 +51,7 @@ export class CommentRepository implements CommentRepositoryInterface {
         }
     }
 
-    async deleteCommentsByPostId(postId: number): Promise<void> {
+    async deleteByPostId(postId: number): Promise<void> {
         try {
             const query = `DELETE
                            FROM comments
@@ -69,7 +64,7 @@ export class CommentRepository implements CommentRepositoryInterface {
         }
     }
 
-    async findCommentById(id: number): Promise<Comment> {
+    async findById(id: number): Promise<Comment> {
         try {
             const query = `SELECT *
                            FROM comments
@@ -84,7 +79,7 @@ export class CommentRepository implements CommentRepositoryInterface {
         }
     }
 
-    async findCommentsByPostId(postId: number, page: number, limit: number): Promise<Comment[]> {
+    async findByPostId(postId: number, page: number, limit: number): Promise<Comment[]> {
         try {
             const offset = (page - 1) * limit;
             const query = `SELECT *
